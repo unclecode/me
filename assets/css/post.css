@@ -1,0 +1,331 @@
+/* 
+ * Blog Post CSS
+ * Specific styling for individual blog post pages
+ * Imports the core terminal styling
+ */
+
+@import url('terminal-core.css');
+
+/* Link styling specific to blog posts */
+a {
+  color: var(--terminal-link);
+  text-decoration: none;
+  border-bottom: 1px dotted var(--terminal-link);
+}
+
+a:hover {
+  border-bottom: 1px solid var(--terminal-link);
+}
+
+/* Post header */
+.post-header {
+  margin-bottom: 2rem;
+  color: var(--terminal-text);
+  padding-bottom: 1.5rem;
+  border-bottom: 1px solid var(--terminal-border);
+}
+
+.post-meta-line {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  margin-bottom: 0.5rem;
+  font-size: 0.85rem;
+  color: var(--terminal-gray);
+}
+
+.post-title {
+  margin: 1rem 0 0.5rem;
+  font-size: 2rem;
+  font-weight: 700;
+  color: var(--terminal-green);
+}
+
+.post-meta-value {
+  color: var(--terminal-yellow);
+}
+
+.post-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  margin-top: 1rem;
+}
+
+/* Post content */
+.post-content {
+  line-height: 1.7;
+}
+
+.post-content p {
+  margin-bottom: 1.5rem;
+}
+
+.post-content h2 {
+  margin-top: 3rem;
+  margin-bottom: 1.5rem;
+  color: var(--terminal-green);
+  position: relative;
+  font-size: 1.5rem;
+  padding-bottom: 0.75rem;
+  border-bottom: 1px solid var(--terminal-border);
+}
+
+.post-content h2::before {
+  content: '## ';
+  color: var(--terminal-gray);
+}
+
+.post-content h3 {
+  margin-top: 2.5rem;
+  margin-bottom: 1rem;
+  color: var(--terminal-cyan);
+  font-size: 1.2rem;
+}
+
+.post-content h3::before {
+  content: '### ';
+  color: var(--terminal-gray);
+}
+
+.post-content ul, .post-content ol {
+  margin-bottom: 1.5rem;
+  padding-left: 2rem;
+}
+
+.post-content li {
+  margin-bottom: 0.5rem;
+}
+
+.post-content blockquote {
+  margin: 2rem 0;
+  padding: 1rem;
+  border-left: 3px solid var(--terminal-cyan);
+  background-color: var(--terminal-highlight);
+  font-style: italic;
+  color: var(--terminal-gray);
+}
+
+.post-content blockquote p {
+  margin: 0;
+}
+
+/* Code styling */
+.post-content pre {
+  margin: 1.5rem 0;
+  position: relative;
+  overflow-x: auto;
+  background-color: transparent !important;
+}
+
+.post-content code {
+  font-family: var(--monospace);
+  font-size: 0.9rem;
+  background-color: rgba(138, 43, 226, 0.1);
+  padding: 0.2rem 0.4rem;
+  border-radius: 3px;
+}
+
+.post-content pre code {
+  background-color: transparent;
+  padding: 0;
+  font-size: 0.85rem;
+  line-height: 1.5;
+  border-radius: 0;
+  color: var(--terminal-text);
+}
+
+/* Terminal-style code blocks */
+.code-container {
+  margin: 2rem 0;
+  overflow: hidden;
+  border-radius: 6px;
+  border: 1px solid var(--terminal-border);
+}
+
+.code-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.5rem 1rem;
+  background-color: var(--terminal-code-bg);
+  border-bottom: 1px solid var(--terminal-border);
+  font-size: 0.85rem;
+  color: var(--terminal-gray);
+}
+
+.code-block {
+  background-color: #1e1e1e;
+  overflow-x: auto;
+  padding: 1rem;
+}
+
+.copy-button {
+  background-color: transparent;
+  border: 1px solid var(--terminal-border);
+  color: var(--terminal-gray);
+  cursor: pointer;
+  font-size: 0.8rem;
+  display: flex;
+  align-items: center;
+  gap: 0.3rem;
+  padding: 0.2rem 0.5rem;
+  border-radius: 3px;
+  transition: all 0.2s ease;
+  font-family: var(--monospace);
+}
+
+.copy-button:hover {
+  background-color: var(--terminal-highlight);
+  color: var(--terminal-text);
+}
+
+/* Command line prompts in code */
+.language-bash .hljs-meta {
+  color: var(--terminal-green);
+  font-weight: bold;
+  user-select: none;
+}
+
+/* Author bio */
+.author-section {
+  margin-top: 4rem;
+  border-top: 1px solid var(--terminal-border);
+  padding-top: 2rem;
+}
+
+.author-header {
+  color: var(--terminal-gray);
+  font-size: 0.85rem;
+  margin-bottom: 1rem;
+}
+
+.author-header::before {
+  content: '# ';
+  color: var(--terminal-gray);
+}
+
+.author-bio {
+  display: flex;
+  gap: 1.5rem;
+  background-color: var(--terminal-highlight);
+  padding: 1.5rem;
+  border-radius: 6px;
+  border: 1px solid var(--terminal-border);
+}
+
+.author-avatar {
+  width: 80px;
+  height: 80px;
+  border-radius: 6px;
+  overflow: hidden;
+  flex-shrink: 0;
+  border: 1px solid var(--terminal-border);
+}
+
+.author-avatar img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.author-info {
+  flex: 1;
+}
+
+.author-name {
+  font-size: 1.2rem;
+  color: var(--terminal-green);
+  margin-bottom: 0.5rem;
+}
+
+.author-description {
+  font-size: 0.9rem;
+  color: var(--terminal-text);
+  margin-bottom: 1rem;
+  line-height: 1.6;
+}
+
+.author-social {
+  display: flex;
+  gap: 1rem;
+}
+
+.author-social a {
+  color: var(--terminal-link);
+  border-bottom: none;
+}
+
+.author-social a:hover {
+  color: var(--terminal-cyan);
+}
+
+/* Post navigation */
+.post-navigation {
+  margin-top: 3rem;
+  padding-top: 1.5rem;
+  border-top: 1px dashed var(--terminal-border);
+  display: flex;
+  justify-content: space-between;
+}
+
+.navigation-item {
+  max-width: 45%;
+}
+
+.navigation-header {
+  color: var(--terminal-gray);
+  font-size: 0.8rem;
+  margin-bottom: 0.5rem;
+}
+
+.navigation-title {
+  color: var(--terminal-link);
+  font-size: 0.95rem;
+  text-decoration: none;
+  display: inline-block;
+  border-bottom: 1px dotted var(--terminal-link);
+}
+
+.navigation-title:hover {
+  border-bottom: 1px solid var(--terminal-link);
+}
+
+.navigation-next {
+  text-align: right;
+}
+
+/* Terminal footer */
+.terminal-footer {
+  margin-top: 4rem;
+  color: var(--terminal-gray);
+  font-size: 0.85rem;
+  padding-top: 1rem;
+  border-top: 1px solid var(--terminal-border);
+}
+
+.terminal-footer .prompt {
+  color: var(--terminal-prompt);
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .terminal-body {
+    padding: 1.5rem 1rem;
+  }
+  
+  .author-bio {
+    flex-direction: column;
+    gap: 1rem;
+  }
+  
+  .post-navigation {
+    flex-direction: column;
+    gap: 1.5rem;
+  }
+  
+  .navigation-item {
+    max-width: 100%;
+    text-align: left;
+  }
+}

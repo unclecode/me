@@ -1,0 +1,762 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CUTLASS vs DeepGEMM Animation</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+    <style>
+        :root {
+            /* Light theme (default) */
+            --primary-color: #3b82f6;
+            --secondary-color: #10b981;
+            --accent-orange: #f97316;
+            --accent-green: #10b981;
+            --accent-yellow: #fbbf24;
+            --accent-blue: #60a5fa;
+            --bg-main: #f8fafc;
+            --bg-card: #ffffff;
+            --bg-element: #f1f5f9;
+            --bg-element-hover: #e2e8f0;
+            --text-primary: #334155;
+            --text-secondary: #64748b;
+            --text-tertiary: #94a3b8;
+            --border-color: #cbd5e1;
+            --shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+            --radius: 12px;
+        }
+        
+        [data-theme="dark"] {
+            --primary-color: #60a5fa;
+            --secondary-color: #34d399;
+            --accent-orange: #fb923c;
+            --accent-green: #34d399;
+            --accent-yellow: #fcd34d;
+            --accent-blue: #93c5fd;
+            --bg-main: #0f172a;
+            --bg-card: #1e293b;
+            --bg-element: #334155;
+            --bg-element-hover: #475569;
+            --text-primary: #f1f5f9;
+            --text-secondary: #cbd5e1;
+            --text-tertiary: #94a3b8;
+            --border-color: #475569;
+            --shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.3), 0 4px 6px -2px rgba(0, 0, 0, 0.15);
+        }
+        
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 2rem;
+            background-color: var(--bg-main);
+            color: var(--text-primary);
+            line-height: 1.5;
+            margin: 0;
+            transition: background-color 0.3s ease, color 0.3s ease;
+        }
+        
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            width: 100%;
+        }
+        
+        h1 {
+            color: var(--text-primary);
+            text-align: center;
+            font-weight: 700;
+            font-size: 2rem;
+            margin-bottom: 0.5rem;
+            letter-spacing: -0.025em;
+            transition: color 0.3s ease;
+        }
+        
+        .svg-container {
+            background-color: var(--bg-card);
+            border-radius: var(--radius);
+            box-shadow: var(--shadow);
+            margin-bottom: 1.5rem;
+            overflow: visible;
+            width: 100%;
+            height: auto;
+            transition: background-color 0.3s ease, box-shadow 0.3s ease, transform 0.2s ease;
+        }
+        
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1rem;
+        }
+        
+        .controls {
+            display: flex;
+            gap: 1rem;
+            align-items: center;
+        }
+        
+        .button-container {
+            text-align: center;
+            margin-top: 1.5rem;
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+        }
+        
+        .btn {
+            background-color: var(--primary-color);
+            border: none;
+            color: white;
+            padding: 0.75rem 1.5rem;
+            text-align: center;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1rem;
+            font-weight: 500;
+            cursor: pointer;
+            border-radius: var(--radius);
+            transition: all 0.2s ease;
+            box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+        }
+        
+        .btn:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+        }
+        
+        .btn:active {
+            transform: translateY(0);
+        }
+        
+        #replay-button {
+            background-color: var(--primary-color);
+        }
+        
+        #replay-button:hover {
+            background-color: #2563eb;
+        }
+        
+        .theme-toggle {
+            background-color: var(--bg-element);
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius);
+            padding: 0.5rem;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: background-color 0.3s ease;
+        }
+        
+        .theme-toggle:hover {
+            background-color: var(--bg-element-hover);
+        }
+        
+        .subtitle {
+            text-align: center;
+            color: var(--text-secondary);
+            margin-bottom: 2rem;
+            font-weight: 400;
+            max-width: 80%;
+            margin-left: auto;
+            margin-right: auto;
+            transition: color 0.3s ease;
+        }
+        
+        .footer {
+            margin-top: 2rem;
+            text-align: center;
+            padding: 1rem;
+            border-top: 1px solid var(--border-light);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            transition: border-color 0.3s ease;
+        }
+        
+        .author {
+            font-weight: 600;
+            color: var(--text-primary);
+            margin-bottom: 0.5rem;
+            font-size: 1rem;
+            transition: color 0.3s ease;
+        }
+        
+        .social-links {
+            display: flex;
+            gap: 1rem;
+            margin-top: 0.5rem;
+        }
+        
+        .social-link {
+            color: var(--text-secondary);
+            font-size: 1.25rem;
+            transition: color 0.2s ease, transform 0.2s ease;
+        }
+        
+        .social-link:hover {
+            color: var(--primary-color);
+            transform: translateY(-2px);
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>CUTLASS vs DeepGEMM</h1>
+            <div class="controls">
+                <button class="theme-toggle" id="theme-toggle" aria-label="Toggle theme">
+                    <svg id="theme-icon" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"></path>
+                    </svg>
+                </button>
+            </div>
+        </div>
+        <p class="subtitle">Comparing pre-compilation and Just-In-Time (JIT) compilation strategies for optimized GEMM kernels</p>
+        <div class="svg-container" id="animation-container">
+            <!-- SVG Animation will be inserted here by JavaScript -->
+        </div>
+        <div class="button-container">
+            <button id="replay-button" class="btn">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="margin-right: 8px;">
+                    <path d="M17.91 12c0-.96-.2-1.87-.52-2.71l-3.1 3.1.78 3.29 2.75-.49A5.95 5.95 0 0 0 17.91 12z"></path>
+                    <path d="M2 12c0 5.52 4.48 10 10 10 .96 0 1.87-.2 2.71-.52l-3.1-3.1-3.29.78.49 2.75A5.95 5.95 0 0 1 2 12z"></path>
+                    <path d="M22 12c0-5.52-4.48-10-10-10-.96 0-1.87.2-2.71.52l3.1 3.1 3.29-.78-.49-2.75A5.95 5.95 0 0 1 22 12z"></path>
+                    <path d="M6.09 12c0 .96.2 1.87.52 2.71l3.1-3.1-.78-3.29-2.75.49A5.95 5.95 0 0 0 6.09 12z"></path>
+                </svg>
+                Replay Animation
+            </button>
+        </div>
+        
+        <footer class="footer">
+            <div class="author">Visualized by Unclecode (Hossein)</div>
+            <div class="social-links">
+                <a href="https://x.com/unclecode" target="_blank" class="social-link" title="Twitter/X">
+                    <i class="fab fa-x-twitter"></i>
+                </a>
+                <a href="https://github.com/unclecode/crawl4ai" target="_blank" class="social-link" title="GitHub">
+                    <i class="fab fa-github"></i>
+                </a>
+            </div>
+        </footer>
+    </div>
+
+    <script>
+        // SVG content as a string
+        const svgContent = `
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 530">
+  <style>
+    text {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+      font-size: 14px;
+      fill: #334155;
+    }
+    .title {
+      font-size: 18px;
+      font-weight: 600;
+      fill: #1e293b;
+    }
+    .subtitle {
+      font-size: 16px;
+      fill: #475569;
+      font-weight: 300;
+    }
+    
+    /* CUTLASS Animations */
+    @keyframes generateKernels {
+      0% { opacity: 0; transform: translateY(-20px); }
+      100% { opacity: 1; transform: translateY(0); }
+    }
+    
+    .cutlass-kernel {
+      animation: generateKernels 0.2s ease-out forwards;
+      opacity: 0;
+    }
+    
+    @keyframes searchKernel {
+      0% { stroke: #ff0000; stroke-width: 0; }
+      50% { stroke: #ff0000; stroke-width: 3; }
+      100% { stroke: #ff0000; stroke-width: 0; }
+    }
+    
+    @keyframes fadeUnused {
+      0% { opacity: 1; }
+      100% { opacity: 0.3; }
+    }
+    
+    /* DeepGEMM Animations */
+    @keyframes showBlueprint {
+      0% { opacity: 0; }
+      100% { opacity: 1; }
+    }
+    
+    @keyframes assembleKernel {
+      0% { opacity: 0; transform: translateY(20px); }
+      100% { opacity: 1; transform: translateY(0); }
+    }
+    
+    @keyframes cacheKernel {
+      0% { opacity: 0; transform: scale(0.8); }
+      100% { opacity: 1; transform: scale(1); }
+    }
+    
+    /* Performance indicators */
+    @keyframes growBarCutlass {
+      0% { width: 0; }
+      100% { width: 100px; }
+    }
+    
+    @keyframes growBarDeep {
+      0% { width: 0; }
+      100% { width: 270px; }
+    }
+  </style>
+  
+  <!-- Background and divider -->
+  <rect width="800" height="520" fill="#ffffff" rx="8" ry="8" />
+  <rect x="0" y="0" width="800" height="520" fill="#f8fafc" rx="8" ry="8" opacity="0.8" />
+  <line x1="400" y1="50" x2="400" y2="450" stroke="#94a3b8" stroke-width="1.5" stroke-dasharray="6,4" />
+  
+  <!-- Titles -->
+  <text x="200" y="30" text-anchor="middle" class="title">CUTLASS: Pre-compilation</text>
+  <text x="600" y="30" text-anchor="middle" class="title">DeepGEMM: Just-In-Time</text>
+  
+  <!-- CUTLASS Side -->
+  <g id="cutlass-side">
+    <!-- Installation phase -->
+    <text x="200" y="70" text-anchor="middle" class="subtitle">Installation: Generate ALL kernels</text>
+    
+    <!-- Library of kernels -->
+    <rect x="120" y="90" width="160" height="200" stroke="#cbd5e1" stroke-width="1.5" fill="#f1f5f9" rx="6" ry="6" />
+    
+    <!-- Pre-generated kernels -->
+    <g id="pre-generated-kernels">
+      <!-- Row 1 -->
+      <rect class="cutlass-kernel" x="130" y="100" width="30" height="20" fill="#FFD700" style="animation-delay: 0.1s;">
+        <title>M=64, N=128, K=256</title>
+      </rect>
+      <rect class="cutlass-kernel" x="165" y="100" width="30" height="20" fill="#87CEEB" style="animation-delay: 0.2s;">
+        <title>M=128, N=256, K=512</title>
+      </rect>
+      <rect class="cutlass-kernel" x="200" y="100" width="30" height="20" fill="#90EE90" style="animation-delay: 0.3s;">
+        <title>M=256, N=512, K=1024</title>
+      </rect>
+      <rect class="cutlass-kernel" x="235" y="100" width="30" height="20" fill="#FFD700" style="animation-delay: 0.4s;">
+        <title>M=512, N=1024, K=2048</title>
+      </rect>
+      
+      <!-- Row 2 -->
+      <rect class="cutlass-kernel" x="130" y="125" width="30" height="20" fill="#87CEEB" style="animation-delay: 0.5s;">
+        <title>M=64, N=256, K=512</title>
+      </rect>
+      <rect class="cutlass-kernel" x="165" y="125" width="30" height="20" fill="#90EE90" style="animation-delay: 0.6s;">
+        <title>M=128, N=512, K=1024</title>
+      </rect>
+      <rect class="cutlass-kernel" x="200" y="125" width="30" height="20" fill="#FFD700" style="animation-delay: 0.7s;">
+        <title>M=256, N=1024, K=2048</title>
+      </rect>
+      <rect class="cutlass-kernel" x="235" y="125" width="30" height="20" fill="#87CEEB" style="animation-delay: 0.8s;">
+        <title>M=512, N=2048, K=4096</title>
+      </rect>
+      
+      <!-- More rows... -->
+      <rect class="cutlass-kernel" x="130" y="150" width="30" height="20" fill="#90EE90" style="animation-delay: 0.9s;" />
+      <rect class="cutlass-kernel" x="165" y="150" width="30" height="20" fill="#FFD700" style="animation-delay: 1.0s;" />
+      <rect class="cutlass-kernel" x="200" y="150" width="30" height="20" fill="#87CEEB" style="animation-delay: 1.1s;" />
+      <rect class="cutlass-kernel" x="235" y="150" width="30" height="20" fill="#90EE90" style="animation-delay: 1.2s;" />
+      
+      <rect class="cutlass-kernel" x="130" y="175" width="30" height="20" fill="#FFD700" style="animation-delay: 1.3s;" />
+      <rect class="cutlass-kernel" x="165" y="175" width="30" height="20" fill="#87CEEB" style="animation-delay: 1.4s;" />
+      <rect class="cutlass-kernel" x="200" y="175" width="30" height="20" fill="#90EE90" style="animation-delay: 1.5s;" />
+      <rect class="cutlass-kernel" x="235" y="175" width="30" height="20" fill="#FFD700" style="animation-delay: 1.6s;" />
+      
+      <rect class="cutlass-kernel" x="130" y="200" width="30" height="20" fill="#87CEEB" style="animation-delay: 1.7s;" />
+      <rect class="cutlass-kernel" x="165" y="200" width="30" height="20" fill="#90EE90" style="animation-delay: 1.8s;" />
+      <rect class="cutlass-kernel" x="200" y="200" width="30" height="20" fill="#FFD700" style="animation-delay: 1.9s;" />
+      <rect class="cutlass-kernel" x="235" y="200" width="30" height="20" fill="#87CEEB" style="animation-delay: 2.0s;" />
+      
+      <rect class="cutlass-kernel" x="130" y="225" width="30" height="20" fill="#90EE90" style="animation-delay: 2.1s;" />
+      <rect class="cutlass-kernel" x="165" y="225" width="30" height="20" fill="#FFD700" style="animation-delay: 2.2s;" />
+      <rect class="cutlass-kernel" x="200" y="225" width="30" height="20" fill="#87CEEB" style="animation-delay: 2.3s;" />
+      <rect class="cutlass-kernel" x="235" y="225" width="30" height="20" fill="#90EE90" style="animation-delay: 2.4s;" />
+      
+      <rect class="cutlass-kernel" x="130" y="250" width="30" height="20" fill="#FFD700" style="animation-delay: 2.5s;" />
+      <rect class="cutlass-kernel" x="165" y="250" width="30" height="20" fill="#87CEEB" style="animation-delay: 2.6s;" />
+      <rect class="cutlass-kernel" x="200" y="250" width="30" height="20" fill="#90EE90" style="animation-delay: 2.7s;" />
+      <rect class="cutlass-kernel" x="235" y="250" width="30" height="20" fill="#FFD700" style="animation-delay: 2.8s;" />
+    </g>
+    
+    <text x="200" y="310" text-anchor="middle" font-size="12px">Pre-compiled: thousands of kernels</text>
+    
+    <!-- Runtime phase -->
+    <text x="200" y="340" text-anchor="middle" class="subtitle">Runtime: Search for closest match</text>
+    
+    <!-- Matrix dimensions needed -->
+    <rect x="90" y="360" width="220" height="30" fill="#e2e8f0" stroke="#cbd5e1" stroke-width="1" rx="6" ry="6" />
+    <text x="200" y="380" text-anchor="middle" font-size="13px" font-weight="500">Need: M=129, N=257, K=513</text>
+    
+    <!-- Selection process -->
+    <g id="selection-process">
+      <rect id="search1" x="165" y="100" width="30" height="20" fill="none" stroke-width="0">
+        <animate id="search1-anim" attributeName="stroke-width" values="0;3;0" dur="0.5s" begin="3s" fill="freeze" />
+        <animate attributeName="stroke" values="transparent;red;transparent" dur="0.5s" begin="3s" fill="freeze" />
+      </rect>
+      
+      <rect id="search2" x="200" y="125" width="30" height="20" fill="none" stroke-width="0">
+        <animate id="search2-anim" attributeName="stroke-width" values="0;3;0" dur="0.5s" begin="3.5s" fill="freeze" />
+        <animate attributeName="stroke" values="transparent;red;transparent" dur="0.5s" begin="3.5s" fill="freeze" />
+      </rect>
+      
+      <rect id="search3" x="130" y="150" width="30" height="20" fill="none" stroke-width="0">
+        <animate id="search3-anim" attributeName="stroke-width" values="0;3;0" dur="0.5s" begin="4s" fill="freeze" />
+        <animate attributeName="stroke" values="transparent;red;transparent" dur="0.5s" begin="4s" fill="freeze" />
+      </rect>
+      
+      <rect id="search4" x="165" y="125" width="30" height="20" fill="none" stroke-width="0">
+        <animate id="search4-anim" attributeName="stroke-width" values="0;3;0" dur="0.5s" begin="4.5s" fill="freeze" />
+        <animate attributeName="stroke" values="transparent;red;transparent" dur="0.5s" begin="4.5s" fill="freeze" />
+      </rect>
+      
+      <!-- Found match with highlighting -->
+      <rect id="match" x="165" y="125" width="30" height="20" fill="#90EE90" stroke="green" stroke-width="0">
+        <animate id="match-anim" attributeName="stroke-width" values="0;3;3" dur="0.5s" begin="5s" fill="freeze" />
+      </rect>
+    </g>
+    
+    <!-- Fade unused kernels -->
+    <g id="fade-unused">
+      <rect x="130" y="100" width="30" height="20" fill="#FFD700">
+        <animate id="fade1" attributeName="opacity" values="1;0.3" dur="0.5s" begin="5.5s" fill="freeze" />
+      </rect>
+      <rect x="200" y="100" width="30" height="20" fill="#90EE90">
+        <animate id="fade2" attributeName="opacity" values="1;0.3" dur="0.5s" begin="5.5s" fill="freeze" />
+      </rect>
+      <!-- Many more with animation to fade them -->
+      <rect x="235" y="100" width="30" height="20" fill="#FFD700">
+        <animate id="fade3" attributeName="opacity" values="1;0.3" dur="0.5s" begin="5.5s" fill="freeze" />
+      </rect>
+      <rect x="130" y="125" width="30" height="20" fill="#87CEEB">
+        <animate id="fade4" attributeName="opacity" values="1;0.3" dur="0.5s" begin="5.5s" fill="freeze" />
+      </rect>
+      <rect x="200" y="125" width="30" height="20" fill="#FFD700">
+        <animate id="fade5" attributeName="opacity" values="1;0.3" dur="0.5s" begin="5.5s" fill="freeze" />
+      </rect>
+      <rect x="235" y="125" width="30" height="20" fill="#87CEEB">
+        <animate id="fade6" attributeName="opacity" values="1;0.3" dur="0.5s" begin="5.5s" fill="freeze" />
+      </rect>
+      <!-- Continue for all other blocks -->
+    </g>
+    
+    <text x="200" y="410" text-anchor="middle" font-size="12px">Use closest pre-compiled kernel</text>
+    <text x="200" y="430" text-anchor="middle" font-size="12px">Most kernels never used!</text>
+  </g>
+  
+  <!-- DeepGEMM Side -->
+  <g id="deepgemm-side">
+    <!-- Empty cache initially -->
+    <text x="600" y="70" text-anchor="middle" class="subtitle">Start with empty kernel cache</text>
+    <rect x="520" y="90" width="160" height="80" stroke="#cbd5e1" stroke-width="1.5" fill="#f1f5f9" rx="8" ry="8" />
+    <text x="600" y="130" text-anchor="middle" font-style="italic" fill="#94a3b8" id="no-kernels">No kernels yet</text>
+    
+    <!-- Runtime JIT phase -->
+    <text x="600" y="190" text-anchor="middle" class="subtitle">Runtime: Generate exactly what's needed</text>
+    
+    <!-- Matrix dimensions requested -->
+    <rect x="500" y="210" width="200" height="30" fill="#e2e8f0" stroke="#cbd5e1" stroke-width="1" rx="6" ry="6" />
+    <text x="600" y="230" text-anchor="middle" font-size="13px" font-weight="500">Need: M=129, N=257, K=513</text>
+    
+    <!-- Blueprint design -->
+    <g id="blueprint">
+      <rect x="470" y="250" width="260" height="60" fill="none" stroke="#3b82f6" stroke-width="1.5" stroke-dasharray="4,2" />
+      <text x="600" y="270" text-anchor="middle" font-size="11px" fill="#3b82f6" font-weight="500">Blueprint for exact dimensions</text>
+      <line x1="470" y1="278" x2="730" y2="278" stroke="#3b82f6" stroke-width="1.5" stroke-dasharray="4,2" />
+      <text x="600" y="295" text-anchor="middle" font-size="11px" fill="#3b82f6" font-weight="500">Optimize for M=129, N=257, K=513</text>
+      
+      <animate id="blueprint-anim" attributeName="opacity" values="0;1" dur="1s" begin="3s" fill="freeze" />
+    </g>
+    
+    <!-- Kernel assembly animation -->
+    <g id="kernel-assembly">
+      <!-- TMA component -->
+      <rect x="565" y="320" width="30" height="20" fill="#fbbf24" opacity="0" rx="3" ry="3">
+        <title>TMA Operations</title>
+        <animate id="tma-anim" attributeName="opacity" values="0;1" dur="0.5s" begin="4s" fill="freeze" />
+        <animate attributeName="transform" values="translate(0,20);translate(0,0)" dur="0.5s" begin="4s" fill="freeze" />
+      </rect>
+      
+      <!-- WGMMA component -->
+      <rect x="600" y="320" width="30" height="20" fill="#10b981" opacity="0" rx="3" ry="3">
+        <title>WGMMA Operations</title>
+        <animate id="wgmma-anim" attributeName="opacity" values="0;1" dur="0.5s" begin="4.3s" fill="freeze" />
+        <animate attributeName="transform" values="translate(0,20);translate(0,0)" dur="0.5s" begin="4.3s" fill="freeze" />
+      </rect>
+      
+      <!-- Data component -->
+      <rect x="565" y="345" width="65" height="15" fill="#60a5fa" opacity="0" rx="2" ry="2">
+        <title>Data Operations</title>
+        <animate id="data-anim" attributeName="opacity" values="0;1" dur="0.5s" begin="4.6s" fill="freeze" />
+        <animate attributeName="transform" values="translate(0,20);translate(0,0)" dur="0.5s" begin="4.6s" fill="freeze" />
+      </rect>
+    </g>
+    
+    <!-- Compilation -->
+    <g id="compilation">
+      <rect x="550" y="365" width="100" height="25" fill="#e2e8f0" stroke="#cbd5e1" stroke-width="1" rx="6" ry="6" opacity="0">
+        <animate id="compile-rect-anim" attributeName="opacity" values="0;1" dur="0.5s" begin="5s" fill="freeze" />
+      </rect>
+      <text x="600" y="382" text-anchor="middle" font-size="13px" font-weight="500" opacity="0">
+        JIT Compile
+        <animate id="compile-text-anim" attributeName="opacity" values="0;1" dur="0.5s" begin="5s" fill="freeze" />
+      </text>
+    </g>
+    
+    <!-- Cache the kernel -->
+    <g id="cache-result">
+      <rect x="540" y="100" width="60" height="30" fill="#10b981" stroke="#059669" stroke-width="1.5" opacity="0" rx="4" ry="4">
+        <animate id="cache-rect-anim" attributeName="opacity" values="0;1" dur="0.8s" begin="5.5s" fill="freeze" />
+        <animate attributeName="transform" values="scale(0.8);scale(1)" dur="0.8s" begin="5.5s" fill="freeze" />
+      </rect>
+      <text x="570" y="120" text-anchor="middle" font-size="10px" fill="white" font-weight="600" opacity="0">
+        M=129
+        <animate id="cache-text-anim" attributeName="opacity" values="0;1" dur="0.8s" begin="5.5s" fill="freeze" />
+      </text>
+      <!-- Hide the "No kernels yet" text when cache appears -->
+      <animate id="no-kernels-anim" xlink:href="#no-kernels" attributeName="opacity" values="1;0" dur="0.1s" begin="5.5s" fill="freeze" />
+    </g>
+    
+    <text x="600" y="410" text-anchor="middle" font-size="13px" font-weight="500">Perfect kernel for exact dimensions</text>
+    <text x="600" y="430" text-anchor="middle" font-size="13px" font-weight="500" fill="#059669">No wasted compilation, no bloat!</text>
+  </g>
+  
+  <!-- Performance comparison - Horizontal Bars -->
+  <g id="performance">
+    <text x="80" y="460" font-size="14px" font-weight="600">Performance:</text>
+    <text x="480" y="460" font-size="14px" font-weight="600">Performance:</text>
+    
+    <!-- Background bars -->
+    <rect x="80" y="470" width="270" height="20" fill="#f1f5f9" stroke="#e2e8f0" stroke-width="1" rx="6" ry="6"/>
+    <rect x="480" y="470" width="270" height="20" fill="#f1f5f9" stroke="#e2e8f0" stroke-width="1" rx="6" ry="6"/>
+    
+    <!-- CUTLASS bar -->
+    <rect id="cutlass-bar" x="80" y="470" width="0" height="20" fill="#f97316" rx="6" ry="6">
+      <animate id="cutlass-bar-anim" attributeName="width" values="0;100" dur="1s" begin="6s" fill="freeze" />
+    </rect>
+    <text x="90" y="485" font-size="13px" font-weight="600" fill="white">1x</text>
+    
+    <!-- DeepGEMM bar -->
+    <rect id="deepgemm-bar" x="480" y="470" width="0" height="20" fill="#10b981" rx="6" ry="6">
+      <animate id="deepgemm-bar-anim" attributeName="width" values="0;270" dur="1s" begin="6s" fill="freeze" />
+    </rect>
+    <text x="490" y="485" font-size="13px" font-weight="600" fill="white">2.7x</text>
+  </g>
+  
+  <!-- Kernel counter -->
+  <g id="counter">
+    <text x="80" y="510" font-size="13px" font-weight="300">Pre-compiled kernels:</text>
+    <text id="pre-compiled-counter" x="230" y="510" font-size="14px" font-weight="600" fill="#f97316">0</text>
+    
+    <text x="480" y="510" font-size="13px" font-weight="300">JIT-compiled kernels:</text>
+    <text id="jit-counter" x="630" y="510" font-size="14px" font-weight="600" fill="#10b981">0</text>
+  </g>
+</svg>
+`;
+
+        // Theme handling
+        const THEME_KEY = 'deepGEMM-theme-preference';
+        const LIGHT_THEME = 'light';
+        const DARK_THEME = 'dark';
+        
+        // Function to toggle theme
+        function toggleTheme() {
+            const currentTheme = document.documentElement.getAttribute('data-theme');
+            const newTheme = currentTheme === LIGHT_THEME ? DARK_THEME : LIGHT_THEME;
+            
+            document.documentElement.setAttribute('data-theme', newTheme);
+            localStorage.setItem(THEME_KEY, newTheme);
+            
+            // Update theme icon
+            updateThemeIcon(newTheme);
+            
+            // Re-render SVG for theme changes
+            insertSVG();
+        }
+        
+        // Function to update theme icon based on current theme
+        function updateThemeIcon(theme) {
+            const themeIcon = document.getElementById('theme-icon');
+            
+            if (theme === DARK_THEME) {
+                // Sun icon for dark mode (to switch to light)
+                themeIcon.innerHTML = `
+                    <circle cx="12" cy="12" r="5"></circle>
+                    <line x1="12" y1="1" x2="12" y2="3"></line>
+                    <line x1="12" y1="21" x2="12" y2="23"></line>
+                    <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+                    <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+                    <line x1="1" y1="12" x2="3" y2="12"></line>
+                    <line x1="21" y1="12" x2="23" y2="12"></line>
+                    <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+                    <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+                `;
+            } else {
+                // Moon icon for light mode (to switch to dark)
+                themeIcon.innerHTML = `<path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"></path>`;
+            }
+        }
+        
+        // Function to insert the SVG into the container
+        function insertSVG() {
+            // Get current theme
+            const currentTheme = document.documentElement.getAttribute('data-theme');
+            
+            // Get the container
+            const container = document.getElementById('animation-container');
+            
+            // Insert SVG content
+            container.innerHTML = svgContent;
+            
+            // Apply theme-specific styles to SVG elements
+            if (currentTheme === DARK_THEME) {
+                // Get the SVG element
+                const svg = container.querySelector('svg');
+                
+                // Background and texts
+                const bgRect = svg.querySelector('rect:first-of-type');
+                if (bgRect) bgRect.setAttribute('fill', '#1e293b'); // Dark background
+                
+                const secondBgRect = svg.querySelectorAll('rect')[1];
+                if (secondBgRect) secondBgRect.setAttribute('fill', '#0f172a');
+                
+                // Update all text colors for dark mode
+                const allTexts = svg.querySelectorAll('text');
+                allTexts.forEach(text => {
+                    // Skip specific colored texts that should remain their color
+                    if (text.getAttribute('fill') === '#059669' || 
+                        text.getAttribute('fill') === '#f97316' || 
+                        text.getAttribute('fill') === '#10b981' ||
+                        text.getAttribute('fill') === 'white') {
+                        return;
+                    }
+                    
+                    // Update all other text to light color
+                    text.setAttribute('fill', '#f1f5f9');
+                });
+                
+                // Update style element to modify text default color
+                const styleElement = svg.querySelector('style');
+                if (styleElement) {
+                    let styleContent = styleElement.textContent;
+                    styleContent = styleContent.replace(/fill: ?#334155/g, 'fill: #f1f5f9');
+                    styleContent = styleContent.replace(/fill: ?#1e293b/g, 'fill: #f1f5f9');
+                    styleContent = styleContent.replace(/fill: ?#475569/g, 'fill: #cbd5e1');
+                    styleElement.textContent = styleContent;
+                }
+                
+                // Find all the "Need: M=129..." boxes specifically
+                const needBoxes = svg.querySelectorAll('rect[fill="#e2e8f0"]');
+                needBoxes.forEach(rect => {
+                    rect.setAttribute('fill', '#475569');
+                    if (rect.getAttribute('stroke') === '#cbd5e1') {
+                        rect.setAttribute('stroke', '#64748b');
+                    }
+                });
+                
+                // Update borders and fills for lighter elements
+                const lightBgElements = svg.querySelectorAll('rect[fill="#f1f5f9"], rect[fill="#ffffff"], rect[fill="white"]');
+                lightBgElements.forEach(rect => {
+                    // Skip elements that we don't want to change
+                    if (rect.id === 'cutlass-bar' || rect.id === 'deepgemm-bar') {
+                        return;
+                    }
+                    
+                    if (rect.getAttribute('fill') === '#f1f5f9' || 
+                        rect.getAttribute('fill') === '#ffffff' || 
+                        rect.getAttribute('fill') === 'white') {
+                        rect.setAttribute('fill', '#334155');
+                    }
+                    
+                    if (rect.getAttribute('stroke') === '#cbd5e1' || 
+                        rect.getAttribute('stroke') === '#e2e8f0') {
+                        rect.setAttribute('stroke', '#475569');
+                    }
+                });
+                
+                // Update divider line
+                const dividerLine = svg.querySelector('line[stroke="#94a3b8"]');
+                if (dividerLine) {
+                    dividerLine.setAttribute('stroke', '#64748b');
+                }
+            }
+            
+            // Set up counter animations with JavaScript
+            setupCounterAnimations();
+        }
+        
+        // Function to animate the counters
+        function setupCounterAnimations() {
+            const preCounter = document.getElementById('pre-compiled-counter');
+            const jitCounter = document.getElementById('jit-counter');
+            
+            // Pre-compiled kernels counter animation
+            if (preCounter) {
+                const preCounterValues = [0, 10, 100, 1000, 10000, 100000];
+                let preCounterIndex = 0;
+                
+                setTimeout(() => {
+                    const preInterval = setInterval(() => {
+                        preCounterIndex++;
+                        if (preCounterIndex >= preCounterValues.length) {
+                            clearInterval(preInterval);
+                            return;
+                        }
+                        preCounter.textContent = preCounterValues[preCounterIndex];
+                    }, 600); // 3000ms / 5 steps = 600ms per step
+                }, 500); // Start after 500ms
+            }
+            
+            // JIT-compiled kernels counter animation
+            if (jitCounter) {
+                setTimeout(() => {
+                    jitCounter.textContent = "1";
+                }, 5500); // Update after 5.5s
+            }
+        }
+        
+        // Initialize theme from localStorage or default to light
+        function initializeTheme() {
+            const savedTheme = localStorage.getItem(THEME_KEY) || LIGHT_THEME;
+            document.documentElement.setAttribute('data-theme', savedTheme);
+            updateThemeIcon(savedTheme);
+        }
+        
+        // Document ready function
+        document.addEventListener('DOMContentLoaded', () => {
+            // Initialize theme
+            initializeTheme();
+            
+            // Insert the SVG initially
+            insertSVG();
+            
+            // Set up theme toggle button
+            document.getElementById('theme-toggle').addEventListener('click', toggleTheme);
+            
+            // Add event listener to the replay button
+            document.getElementById('replay-button').addEventListener('click', function() {
+                // Replace the SVG to restart all animations
+                document.getElementById('animation-container').innerHTML = '';
+                setTimeout(() => {
+                    insertSVG();
+                }, 50);
+            });
+        });
+    </script>
+</body>
+</html>

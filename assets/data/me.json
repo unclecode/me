@@ -1,0 +1,94 @@
+{
+    "title": "AI Researcher, Innovator, and Educator.",
+    "subtitle": "Unclecode revolutionizes learning with advanced AI solutions and leads a #1 trending open-source project, driving global tech innovation. He offers expert consultancy to help organizations harness AI for growth.",
+    "latest_project": {
+      "name": "Crawl4AI",
+      "description": "Crawl4AI is the #1 trending GitHub repository, actively maintained by a vibrant community. It delivers blazing-fast, AI-ready web crawling tailored for LLMs, AI agents, and data pipelines. Fully open source, flexible, and built for real-time performance, Crawl4AI empowers developers with unmatched speed, precision, and deployment ease.",
+      "link": "https://github.com/unclecode/crawl4AI",
+      "image": "https://static.wixstatic.com/media/95371c_2edaa853e70543dbb7782623a15f4e27~mv2.jpg/v1/fill/w_537,h_336,al_c,q_80,usm_0.66_1.00_0.01,enc_avif,quality_auto/uc-edutech-800x_edited.jpg"
+    },
+    "ventures": {
+      "Aleph Null": {
+        "location": "Singapore",
+        "description": "Aleph Null is Asia's leading Edtech hub, where student centricity is at the core of everything we do. We exist to democratize AI in education and empower the next generation of learners and learning institutions with services and tools they need to thrive in a rapidly changing world.",
+        "link": "https://www.alephnull.sg",
+        "logo": "https://static.wixstatic.com/media/95371c_f2f6d914015240dea9fdd3b4e3fe114f~mv2.png/v1/fill/w_48,h_52,al_c,q_85,usm_0.66_1.00_0.01,enc_avif,quality_auto/aleph-null-logo.png"
+      },
+      "Kidocode": {
+        "location": "Malaysia",
+        "description": "Founded in 2014, Kidocode empowers the next generation of knowledge workers through a personalized, adaptive education system accessible both online and in classrooms. With over 30,000 students, it continues to revolutionize learning by making cutting-edge skills and tools available to all.",
+        "link": "https://kidocode.com",
+        "logo": "https://static.wixstatic.com/media/95371c_bcae68bb50b94569986b2566d34d491c~mv2.png/v1/fill/w_52,h_52,al_c,q_85,usm_0.66_1.00_0.01,enc_avif,quality_auto/k-symbol-blue-512.png"
+      },
+      "KPlay Team": {
+        "location": "Malaysia",
+        "description": "KPlay Team is a software development and consultancy company, with a focus on web & mobile app development services. We enable enterprises, service providers, and system integrators to model, design, standardize, and optimize infrastructure.",
+        "link": "https://www.kplay.team/",
+        "logo": "https://static.wixstatic.com/media/95371c_4688d51a1ce14d88a0122d92949a0ba6~mv2.png/v1/fill/w_50,h_52,al_c,q_85,usm_0.66_1.00_0.01,enc_avif,quality_auto/kplay-symbol.png"
+      },
+      "Pycademy": {
+        "location": "Malaysia",
+        "description": "Pycademy provides skills development and certification training for IT and Data Science professionals while building the entire workforce’s aptitude through awareness training and simulations.",
+        "link": "https://pycademy.net/about-us/",
+        "logo": "https://static.wixstatic.com/media/95371c_eee00e6750a84ddeaf598c0abeba294d~mv2.png/v1/fill/w_80,h_80,al_c,q_85,usm_0.66_1.00_0.01,enc_avif,quality_auto/download-removebg-preview.png"
+      }
+    },
+    "projects": [
+      {
+        "title": "Cubie",
+        "description": "An AI-empowered learning platform with personalized education.",
+        "link": "https://cubie.kidocode.com/",
+        "logo": "https://static.wixstatic.com/media/95371c_cef0363acc384adba0cbea2695027500~mv2.png/v1/fill/w_121,h_121,al_c,q_85,usm_0.66_1.00_0.01,enc_avif,quality_auto/cubie-cover.png"
+      },
+      {
+        "title": "Mojitofilms",
+        "description": "An app with personalised movie recommendations, powered by AI assistant.",
+        "link": "https://www.mojitofilms.com/",
+        "logo": "https://static.wixstatic.com/media/95371c_df93487c495741879349c3f30132662a~mv2.png/v1/fill/w_121,h_121,al_c,q_85,usm_0.66_1.00_0.01,enc_avif,quality_auto/mojito-cover.png"
+      },
+      {
+        "title": "AdNext",
+        "description": "AI platform that enhances e-commerce conversions and customer satisfaction.",
+        "link": "https://adnext.ai/",
+        "logo": "https://static.wixstatic.com/media/95371c_8de65b4261ed4385be0ed4453e386738~mv2.png/v1/fill/w_121,h_121,al_c,q_85,usm_0.66_1.00_0.01,enc_avif,quality_auto/adnext-cover.png"
+      },
+      {
+        "title": "Talk2Me",
+        "description": "Chat-based AI app to learn new things through character conversations.",
+        "link": "https://talk2me.stucent.ai/",
+        "logo": "https://static.wixstatic.com/media/95371c_bf225f9564ad4d52bfd23e06ce9703d3~mv2.png/v1/fill/w_121,h_121,al_c,q_85,usm_0.66_1.00_0.01,enc_avif,quality_auto/talktome-cover.png"
+      },
+      {
+        "title": "Potatomath",
+        "description": "An engaging and gamified math mobile application for K12 students.",
+        "link": "http://www.potatomath.com/",
+        "logo": "https://static.wixstatic.com/media/95371c_73b53dcea85142e2ab045ae9b6c34336~mv2.png/v1/fill/w_121,h_121,al_c,q_85,usm_0.66_1.00_0.01,enc_avif,quality_auto/potatomath-cover.png"
+      }
+    ],
+    "social_media": {
+      "YouTube": {
+        "channel": "Unclecode",
+        "videos": [
+          {
+            "title": "Crawl4ai: Build your own SERP API for you AI agents",
+            "thumbnail": "https://i.ytimg.com/vi/1F4i_wubWi8/mqdefault.jpg",
+            "link": "https://www.youtube.com/watch?v=1F4i_wubWi8"
+          },
+          {
+            "title": "Set Up Your Own Super-Fast Whisper Server on Colab! 🚀",
+            "thumbnail": "https://i.ytimg.com/vi/SrgJN7jOxoY/mqdefault.jpg",
+            "link": "https://www.youtube.com/watch?v=SrgJN7jOxoY"
+          },
+          {
+            "title": "Garvis: Almost Real-time Voice-Assistant Using Groq 🚀",
+            "thumbnail": "https://i.ytimg.com/vi/Nl9Br2fhfjw/mqdefault.jpg",
+            "link": "https://www.youtube.com/watch?v=Nl9Br2fhfjw"
+          }
+        ]
+      },
+      "Instagram": {
+        "feed_link": "https://instafeed.codev.wixapps.net/ig_business_app/widget"
+      }
+    }
+  }
+  

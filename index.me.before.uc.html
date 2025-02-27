@@ -1,0 +1,1264 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Unclecode (Hossein)</title>
+  <meta name="description" content="Personal website of Unclecode (Hossein) featuring projects, thoughts, and experiments.">
+  
+  <!-- Fonts and Icons -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+  
+  <style>
+    :root {
+      /* Base colors */
+      --bg-color: #000000;
+      --text-color: #ffffff;
+      --accent-color: #8A2BE2; /* BlueViolet */
+      --secondary-bg: #121212;
+      --border-color: #333333;
+      --muted-color: #888888;
+      
+      /* Transition speeds */
+      --fast-transition: 0.2s;
+      --medium-transition: 0.4s;
+      --slow-transition: 0.8s;
+    }
+    
+    [data-theme="light"] {
+      --bg-color: #ffffff;
+      --text-color: #000000;
+      --accent-color: #8A2BE2;
+      --secondary-bg: #f5f5f5;
+      --border-color: #dddddd;
+      --muted-color: #666666;
+    }
+    
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+    
+    html, body {
+      height: 100%;
+      width: 100%;
+      overflow-x: hidden;
+    }
+    
+    body {
+      font-family: 'Inter', sans-serif;
+      background-color: var(--bg-color);
+      color: var(--text-color);
+      transition: background-color var(--medium-transition) ease, color var(--medium-transition) ease;
+      line-height: 1.6;
+    }
+    
+    h1, h2, h3, h4, h5, h6 {
+      font-family: 'Space Mono', monospace;
+      letter-spacing: -0.02em;
+    }
+    
+    a {
+      color: var(--accent-color);
+      text-decoration: none;
+      transition: all var(--fast-transition) ease;
+      border-bottom: 1px solid transparent;
+    }
+    
+    a:hover {
+      border-bottom-color: var(--accent-color);
+    }
+    
+    /* Header styles */
+    header {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      padding: 1.5rem 2rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      z-index: 100;
+      backdrop-filter: blur(10px);
+      background-color: rgba(0, 0, 0, 0.5);
+      transition: all var(--medium-transition) ease;
+    }
+    
+    .logo {
+      font-family: 'Space Mono', monospace;
+      font-weight: 700;
+      font-size: 1.2rem;
+      letter-spacing: -0.05em;
+      color: var(--accent-color);
+    }
+    
+    .main-nav {
+      display: flex;
+      align-items: center;
+    }
+    
+    .nav-links {
+      display: flex;
+      list-style: none;
+      gap: 2rem;
+    }
+    
+    .nav-links a {
+      color: var(--text-color);
+      font-weight: 500;
+      padding: 0.5rem 0;
+      position: relative;
+      transition: color var(--fast-transition) ease;
+    }
+    
+    .nav-links a::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      height: 2px;
+      background-color: var(--accent-color);
+      transform: scaleX(0);
+      transition: transform var(--fast-transition) ease;
+      transform-origin: right center;
+    }
+    
+    .nav-links a:hover::after {
+      transform: scaleX(1);
+      transform-origin: left center;
+    }
+    
+    .nav-links a:hover {
+      color: var(--accent-color);
+      border-bottom: none;
+    }
+    
+    .theme-toggle {
+      background: transparent;
+      border: none;
+      color: var(--text-color);
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all var(--fast-transition) ease;
+      margin-left: 1rem;
+    }
+    
+    .theme-toggle:hover {
+      background-color: rgba(138, 43, 226, 0.2);
+    }
+    
+    .mobile-menu-toggle {
+      display: none;
+      flex-direction: column;
+      justify-content: space-between;
+      width: 30px;
+      height: 21px;
+      background: transparent;
+      border: none;
+      cursor: pointer;
+      padding: 0;
+      z-index: 101;
+    }
+    
+    .mobile-menu-toggle span {
+      display: block;
+      width: 100%;
+      height: 3px;
+      background-color: var(--text-color);
+      border-radius: 3px;
+      transition: all var(--fast-transition) ease;
+    }
+    
+    /* Scrolled header style */
+    header.scrolled {
+      padding: 1rem 2rem;
+      background-color: var(--bg-color);
+      box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
+    }
+    
+    /* Hero section with canvas */
+    .hero {
+      height: 100vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      position: relative;
+      overflow: hidden;
+    }
+    
+    .hero-canvas-container {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: 1;
+    }
+    
+    #dot-canvas {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+    
+    .hero-content {
+      position: relative;
+      z-index: 2;
+      text-align: center;
+      padding: 0 2rem;
+      max-width: 900px;
+    }
+    
+    .hero-title {
+      font-size: clamp(2.5rem, 10vw, 5rem);
+      margin-bottom: 1rem;
+      line-height: 1.1;
+    }
+    
+    .hero-subtitle {
+      font-size: clamp(1.2rem, 3vw, 1.8rem);
+      margin-bottom: 2rem;
+      opacity: 0.8;
+      max-width: 700px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+    
+    .social-links {
+      display: flex;
+      gap: 1.5rem;
+      margin-top: 2rem;
+      justify-content: center;
+    }
+    
+    .social-link {
+      font-size: 1.5rem;
+      color: var(--text-color);
+      transition: all var(--fast-transition) ease;
+      border-bottom: none;
+    }
+    
+    .social-link:hover {
+      color: var(--accent-color);
+      transform: translateY(-3px);
+    }
+    
+    /* Common section styles */
+    .container {
+      width: 100%;
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 2rem;
+    }
+    
+    .section-title {
+      font-size: 2.5rem;
+      margin-bottom: 1.5rem;
+      display: inline-block;
+      border-bottom: 2px solid var(--accent-color);
+      padding-bottom: 0.5rem;
+    }
+    
+    .section-subtitle {
+      font-size: 1.2rem;
+      margin-bottom: 3rem;
+      color: var(--muted-color);
+      max-width: 800px;
+    }
+    
+    /* Button styles */
+    .primary-button, .secondary-button, .contact-button {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 0.8rem 1.5rem;
+      border-radius: 6px;
+      font-weight: 600;
+      transition: all var(--fast-transition) ease;
+      text-decoration: none;
+      border: 2px solid var(--accent-color);
+    }
+    
+    .primary-button {
+      background-color: var(--accent-color);
+      color: white;
+    }
+    
+    .primary-button:hover {
+      background-color: transparent;
+      color: var(--accent-color);
+      border-color: var(--accent-color);
+    }
+    
+    .secondary-button {
+      background-color: transparent;
+      color: var(--accent-color);
+    }
+    
+    .secondary-button:hover {
+      background-color: var(--accent-color);
+      color: white;
+    }
+    
+    .contact-button {
+      background-color: var(--accent-color);
+      color: white;
+      padding: 1rem 2rem;
+      font-size: 1.1rem;
+      margin-top: 2rem;
+    }
+    
+    .contact-button:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 10px 20px rgba(138, 43, 226, 0.2);
+    }
+    
+    /* Featured Project Section */
+    .featured-project {
+      padding: 6rem 0;
+      background-color: var(--secondary-bg);
+      position: relative;
+      overflow: hidden;
+    }
+    
+    .featured-content {
+      max-width: 900px;
+      position: relative;
+      z-index: 2;
+    }
+    
+    .featured-badge {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 1rem;
+      margin-bottom: 1.5rem;
+    }
+    
+    .featured-badge span {
+      background-color: rgba(138, 43, 226, 0.2);
+      color: var(--accent-color);
+      padding: 0.4rem 0.8rem;
+      border-radius: 50px;
+      font-size: 0.9rem;
+      font-weight: 600;
+    }
+    
+    .featured-title {
+      font-size: 3.5rem;
+      margin-bottom: 1.5rem;
+      font-family: 'Space Mono', monospace;
+      background: linear-gradient(90deg, var(--accent-color), #E5A9FF);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+    
+    .featured-description {
+      font-size: 1.2rem;
+      line-height: 1.6;
+      margin-bottom: 2rem;
+      color: var(--text-color);
+    }
+    
+    .featured-actions {
+      display: flex;
+      gap: 1rem;
+    }
+    
+    /* Hexagon Grid for Ventures */
+    .ventures-section {
+      padding: 6rem 0;
+      text-align: center;
+    }
+    
+    .hex-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 2rem;
+      margin-top: 3rem;
+    }
+    
+    .hex-item {
+      position: relative;
+    }
+    
+    .hex-content {
+      background-color: var(--secondary-bg);
+      border-radius: 16px;
+      padding: 2.5rem 1.5rem;
+      height: 100%;
+      transition: transform var(--medium-transition) ease, box-shadow var(--medium-transition) ease;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      position: relative;
+      z-index: 1;
+      overflow: hidden;
+    }
+    
+    .hex-content::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: linear-gradient(135deg, rgba(138, 43, 226, 0.1), transparent);
+      z-index: -1;
+      border-radius: 16px;
+      transition: opacity var(--medium-transition) ease;
+      opacity: 0;
+    }
+    
+    .hex-content:hover {
+      transform: translateY(-10px);
+      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+    }
+    
+    .hex-content:hover::before {
+      opacity: 1;
+    }
+    
+    .hex-content img {
+      width: 80px;
+      height: 80px;
+      margin-bottom: 1.5rem;
+      border-radius: 12px;
+      object-fit: contain;
+      transition: transform var(--medium-transition) ease;
+    }
+    
+    .hex-content:hover img {
+      transform: scale(1.1);
+    }
+    
+    .hex-content h3 {
+      font-family: 'Space Mono', monospace;
+      font-size: 1.6rem;
+      margin-bottom: 1rem;
+      color: var(--text-color);
+    }
+    
+    .hex-content p {
+      color: var(--muted-color);
+      font-size: 0.95rem;
+      line-height: 1.6;
+      margin-bottom: 1.5rem;
+    }
+    
+    .hex-content a {
+      color: var(--accent-color);
+      font-weight: 600;
+      margin-top: auto;
+      transition: transform var(--fast-transition) ease;
+    }
+    
+    .hex-content a:hover {
+      transform: translateX(5px);
+    }
+    
+    /* Projects Grid Section */
+    .projects-section {
+      padding: 6rem 0;
+      background-color: var(--secondary-bg);
+    }
+    
+    .filter-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.8rem;
+      margin-bottom: 3rem;
+    }
+    
+    .filter-tag {
+      background-color: transparent;
+      border: 1px solid var(--border-color);
+      color: var(--text-color);
+      padding: 0.5rem 1.2rem;
+      border-radius: 50px;
+      cursor: pointer;
+      transition: all var(--fast-transition) ease;
+      font-family: 'Inter', sans-serif;
+      font-size: 0.9rem;
+    }
+    
+    .filter-tag:hover, .filter-tag.active {
+      background-color: var(--accent-color);
+      color: white;
+      border-color: var(--accent-color);
+    }
+    
+    .projects-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+      gap: 2rem;
+    }
+    
+    .project-card {
+      background-color: var(--bg-color);
+      border-radius: 12px;
+      overflow: hidden;
+      transition: transform var(--medium-transition) ease, box-shadow var(--medium-transition) ease;
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+    }
+    
+    .project-card:hover {
+      transform: translateY(-8px);
+      box-shadow: 0 15px 30px rgba(0, 0, 0, 0.15);
+    }
+    
+    .project-logo {
+      padding: 2rem;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      background-color: rgba(138, 43, 226, 0.05);
+    }
+    
+    .project-logo img {
+      max-width: 100px;
+      height: auto;
+      border-radius: 12px;
+    }
+    
+    .project-thumbnail {
+      height: 180px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      font-size: 3rem;
+      color: white;
+    }
+    
+    .youtube-thumb {
+      position: relative;
+      background-color: #000;
+      overflow: hidden;
+    }
+    
+    .youtube-thumb img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      opacity: 0.7;
+      transition: opacity var(--medium-transition) ease, transform var(--medium-transition) ease;
+    }
+    
+    .project-card:hover .youtube-thumb img {
+      opacity: 0.9;
+      transform: scale(1.05);
+    }
+    
+    .play-button {
+      position: absolute;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      background-color: rgba(255, 0, 0, 0.8);
+      width: 50px;
+      height: 50px;
+      border-radius: 50%;
+      color: white;
+      font-size: 1.2rem;
+      transition: transform var(--medium-transition) ease;
+    }
+    
+    .project-card:hover .play-button {
+      transform: scale(1.1);
+    }
+    
+    .project-content {
+      padding: 1.5rem;
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+    }
+    
+    .project-title {
+      font-family: 'Space Mono', monospace;
+      font-size: 1.4rem;
+      margin: 1.2rem 1.5rem 0.8rem;
+      line-height: 1.3;
+    }
+    
+    .project-description {
+      color: var(--muted-color);
+      font-size: 0.95rem;
+      line-height: 1.6;
+      margin: 0 1.5rem 1.5rem;
+      flex: 1;
+    }
+    
+    .project-link {
+      color: var(--accent-color);
+      font-weight: 600;
+      margin: 0 1.5rem 1.5rem;
+      display: inline-block;
+      transition: transform var(--fast-transition) ease;
+    }
+    
+    .project-link:hover {
+      transform: translateX(5px);
+    }
+    
+    /* Consultancy Section */
+    .consultancy-section {
+      padding: 6rem 0;
+      text-align: center;
+    }
+    
+    .consultancy-content {
+      max-width: 900px;
+      margin: 0 auto;
+    }
+    
+    .section-description {
+      font-size: 1.2rem;
+      line-height: 1.8;
+      margin-bottom: 3rem;
+      color: var(--text-color);
+    }
+    
+    .expertise-areas {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 2rem;
+      margin: 3rem 0;
+    }
+    
+    .expertise-item {
+      background-color: var(--secondary-bg);
+      padding: 2rem;
+      border-radius: 12px;
+      transition: transform var(--medium-transition) ease;
+    }
+    
+    .expertise-item:hover {
+      transform: translateY(-5px);
+    }
+    
+    .expertise-icon {
+      font-size: 2.5rem;
+      margin-bottom: 1.5rem;
+      color: var(--accent-color);
+    }
+    
+    .expertise-item h3 {
+      font-family: 'Space Mono', monospace;
+      font-size: 1.4rem;
+      margin-bottom: 1rem;
+    }
+    
+    .expertise-item p {
+      color: var(--muted-color);
+      font-size: 0.95rem;
+      line-height: 1.6;
+    }
+    
+    /* Footer styles */
+    footer {
+      padding: 3rem 2rem;
+      text-align: center;
+      border-top: 1px solid var(--border-color);
+    }
+    
+    .footer-text {
+      color: var(--muted-color);
+      margin-bottom: 1rem;
+    }
+    
+    /* Animation styles */
+    .animate-on-scroll {
+      opacity: 0;
+      transform: translateY(30px);
+      transition: opacity 0.6s ease, transform 0.6s ease;
+    }
+    
+    .animate-on-scroll.in-view {
+      opacity: 1;
+      transform: translateY(0);
+    }
+    
+    /* Stagger animations for grid items */
+    .hex-item:nth-child(1),
+    .project-card:nth-child(1),
+    .expertise-item:nth-child(1) {
+      transition-delay: 0.1s;
+    }
+    
+    .hex-item:nth-child(2),
+    .project-card:nth-child(2),
+    .expertise-item:nth-child(2) {
+      transition-delay: 0.2s;
+    }
+    
+    .hex-item:nth-child(3),
+    .project-card:nth-child(3),
+    .expertise-item:nth-child(3) {
+      transition-delay: 0.3s;
+    }
+    
+    .hex-item:nth-child(4),
+    .project-card:nth-child(4),
+    .expertise-item:nth-child(4) {
+      transition-delay: 0.4s;
+    }
+    
+    .hex-item:nth-child(n+5),
+    .project-card:nth-child(n+5),
+    .expertise-item:nth-child(n+5) {
+      transition-delay: 0.5s;
+    }
+    
+    /* Responsive adjustments */
+    @media (max-width: 992px) {
+      .featured-title {
+        font-size: 2.8rem;
+      }
+      
+      .hex-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+      
+      .expertise-areas {
+        grid-template-columns: repeat(2, 1fr);
+      }
+    }
+    
+    @media (max-width: 768px) {
+      .hero-content {
+        padding: 0 1rem;
+      }
+      
+      .mobile-menu-toggle {
+        display: flex;
+      }
+      
+      .nav-links {
+        position: fixed;
+        top: 0;
+        right: -100%;
+        width: 70%;
+        height: 100vh;
+        background-color: var(--bg-color);
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        gap: 2rem;
+        transition: right var(--medium-transition) ease;
+        z-index: 99;
+        box-shadow: -5px 0 20px rgba(0, 0, 0, 0.2);
+      }
+      
+      .nav-links.active {
+        right: 0;
+      }
+      
+      .featured-actions {
+        flex-direction: column;
+        gap: 1rem;
+        align-items: flex-start;
+      }
+      
+      .projects-grid {
+        grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+      }
+      
+      .social-links {
+        gap: 1rem;
+      }
+    }
+    
+    @media (max-width: 576px) {
+      .hero-title {
+        font-size: 2.5rem;
+      }
+      
+      .hero-subtitle {
+        font-size: 1.1rem;
+      }
+      
+      .section-title {
+        font-size: 1.8rem;
+      }
+      
+      .featured-title {
+        font-size: 2.2rem;
+      }
+      
+      .featured-badge {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 0.5rem;
+      }
+      
+      .hex-grid {
+        grid-template-columns: 1fr;
+      }
+      
+      .expertise-areas {
+        grid-template-columns: 1fr;
+      }
+      
+      .projects-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="logo">unclecode</div>
+    <nav class="main-nav">
+      <ul class="nav-links">
+        <li><a href="#ventures">Ventures</a></li>
+        <li><a href="#projects">Projects</a></li>
+        <li><a href="#consultancy">Consultancy</a></li>
+        <li><a href="https://github.com/unclecode/crawl4AI" target="_blank"><i class="fab fa-github"></i> GitHub</a></li>
+      </ul>
+    </nav>
+    <button class="theme-toggle" id="theme-toggle" aria-label="Toggle theme">
+      <svg id="theme-icon" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <circle cx="12" cy="12" r="5"></circle>
+        <line x1="12" y1="1" x2="12" y2="3"></line>
+        <line x1="12" y1="21" x2="12" y2="23"></line>
+        <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+        <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+        <line x1="1" y1="12" x2="3" y2="12"></line>
+        <line x1="21" y1="12" x2="23" y2="12"></line>
+        <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+        <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+      </svg>
+    </button>
+    <button class="mobile-menu-toggle" aria-label="Toggle mobile menu">
+      <span></span>
+      <span></span>
+      <span></span>
+    </button>
+  </header>
+  
+  <section class="hero">
+    <div class="hero-canvas-container">
+      <canvas id="dot-canvas"></canvas>
+    </div>
+    <div class="hero-content">
+      <h1 class="hero-title">Unclecode <span style="color: var(--accent-color)">Hossein</span></h1>
+      <p class="hero-subtitle">Building things at the intersection of AI, design, and code</p>
+      <div class="social-links">
+        <a href="https://x.com/unclecode" target="_blank" class="social-link" title="Twitter/X">
+          <i class="fab fa-x-twitter"></i>
+        </a>
+        <a href="https://github.com/unclecode/crawl4ai" target="_blank" class="social-link" title="GitHub">
+          <i class="fab fa-github"></i>
+        </a>
+      </div>
+    </div>
+  </section>
+  
+  <!-- Featured Project Section with Animation -->
+  <section class="featured-project">
+    <div class="container">
+      <div class="featured-content">
+        <div class="featured-badge">
+          <span>🔥 #1 Trending on GitHub</span>
+          <span>33K+ Stars</span>
+          <span>200K+ Downloads/Month</span>
+        </div>
+        <h2 class="featured-title">Crawl4AI</h2>
+        <p class="featured-description">Crawl4AI is the #1 trending GitHub repository, actively maintained by a vibrant community. It delivers blazing-fast, AI-ready web crawling tailored for LLMs, AI agents, and data pipelines. Fully open source, flexible, and built for real-time performance, Crawl4AI empowers developers with unmatched speed, precision, and deployment ease.</p>
+        <div class="featured-actions">
+          <a href="https://github.com/unclecode/crawl4AI" class="primary-button" target="_blank">
+            <i class="fab fa-github"></i> View on GitHub
+          </a>
+          <a href="https://www.youtube.com/watch?v=1F4i_wubWi8" class="secondary-button" target="_blank">
+            <i class="fab fa-youtube"></i> Watch Demo
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Ventures Section with Hexagon Grid -->
+  <section class="ventures-section" id="ventures">
+    <div class="container">
+      <h2 class="section-title">Ventures & Companies</h2>
+      <p class="section-subtitle">Building innovative tech businesses that make a difference</p>
+      
+      <div class="hex-grid">
+        <div class="hex-item">
+          <div class="hex-content">
+            <img src="https://static.wixstatic.com/media/95371c_f2f6d914015240dea9fdd3b4e3fe114f~mv2.png/v1/fill/w_48,h_52,al_c,q_85,usm_0.66_1.00_0.01,enc_avif,quality_auto/aleph-null-logo.png" alt="Aleph Null">
+            <h3>Aleph Null</h3>
+            <p>Asia's leading Edtech hub, democratizing AI in education and empowering the next generation of learners.</p>
+            <a href="https://www.alephnull.sg" target="_blank">Learn More →</a>
+          </div>
+        </div>
+        
+        <div class="hex-item">
+          <div class="hex-content">
+            <img src="https://static.wixstatic.com/media/95371c_bcae68bb50b94569986b2566d34d491c~mv2.png/v1/fill/w_52,h_52,al_c,q_85,usm_0.66_1.00_0.01,enc_avif,quality_auto/k-symbol-blue-512.png" alt="Kidocode">
+            <h3>Kidocode</h3>
+            <p>Founded in 2014, empowering knowledge workers with adaptive education systems for over 30,000 students.</p>
+            <a href="https://kidocode.com" target="_blank">Learn More →</a>
+          </div>
+        </div>
+        
+        <div class="hex-item">
+          <div class="hex-content">
+            <img src="https://static.wixstatic.com/media/95371c_4688d51a1ce14d88a0122d92949a0ba6~mv2.png/v1/fill/w_50,h_52,al_c,q_85,usm_0.66_1.00_0.01,enc_avif,quality_auto/kplay-symbol.png" alt="KPlay Team">
+            <h3>KPlay Team</h3>
+            <p>Software development and consultancy focusing on web & mobile app development services for enterprises.</p>
+            <a href="https://www.kplay.team/" target="_blank">Learn More →</a>
+          </div>
+        </div>
+        
+        <div class="hex-item">
+          <div class="hex-content">
+            <img src="https://static.wixstatic.com/media/95371c_eee00e6750a84ddeaf598c0abeba294d~mv2.png/v1/fill/w_80,h_80,al_c,q_85,usm_0.66_1.00_0.01,enc_avif,quality_auto/download-removebg-preview.png" alt="Pycademy">
+            <h3>Pycademy</h3>
+            <p>Skills development and certification training for IT and Data Science professionals with simulations.</p>
+            <a href="https://pycademy.net/about-us/" target="_blank">Learn More →</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Projects Grid Section -->
+  <section class="projects-section" id="projects">
+    <div class="container">
+      <h2 class="section-title">Projects & Experiments</h2>
+      
+      <div class="filter-tags">
+        <button class="filter-tag active" data-filter="all">All</button>
+        <button class="filter-tag" data-filter="project">Projects</button>
+        <button class="filter-tag" data-filter="animation">Animations</button>
+        <button class="filter-tag" data-filter="article">Articles</button>
+      </div>
+      
+      <div class="projects-grid">
+        <!-- Featured AI Projects -->
+        <div class="project-card" data-categories="project ai">
+          <div class="project-logo">
+            <img src="https://static.wixstatic.com/media/95371c_cef0363acc384adba0cbea2695027500~mv2.png/v1/fill/w_121,h_121,al_c,q_85,usm_0.66_1.00_0.01,enc_avif,quality_auto/cubie-cover.png" alt="Cubie">
+          </div>
+          <h3 class="project-title">Cubie</h3>
+          <p class="project-description">An AI-empowered learning platform with personalized education.</p>
+          <a href="https://cubie.kidocode.com/" class="project-link" target="_blank">View Project →</a>
+        </div>
+        
+        <div class="project-card" data-categories="project ai">
+          <div class="project-logo">
+            <img src="https://static.wixstatic.com/media/95371c_df93487c495741879349c3f30132662a~mv2.png/v1/fill/w_121,h_121,al_c,q_85,usm_0.66_1.00_0.01,enc_avif,quality_auto/mojito-cover.png" alt="Mojitofilms">
+          </div>
+          <h3 class="project-title">Mojitofilms</h3>
+          <p class="project-description">An app with personalised movie recommendations, powered by AI assistant.</p>
+          <a href="https://www.mojitofilms.com/" class="project-link" target="_blank">View Project →</a>
+        </div>
+        
+        <div class="project-card" data-categories="project ai">
+          <div class="project-logo">
+            <img src="https://static.wixstatic.com/media/95371c_8de65b4261ed4385be0ed4453e386738~mv2.png/v1/fill/w_121,h_121,al_c,q_85,usm_0.66_1.00_0.01,enc_avif,quality_auto/adnext-cover.png" alt="AdNext">
+          </div>
+          <h3 class="project-title">AdNext</h3>
+          <p class="project-description">AI platform that enhances e-commerce conversions and customer satisfaction.</p>
+          <a href="https://adnext.ai/" class="project-link" target="_blank">View Project →</a>
+        </div>
+        
+        <div class="project-card" data-categories="project ai">
+          <div class="project-logo">
+            <img src="https://static.wixstatic.com/media/95371c_bf225f9564ad4d52bfd23e06ce9703d3~mv2.png/v1/fill/w_121,h_121,al_c,q_85,usm_0.66_1.00_0.01,enc_avif,quality_auto/talktome-cover.png" alt="Talk2Me">
+          </div>
+          <h3 class="project-title">Talk2Me</h3>
+          <p class="project-description">Chat-based AI app to learn new things through character conversations.</p>
+          <a href="https://talk2me.stucent.ai/" class="project-link" target="_blank">View Project →</a>
+        </div>
+        
+        <div class="project-card" data-categories="project education">
+          <div class="project-logo">
+            <img src="https://static.wixstatic.com/media/95371c_73b53dcea85142e2ab045ae9b6c34336~mv2.png/v1/fill/w_121,h_121,al_c,q_85,usm_0.66_1.00_0.01,enc_avif,quality_auto/potatomath-cover.png" alt="Potatomath">
+          </div>
+          <h3 class="project-title">Potatomath</h3>
+          <p class="project-description">An engaging and gamified math mobile application for K12 students.</p>
+          <a href="http://www.potatomath.com/" class="project-link" target="_blank">View Project →</a>
+        </div>
+        
+        <!-- Animations -->
+        <div class="project-card" data-categories="animation ai">
+          <div class="project-thumbnail" style="background-color: var(--accent-color);">
+            <i class="fas fa-chart-line"></i>
+          </div>
+          <h3 class="project-title">DeepGEMM Visualization</h3>
+          <p class="project-description">Interactive visualization comparing CUTLASS and DeepGEMM approaches to matrix multiplication.</p>
+          <a href="./animations/deepgemm/" class="project-link">View Animation →</a>
+        </div>
+        
+        <div class="project-card" data-categories="animation ai">
+          <div class="project-thumbnail" style="background-color: var(--accent-color);">
+            <i class="fas fa-network-wired"></i>
+          </div>
+          <h3 class="project-title">DeepEP Communication</h3>
+          <p class="project-description">Animation demonstrating how DeepEP's RDMA-based approach improves MoE communication efficiency.</p>
+          <a href="./animations/deepep/" class="project-link">View Animation →</a>
+        </div>
+        
+        <!-- Articles/Blog Posts -->
+        <div class="project-card" data-categories="article ai">
+          <div class="project-thumbnail youtube-thumb">
+            <img src="https://i.ytimg.com/vi/1F4i_wubWi8/mqdefault.jpg" alt="Crawl4ai: SERP API for AI agents">
+            <div class="play-button"><i class="fab fa-youtube"></i></div>
+          </div>
+          <h3 class="project-title">Build your own SERP API for AI agents</h3>
+          <p class="project-description">Learn how to build and deploy a custom SERP API for your AI agents using Crawl4ai.</p>
+          <a href="https://www.youtube.com/watch?v=1F4i_wubWi8" class="project-link" target="_blank">Watch Video →</a>
+        </div>
+        
+        <div class="project-card" data-categories="article ai">
+          <div class="project-thumbnail youtube-thumb">
+            <img src="https://i.ytimg.com/vi/SrgJN7jOxoY/mqdefault.jpg" alt="Whisper Server on Colab">
+            <div class="play-button"><i class="fab fa-youtube"></i></div>
+          </div>
+          <h3 class="project-title">Super-Fast Whisper Server on Colab</h3>
+          <p class="project-description">Set up your own fast and efficient Whisper speech recognition server using Google Colab.</p>
+          <a href="https://www.youtube.com/watch?v=SrgJN7jOxoY" class="project-link" target="_blank">Watch Video →</a>
+        </div>
+        
+        <div class="project-card" data-categories="article ai">
+          <div class="project-thumbnail youtube-thumb">
+            <img src="https://i.ytimg.com/vi/Nl9Br2fhfjw/mqdefault.jpg" alt="Garvis Voice Assistant">
+            <div class="play-button"><i class="fab fa-youtube"></i></div>
+          </div>
+          <h3 class="project-title">Garvis: Real-time Voice-Assistant</h3>
+          <p class="project-description">Build a real-time voice assistant using Groq's ultra-fast inference API.</p>
+          <a href="https://www.youtube.com/watch?v=Nl9Br2fhfjw" class="project-link" target="_blank">Watch Video →</a>
+        </div>
+      </div>
+    </div>
+  </section>
+  
+  <!-- Consultancy Section -->
+  <section class="consultancy-section" id="consultancy">
+    <div class="container">
+      <div class="consultancy-content">
+        <h2 class="section-title">AI Consultancy</h2>
+        <p class="section-description">Leverage my expertise to help your organization harness AI for growth. With over a decade of experience building successful AI-powered businesses and solutions, I can guide your team through implementation challenges and strategic decisions.</p>
+        
+        <div class="expertise-areas">
+          <div class="expertise-item">
+            <div class="expertise-icon"><i class="fas fa-brain"></i></div>
+            <h3>AI Strategy</h3>
+            <p>Develop practical, ROI-focused AI implementation plans</p>
+          </div>
+          
+          <div class="expertise-item">
+            <div class="expertise-icon"><i class="fas fa-code-branch"></i></div>
+            <h3>Technical Implementation</h3>
+            <p>Optimize deployment and integration of AI systems</p>
+          </div>
+          
+          <div class="expertise-item">
+            <div class="expertise-icon"><i class="fas fa-graduation-cap"></i></div>
+            <h3>AI Education</h3>
+            <p>Training programs to upskill your team in AI technologies</p>
+          </div>
+        </div>
+        
+        <a href="mailto:contact@unclecode.com" class="contact-button">
+          <i class="fas fa-envelope"></i> Get in Touch
+        </a>
+      </div>
+    </div>
+  </section>
+  
+  <footer>
+    <p class="footer-text">© 2025 Unclecode (Hossein)</p>
+    <div class="social-links">
+      <a href="https://x.com/unclecode" target="_blank" class="social-link" title="Twitter/X">
+        <i class="fab fa-x-twitter"></i>
+      </a>
+      <a href="https://github.com/unclecode/crawl4ai" target="_blank" class="social-link" title="GitHub">
+        <i class="fab fa-github"></i>
+      </a>
+    </div>
+  </footer>
+  
+  <script src="./assets/js/doteffect.js"></script>
+  <script>
+    // Full website functionality
+    document.addEventListener('DOMContentLoaded', () => {
+      const themeToggle = document.getElementById('theme-toggle');
+      const themeIcon = document.getElementById('theme-icon');
+      const THEME_KEY = 'unclecode-theme-preference';
+      const LIGHT_THEME = 'light';
+      const DARK_THEME = 'dark';
+      
+      // Initialize dot effect
+      const dotEffect = new DotEffect({
+        blockSize: 12,
+        maxRadius: 4,
+        spacing: 0,
+        threshold: 30,
+        mouseRadius: 120,
+        mouseStrength: 0.3,
+        darkMode: true,
+        accentColor: '#8A2BE2',
+        // Vibration effect parameters
+        vibrationRadius: 180,
+        vibrationStrength: 0.7,
+        vibrationSpeed: 3,
+        vibrationDuration: 1000,
+        vibrationElasticity: 0.9
+      });
+      
+      dotEffect.init('dot-canvas', './assets/images/me-avatar.jpg');
+      
+      // Function to set theme
+      function setTheme(theme) {
+        document.documentElement.setAttribute('data-theme', theme);
+        localStorage.setItem(THEME_KEY, theme);
+        
+        // Update theme icon
+        if (theme === DARK_THEME) {
+          // Show sun icon in dark mode
+          themeIcon.innerHTML = `
+            <circle cx="12" cy="12" r="5"></circle>
+            <line x1="12" y1="1" x2="12" y2="3"></line>
+            <line x1="12" y1="21" x2="12" y2="23"></line>
+            <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+            <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+            <line x1="1" y1="12" x2="3" y2="12"></line>
+            <line x1="21" y1="12" x2="23" y2="12"></line>
+            <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+            <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+          `;
+          
+          // Update dot effect
+          dotEffect.updateTheme(true);
+        } else {
+          // Show moon icon in light mode
+          themeIcon.innerHTML = `<path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"></path>`;
+          
+          // Update dot effect
+          dotEffect.updateTheme(false);
+        }
+      }
+      
+      // Load saved theme
+      const savedTheme = localStorage.getItem(THEME_KEY) || DARK_THEME;
+      setTheme(savedTheme);
+      
+      // Toggle theme on button click
+      themeToggle.addEventListener('click', () => {
+        const currentTheme = document.documentElement.getAttribute('data-theme');
+        const newTheme = currentTheme === LIGHT_THEME ? DARK_THEME : LIGHT_THEME;
+        setTheme(newTheme);
+      });
+      
+      // Project Grid Filter functionality
+      const filterTags = document.querySelectorAll('.filter-tag');
+      const projectCards = document.querySelectorAll('.project-card');
+      
+      filterTags.forEach(tag => {
+        tag.addEventListener('click', () => {
+          // Remove active class from all tags
+          filterTags.forEach(t => t.classList.remove('active'));
+          
+          // Add active class to clicked tag
+          tag.classList.add('active');
+          
+          // Get filter value
+          const filter = tag.getAttribute('data-filter');
+          
+          // Filter items
+          projectCards.forEach(card => {
+            if (filter === 'all' || card.getAttribute('data-categories').includes(filter)) {
+              card.style.display = '';
+            } else {
+              card.style.display = 'none';
+            }
+          });
+        });
+      });
+      
+      // Mobile menu toggle
+      const mobileMenuToggle = document.querySelector('.mobile-menu-toggle');
+      const navLinks = document.querySelector('.nav-links');
+      
+      if (mobileMenuToggle) {
+        mobileMenuToggle.addEventListener('click', () => {
+          navLinks.classList.toggle('active');
+          document.body.classList.toggle('menu-open');
+        });
+      }
+      
+      // Smooth scrolling for anchor links
+      document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener('click', function(e) {
+          e.preventDefault();
+          
+          // Close mobile menu if open
+          if (navLinks.classList.contains('active')) {
+            navLinks.classList.remove('active');
+            document.body.classList.remove('menu-open');
+          }
+          
+          const target = document.querySelector(this.getAttribute('href'));
+          if (target) {
+            target.scrollIntoView({
+              behavior: 'smooth',
+              block: 'start'
+            });
+          }
+        });
+      });
+      
+      // Header scroll effect
+      const header = document.querySelector('header');
+      const scrollThreshold = 100;
+      
+      window.addEventListener('scroll', () => {
+        if (window.scrollY > scrollThreshold) {
+          header.classList.add('scrolled');
+        } else {
+          header.classList.remove('scrolled');
+        }
+      });
+      
+      // Animate elements on scroll
+      const observerOptions = {
+        root: null,
+        rootMargin: '0px',
+        threshold: 0.1
+      };
+      
+      const observer = new IntersectionObserver((entries, observer) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add('in-view');
+            observer.unobserve(entry.target);
+          }
+        });
+      }, observerOptions);
+      
+      document.querySelectorAll('.hex-item, .project-card, .expertise-item').forEach(element => {
+        element.classList.add('animate-on-scroll');
+        observer.observe(element);
+      });
+    });
+  </script>
+</body>
+</html>

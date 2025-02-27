@@ -1,0 +1,161 @@
+/* 
+ * Terminal Core CSS
+ * Core terminal theme styling for Unclecode's personal website
+ * Shared between main terminal interface and blog posts
+ */
+
+:root {
+  /* Terminal theme colors */
+  --terminal-bg: #1a1a1a;
+  --terminal-text: #f0f0f0;
+  --terminal-green: #33ff33;
+  --terminal-blue: #3399ff;
+  --terminal-yellow: #ffcc00;
+  --terminal-red: #ff3333;
+  --terminal-purple: #cc33ff;
+  --terminal-cyan: #33ffff;
+  --terminal-gray: #999999;
+  --terminal-highlight: rgba(255, 255, 255, 0.05);
+  --terminal-prompt: #33ff33;
+  --terminal-link: #3399ff;
+  --terminal-border: #333333;
+  --terminal-header-bg: #333333;
+  --terminal-code-bg: #2d2d2d;
+  --monospace: 'JetBrains Mono', monospace;
+}
+
+/* Global terminal styling */
+body {
+  font-family: var(--monospace);
+  background-color: var(--terminal-bg);
+  color: var(--terminal-text);
+  line-height: 1.5;
+  padding-top: 70px;
+}
+
+header {
+  background-color: rgba(26, 26, 26, 0.95);
+  border-bottom: 1px solid var(--terminal-border);
+}
+
+/* Terminal container */
+.terminal-container {
+  max-width: 900px;
+  margin: 2rem auto;
+  padding: 0 1rem;
+  font-size: 0.95rem;
+}
+
+/* Terminal header with title bar */
+.terminal-header {
+  background-color: var(--terminal-header-bg);
+  border-top-left-radius: 6px;
+  border-top-right-radius: 6px;
+  padding: 0.5rem 1rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border: 1px solid #444;
+  border-bottom: none;
+}
+
+.terminal-title {
+  color: var(--terminal-text);
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.85rem;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.terminal-buttons {
+  display: flex;
+  gap: 0.5rem;
+  flex-shrink: 0;
+}
+
+.terminal-button {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+}
+
+.terminal-close {
+  background-color: #ff5f56;
+}
+
+.terminal-minimize {
+  background-color: #ffbd2e;
+}
+
+.terminal-maximize {
+  background-color: #27c93f;
+}
+
+/* Terminal body */
+.terminal-body {
+  background-color: var(--terminal-bg);
+  border: 1px solid #444;
+  border-bottom-left-radius: 6px;
+  border-bottom-right-radius: 6px;
+  padding: 1.5rem;
+  overflow: auto;
+}
+
+/* Common terminal text styling */
+.comment {
+  color: var(--terminal-gray);
+}
+
+.keyword {
+  color: var(--terminal-purple);
+}
+
+.function {
+  color: var(--terminal-blue);
+}
+
+.string {
+  color: var(--terminal-green);
+}
+
+.number {
+  color: var(--terminal-yellow);
+}
+
+.operator {
+  color: var(--terminal-cyan);
+}
+
+/* Tags styling */
+.post-tag {
+  color: var(--terminal-purple);
+  position: relative;
+}
+
+.post-tag::before {
+  content: '#';
+}
+
+/* Terminal prompt */
+.terminal-prompt {
+  color: var(--terminal-prompt);
+  white-space: nowrap;
+}
+
+/* Basic responsive adjustments */
+@media (max-width: 768px) {
+  .terminal-container {
+    padding: 0 0.75rem;
+  }
+  
+  .terminal-header {
+    padding: 0.4rem 0.75rem;
+  }
+  
+  .terminal-body {
+    padding: 1rem;
+  }
+}

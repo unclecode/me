@@ -1,0 +1,215 @@
+/* 
+ * Terminal CSS
+ * Specific styling for the terminal-like blog index page
+ * Imports the core terminal styling
+ */
+
+@import url('terminal-core.css');
+
+/* Terminal welcome message */
+.terminal-welcome {
+  margin-bottom: 2rem;
+  color: var(--terminal-gray);
+  font-size: 0.85rem;
+  line-height: 1.5;
+}
+
+.terminal-ascii {
+  color: var(--terminal-cyan);
+  white-space: pre;
+  font-size: 12px;
+  line-height: 1.2;
+  margin-bottom: 1rem;
+}
+
+/* Search command */
+.terminal-command {
+  display: flex;
+  gap: 0.5rem;
+  margin-bottom: 1.5rem;
+  align-items: center;
+}
+
+.terminal-input-wrapper {
+  position: relative;
+  flex: 1;
+}
+
+.terminal-input {
+  width: 100%;
+  background-color: transparent;
+  border: none;
+  border-bottom: 1px solid var(--terminal-border);
+  color: var(--terminal-text);
+  font-family: var(--monospace);
+  font-size: 0.95rem;
+  padding: 0.5rem 0;
+  outline: none;
+}
+
+.terminal-input:focus {
+  border-bottom-color: var(--terminal-cyan);
+}
+
+.terminal-input::placeholder {
+  color: var(--terminal-gray);
+  opacity: 0.7;
+}
+
+/* Terminal filters */
+.terminal-filters {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  margin-bottom: 2rem;
+  font-size: 0.85rem;
+}
+
+.filter-tag {
+  color: var(--terminal-text);
+  background-color: transparent;
+  border: 1px solid var(--terminal-border);
+  padding: 0.3rem 0.7rem;
+  cursor: pointer;
+  font-family: var(--monospace);
+  transition: all 0.2s ease;
+}
+
+.filter-tag:hover, .filter-tag.active {
+  background-color: var(--terminal-highlight);
+  border-color: var(--terminal-cyan);
+  color: var(--terminal-cyan);
+}
+
+/* Terminal blog posts list - Hacker News style */
+.posts-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.post-item {
+  margin-bottom: 0.35rem;
+  padding: 0.5rem 0;
+  display: flex;
+  border-radius: 3px;
+}
+
+.post-item:hover {
+  background-color: var(--terminal-highlight);
+}
+
+.post-number {
+  color: var(--terminal-gray);
+  padding: 0 0.75rem;
+  font-size: 0.85rem;
+  min-width: 2.5rem;
+  text-align: right;
+}
+
+.post-content {
+  flex: 1;
+}
+
+.post-title-link {
+  color: var(--terminal-link);
+  text-decoration: none;
+  font-weight: 500;
+  display: inline-block;
+  margin-right: 0.5rem;
+  border-bottom: none;
+}
+
+.post-title-link:hover {
+  text-decoration: underline;
+  border-bottom: none;
+}
+
+.post-title-link::after {
+  content: none;
+}
+
+.post-meta {
+  display: block;
+  margin-top: 0.25rem;
+  font-size: 0.75rem;
+  color: var(--terminal-gray);
+}
+
+.post-date, .post-reading-time {
+  margin-right: 1rem;
+}
+
+.post-tags {
+  display: inline;
+}
+
+/* Terminal output */
+.terminal-output {
+  margin-bottom: 2rem;
+  line-height: 1.6;
+}
+
+.line {
+  margin-bottom: 0.35rem;
+}
+
+/* Pagination */
+.pagination {
+  display: flex;
+  gap: 1rem;
+  margin-top: 3rem;
+  justify-content: center;
+  font-size: 0.9rem;
+}
+
+.pagination-item {
+  color: var(--terminal-link);
+  cursor: pointer;
+  text-decoration: none;
+  transition: all 0.2s ease;
+  border: 1px solid var(--terminal-border);
+  padding: 0.25rem 0.6rem;
+}
+
+.pagination-item.active, .pagination-item:hover {
+  background-color: var(--terminal-highlight);
+  border-color: var(--terminal-cyan);
+}
+
+.pagination-item.active {
+  color: var(--terminal-cyan);
+}
+
+/* Cursor animation */
+.cursor {
+  display: inline-block;
+  width: 8px;
+  height: 1em;
+  background-color: var(--terminal-text);
+  animation: blink 1s step-end infinite;
+  vertical-align: text-bottom;
+  margin-left: 0.2rem;
+}
+
+@keyframes blink {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0; }
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .terminal-ascii {
+    display: none;
+  }
+  
+  .post-item {
+    flex-direction: column;
+    padding: 0.75rem 0;
+  }
+  
+  .post-number {
+    padding-left: 0;
+    margin-bottom: 0.25rem;
+  }
+}

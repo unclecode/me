@@ -1,0 +1,795 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>DeepEP vs Traditional MoE Communication</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+  <style>
+    :root {
+      /* Light theme (default) */
+      --primary-color: #3b82f6;
+      --secondary-color: #10b981;
+      --accent-orange: #f97316;
+      --accent-green: #22c55e;
+      --accent-yellow: #facc15;
+      --accent-blue: #3b82f6;
+      --accent-red: #ef4444;
+      
+      --compute-color: #22c55e;
+      --communication-color: #3b82f6;
+      --waiting-color: #facc15;
+      --network-color: #f97316;
+      --hook-color: #10b981;
+      --trad-efficiency-color: #f97316;
+      --deepep-efficiency-color: #10b981;
+      --data-packet-color: #facc15;
+      
+      --bg-main: #f8fafc;
+      --bg-card: #ffffff;
+      --bg-element: #f1f5f9;
+      --bg-element-hover: #e2e8f0;
+      --bg-gpu: #e2e8f0;
+      --bg-meter: #f1f5f9;
+      
+      --text-primary: #334155;
+      --text-secondary: #64748b;
+      --text-tertiary: #94a3b8;
+      --text-inverted: #ffffff;
+      
+      --border-color: #cbd5e1;
+      --border-light: #e2e8f0;
+      
+      --shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+      --radius: 12px;
+    }
+    
+    [data-theme="dark"] {
+      --primary-color: #60a5fa;
+      --secondary-color: #34d399;
+      --accent-orange: #fb923c;
+      --accent-green: #4ade80;
+      --accent-yellow: #fde047;
+      --accent-blue: #60a5fa;
+      --accent-red: #f87171;
+      
+      --compute-color: #4ade80;
+      --communication-color: #60a5fa;
+      --waiting-color: #fde047;
+      --network-color: #fb923c;
+      --hook-color: #34d399;
+      --trad-efficiency-color: #fb923c;
+      --deepep-efficiency-color: #34d399;
+      --data-packet-color: #fde047;
+      
+      --bg-main: #0f172a;
+      --bg-card: #1e293b;
+      --bg-element: #334155;
+      --bg-element-hover: #475569;
+      --bg-gpu: #334155;
+      --bg-meter: #1e293b;
+      
+      --text-primary: #f1f5f9;
+      --text-secondary: #cbd5e1;
+      --text-tertiary: #94a3b8;
+      --text-inverted: #ffffff;
+      
+      --border-color: #475569;
+      --border-light: #334155;
+      
+      --shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.3), 0 4px 6px -2px rgba(0, 0, 0, 0.15);
+    }
+    
+    * {
+      box-sizing: border-box;
+    }
+    
+    body {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+      background-color: var(--bg-main);
+      color: var(--text-primary);
+      margin: 0;
+      padding: 20px;
+      line-height: 1.6;
+      transition: background-color 0.3s ease, color 0.3s ease;
+    }
+    
+    .container {
+      max-width: 1000px;
+      margin: 0 auto;
+    }
+    
+    .header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 20px;
+    }
+    
+    h1 {
+      text-align: center;
+      color: var(--text-primary);
+      margin: 0;
+      font-size: 1.75rem;
+      font-weight: 700;
+      letter-spacing: -0.025em;
+      transition: color 0.3s ease;
+    }
+    
+    .subtitle {
+      text-align: center;
+      color: var(--text-secondary);
+      margin-bottom: 30px;
+      font-weight: 400;
+      max-width: 80%;
+      margin-left: auto;
+      margin-right: auto;
+      transition: color 0.3s ease;
+    }
+    
+    .comparison {
+      display: flex;
+      justify-content: space-between;
+      gap: 20px;
+      margin-bottom: 30px;
+    }
+    
+    .approach {
+      flex: 1;
+      background-color: var(--bg-card);
+      border-radius: var(--radius);
+      padding: 20px;
+      box-shadow: var(--shadow);
+      min-width: 0;
+      transition: background-color 0.3s ease, box-shadow 0.3s ease;
+    }
+    
+    h2 {
+      text-align: center;
+      color: var(--text-primary);
+      margin-top: 0;
+      margin-bottom: 15px;
+      padding-bottom: 10px;
+      border-bottom: 1px solid var(--border-light);
+      font-size: 1.25rem;
+      font-weight: 600;
+      transition: color 0.3s ease, border-color 0.3s ease;
+    }
+    
+    .gpu {
+      background-color: var(--bg-gpu);
+      border-radius: var(--radius);
+      padding: 15px;
+      margin-bottom: 20px;
+      position: relative;
+      transition: background-color 0.3s ease;
+    }
+    
+    .gpu-label {
+      font-weight: 600;
+      color: var(--text-primary);
+      margin-bottom: 10px;
+      font-size: 0.875rem;
+      transition: color 0.3s ease;
+    }
+    
+    .sm-resources {
+      display: flex;
+      height: 30px;
+      border-radius: var(--radius);
+      overflow: hidden;
+      margin-bottom: 10px;
+    }
+    
+    .compute {
+      background-color: var(--compute-color);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      color: var(--text-inverted);
+      font-size: 0.8125rem;
+      font-weight: 500;
+      transition: width 1s ease, background-color 0.3s ease;
+    }
+    
+    .communication {
+      background-color: var(--communication-color);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      color: var(--text-inverted);
+      font-size: 0.8125rem;
+      font-weight: 500;
+      transition: width 1s ease, background-color 0.3s ease;
+    }
+    
+    .waiting {
+      background-color: var(--waiting-color);
+      height: 22px;
+      border-radius: 6px;
+      margin-top: 5px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      font-size: 0.75rem;
+      font-weight: 500;
+      color: var(--text-primary);
+      transform-origin: center;
+      opacity: 0;
+      transition: opacity 1s ease, background-color 0.3s ease;
+    }
+    
+    .network {
+      height: 50px;
+      background-color: var(--network-color);
+      border-radius: var(--radius);
+      margin: 20px 0;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      color: var(--text-inverted);
+      position: relative;
+      font-size: 0.875rem;
+      font-weight: 500;
+      transition: background-color 0.3s ease;
+    }
+    
+    .data-packet {
+      position: absolute;
+      width: 10px;
+      height: 10px;
+      background-color: var(--data-packet-color);
+      border-radius: 50%;
+      opacity: 0;
+      transition: background-color 0.3s ease;
+    }
+    
+    .rdma-packet {
+      position: absolute;
+      width: 8px;
+      height: 8px;
+      background-color: var(--communication-color);
+      border-radius: 50%;
+      opacity: 0;
+      transition: background-color 0.3s ease;
+    }
+    
+    .legend {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 15px;
+      margin: 30px 0;
+    }
+    
+    .legend-item {
+      display: flex;
+      align-items: center;
+      font-size: 0.8125rem;
+      color: var(--text-secondary);
+      transition: color 0.3s ease;
+    }
+    
+    .legend-color {
+      width: 16px;
+      height: 16px;
+      margin-right: 8px;
+      border-radius: 4px;
+      transition: background-color 0.3s ease;
+    }
+    
+    .efficiency-meter {
+      height: 25px;
+      background-color: var(--bg-meter);
+      border-radius: 6px;
+      margin-top: 15px;
+      overflow: hidden;
+      position: relative;
+      transition: background-color 0.3s ease;
+    }
+    
+    .efficiency-fill {
+      height: 100%;
+      transition: width 2s ease, background-color 0.3s ease;
+    }
+    
+    .efficiency-label {
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      font-size: 0.875rem;
+      font-weight: 500;
+      color: var(--text-primary);
+      transition: color 0.3s ease;
+    }
+    
+    .hook {
+      position: absolute;
+      width: 14px;
+      height: 14px;
+      border-radius: 50%;
+      background-color: var(--hook-color);
+      box-shadow: 0 0 8px var(--hook-color);
+      opacity: 0;
+      transition: opacity 0.3s ease, background-color 0.3s ease, box-shadow 0.3s ease;
+    }
+    
+    .controls {
+      display: flex;
+      justify-content: center;
+      gap: 15px;
+      margin-top: 20px;
+    }
+    
+    .btn {
+      padding: 10px 20px;
+      background-color: var(--primary-color);
+      color: var(--text-inverted);
+      border: none;
+      border-radius: var(--radius);
+      font-family: 'Inter', sans-serif;
+      font-size: 0.9375rem;
+      font-weight: 500;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.2s ease;
+      box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+    }
+    
+    .btn:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+    }
+    
+    .btn:active {
+      transform: translateY(0);
+    }
+    
+    .btn svg {
+      margin-right: 8px;
+    }
+    
+    .theme-toggle {
+      background-color: var(--bg-element);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius);
+      width: 40px;
+      height: 40px;
+      padding: 0;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--text-primary);
+      transition: background-color 0.3s ease, color 0.3s ease;
+    }
+    
+    .theme-toggle:hover {
+      background-color: var(--bg-element-hover);
+    }
+    
+    @keyframes traditionalDataTransfer {
+      0% { left: 50%; top: -10px; opacity: 1; }
+      50% { left: 50%; top: 50%; opacity: 1; }
+      100% { left: 50%; top: 110%; opacity: 0; }
+    }
+    
+    @keyframes rdmaTransfer1 {
+      0% { left: 20%; top: -5px; opacity: 0; }
+      10% { left: 20%; top: -5px; opacity: 1; }
+      45% { left: 20%; top: 110%; opacity: 1; }
+      50% { left: 20%; top: 110%; opacity: 0; }
+      100% { opacity: 0; }
+    }
+    
+    @keyframes rdmaTransfer2 {
+      0% { opacity: 0; }
+      15% { left: 40%; top: -5px; opacity: 0; }
+      20% { left: 40%; top: -5px; opacity: 1; }
+      55% { left: 40%; top: 110%; opacity: 1; }
+      60% { left: 40%; top: 110%; opacity: 0; }
+      100% { opacity: 0; }
+    }
+    
+    @keyframes rdmaTransfer3 {
+      0% { opacity: 0; }
+      30% { left: 60%; top: -5px; opacity: 0; }
+      35% { left: 60%; top: -5px; opacity: 1; }
+      70% { left: 60%; top: 110%; opacity: 1; }
+      75% { left: 60%; top: 110%; opacity: 0; }
+      100% { opacity: 0; }
+    }
+    
+    @keyframes rdmaTransfer4 {
+      0% { opacity: 0; }
+      45% { left: 80%; top: -5px; opacity: 0; }
+      50% { left: 80%; top: -5px; opacity: 1; }
+      85% { left: 80%; top: 110%; opacity: 1; }
+      90% { left: 80%; top: 110%; opacity: 0; }
+      100% { opacity: 0; }
+    }
+    
+    @keyframes pulse {
+      0% { transform: scale(1); opacity: 1; }
+      50% { transform: scale(1.2); opacity: 0.8; }
+      100% { transform: scale(1); opacity: 1; }
+    }
+    
+    .footer {
+      margin-top: 2rem;
+      text-align: center;
+      padding: 1rem;
+      border-top: 1px solid var(--border-light);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      transition: border-color 0.3s ease;
+    }
+    
+    .author {
+      font-weight: 600;
+      color: var(--text-primary);
+      margin-bottom: 0.5rem;
+      font-size: 1rem;
+      transition: color 0.3s ease;
+    }
+    
+    .social-links {
+      display: flex;
+      gap: 1rem;
+      margin-top: 0.5rem;
+    }
+    
+    .social-link {
+      color: var(--text-secondary);
+      font-size: 1.25rem;
+      transition: color 0.2s ease, transform 0.2s ease;
+    }
+    
+    .social-link:hover {
+      color: var(--primary-color);
+      transform: translateY(-2px);
+    }
+    
+    @media (max-width: 768px) {
+      .comparison {
+        flex-direction: column;
+      }
+      
+      .header {
+        flex-direction: column;
+        align-items: center;
+        gap: 15px;
+      }
+      
+      h1 {
+        font-size: 1.5rem;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="header">
+      <h1>DeepEP vs Traditional MoE Communication</h1>
+      <button class="theme-toggle" id="theme-toggle" aria-label="Toggle theme">
+        <svg id="theme-icon" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"></path>
+        </svg>
+      </button>
+    </div>
+    
+    <p class="subtitle">Comparing traditional MoE communication with DeepEP's innovative RDMA-based approach that eliminates SM resource competition</p>
+    
+    <div class="comparison">
+      <div class="approach">
+        <h2>Traditional Approach</h2>
+        <div class="gpu">
+          <div class="gpu-label">GPU 1 (SMs Shared)</div>
+          <div class="sm-resources">
+            <div class="compute" id="trad-compute-1" style="width: 100%;">Computation</div>
+            <div class="communication" id="trad-comm-1" style="width: 0%;">Communication</div>
+          </div>
+          <div class="waiting" id="trad-wait-1">Waiting</div>
+        </div>
+        
+        <div class="network">
+          <span>GPU Interconnect (Uses SMs)</span>
+          <div class="data-packet" id="trad-packet"></div>
+        </div>
+        
+        <div class="gpu">
+          <div class="gpu-label">GPU 2 (SMs Shared)</div>
+          <div class="sm-resources">
+            <div class="compute" id="trad-compute-2" style="width: 100%;">Computation</div>
+            <div class="communication" id="trad-comm-2" style="width: 0%;">Communication</div>
+          </div>
+          <div class="waiting" id="trad-wait-2">Waiting</div>
+        </div>
+        
+        <div class="efficiency-meter">
+          <div class="efficiency-fill" id="trad-efficiency" style="width: 0%; background-color: var(--trad-efficiency-color);"></div>
+          <div class="efficiency-label">0% Efficiency</div>
+        </div>
+      </div>
+      
+      <div class="approach">
+        <h2>DeepEP Innovation</h2>
+        <div class="gpu">
+          <div class="gpu-label">GPU 1 (100% SMs for Computation)</div>
+          <div class="sm-resources">
+            <div class="compute" style="width: 100%;">Uninterrupted Computation</div>
+          </div>
+          <div class="hook" id="hook-1" style="right: 10px; bottom: 10px;"></div>
+        </div>
+        
+        <div class="network">
+          <span>RDMA Network (No SM Usage)</span>
+          <div class="rdma-packet" id="rdma-packet-1"></div>
+          <div class="rdma-packet" id="rdma-packet-2"></div>
+          <div class="rdma-packet" id="rdma-packet-3"></div>
+          <div class="rdma-packet" id="rdma-packet-4"></div>
+        </div>
+        
+        <div class="gpu">
+          <div class="gpu-label">GPU 2 (100% SMs for Computation)</div>
+          <div class="sm-resources">
+            <div class="compute" style="width: 100%;">Uninterrupted Computation</div>
+          </div>
+          <div class="hook" id="hook-2" style="right: 10px; bottom: 10px;"></div>
+        </div>
+        
+        <div class="efficiency-meter">
+          <div class="efficiency-fill" id="deepep-efficiency" style="width: 0%; background-color: var(--deepep-efficiency-color);"></div>
+          <div class="efficiency-label">0% Efficiency</div>
+        </div>
+      </div>
+    </div>
+    
+    <div class="legend">
+      <div class="legend-item">
+        <div class="legend-color" style="background-color: var(--compute-color);"></div>
+        <span>Computation</span>
+      </div>
+      <div class="legend-item">
+        <div class="legend-color" style="background-color: var(--communication-color);"></div>
+        <span>Communication</span>
+      </div>
+      <div class="legend-item">
+        <div class="legend-color" style="background-color: var(--waiting-color);"></div>
+        <span>Waiting</span>
+      </div>
+      <div class="legend-item">
+        <div class="legend-color" style="background-color: var(--network-color);"></div>
+        <span>RDMA Network</span>
+      </div>
+      <div class="legend-item">
+        <div class="legend-color" style="background-color: var(--hook-color);"></div>
+        <span>Hook (Zero SM Usage)</span>
+      </div>
+    </div>
+    
+    <div class="controls">
+      <button class="btn" id="restart-btn">
+        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"></path>
+          <path d="M3 3v5h5"></path>
+        </svg>
+        Restart Animation
+      </button>
+    </div>
+    
+    <footer class="footer">
+      <div class="author">Visualized by Unclecode (Hossein)</div>
+      <div class="social-links">
+        <a href="https://x.com/unclecode" target="_blank" class="social-link" title="Twitter/X">
+          <i class="fab fa-x-twitter"></i>
+        </a>
+        <a href="https://github.com/unclecode/crawl4ai" target="_blank" class="social-link" title="GitHub">
+          <i class="fab fa-github"></i>
+        </a>
+      </div>
+    </footer>
+  </div>
+  
+  <script>
+    // Theme handling
+    const THEME_KEY = 'deepEP-theme-preference';
+    const LIGHT_THEME = 'light';
+    const DARK_THEME = 'dark';
+    
+    // Function to toggle theme
+    function toggleTheme() {
+      const currentTheme = document.documentElement.getAttribute('data-theme');
+      const newTheme = currentTheme === LIGHT_THEME ? DARK_THEME : LIGHT_THEME;
+      
+      document.documentElement.setAttribute('data-theme', newTheme);
+      localStorage.setItem(THEME_KEY, newTheme);
+      
+      // Update theme icon
+      updateThemeIcon(newTheme);
+    }
+    
+    // Function to update theme icon based on current theme
+    function updateThemeIcon(theme) {
+      const themeIcon = document.getElementById('theme-icon');
+      
+      if (theme === DARK_THEME) {
+        // Sun icon for dark mode (to switch to light)
+        themeIcon.innerHTML = `
+          <circle cx="12" cy="12" r="5"></circle>
+          <line x1="12" y1="1" x2="12" y2="3"></line>
+          <line x1="12" y1="21" x2="12" y2="23"></line>
+          <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+          <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+          <line x1="1" y1="12" x2="3" y2="12"></line>
+          <line x1="21" y1="12" x2="23" y2="12"></line>
+          <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+          <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+        `;
+      } else {
+        // Moon icon for light mode (to switch to dark)
+        themeIcon.innerHTML = `<path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"></path>`;
+      }
+    }
+    
+    // Initialize theme from localStorage or default to light
+    function initializeTheme() {
+      const savedTheme = localStorage.getItem(THEME_KEY) || LIGHT_THEME;
+      document.documentElement.setAttribute('data-theme', savedTheme);
+      updateThemeIcon(savedTheme);
+    }
+    
+    // Animation timeline for Traditional approach
+    function animateTraditional() {
+      setTimeout(() => {
+        // Start communication phase
+        document.getElementById('trad-compute-1').style.width = '60%';
+        document.getElementById('trad-comm-1').style.width = '40%';
+        document.getElementById('trad-efficiency').style.width = '60%';
+        document.querySelector('#trad-efficiency + .efficiency-label').textContent = '60% Efficiency';
+      }, 1000);
+      
+      setTimeout(() => {
+        // Show waiting
+        document.getElementById('trad-wait-2').style.opacity = '1';
+      }, 1500);
+      
+      setTimeout(() => {
+        // Data packet transfer
+        const packet = document.getElementById('trad-packet');
+        packet.style.opacity = '1';
+        packet.style.animation = 'traditionalDataTransfer 2s linear';
+      }, 2000);
+      
+      setTimeout(() => {
+        // Second GPU communication phase
+        document.getElementById('trad-compute-2').style.width = '60%';
+        document.getElementById('trad-comm-2').style.width = '40%';
+        document.getElementById('trad-wait-2').style.opacity = '0';
+        document.getElementById('trad-wait-1').style.opacity = '1';
+      }, 4000);
+      
+      setTimeout(() => {
+        // Return to normal
+        document.getElementById('trad-compute-1').style.width = '100%';
+        document.getElementById('trad-comm-1').style.width = '0%';
+        document.getElementById('trad-compute-2').style.width = '100%';
+        document.getElementById('trad-comm-2').style.width = '0%';
+        document.getElementById('trad-wait-1').style.opacity = '0';
+        document.getElementById('trad-packet').style.opacity = '0';
+        document.getElementById('trad-efficiency').style.width = '50%';
+        document.querySelector('#trad-efficiency + .efficiency-label').textContent = '50% Efficiency';
+      }, 6000);
+    }
+    
+    // Animation timeline for DeepEP approach
+    function animateDeepEP() {
+      // Start with full efficiency
+      setTimeout(() => {
+        document.getElementById('deepep-efficiency').style.width = '90%';
+        document.querySelector('#deepep-efficiency + .efficiency-label').textContent = '90% Efficiency';
+      }, 1000);
+      
+      setTimeout(() => {
+        // Activate hook
+        const hook1 = document.getElementById('hook-1');
+        hook1.style.opacity = '1';
+        hook1.style.animation = 'pulse 0.8s infinite';
+      }, 1500);
+      
+      setTimeout(() => {
+        // Start RDMA transfers
+        const packet1 = document.getElementById('rdma-packet-1');
+        const packet2 = document.getElementById('rdma-packet-2');
+        const packet3 = document.getElementById('rdma-packet-3');
+        const packet4 = document.getElementById('rdma-packet-4');
+        
+        packet1.style.animation = 'rdmaTransfer1 4s linear';
+        packet2.style.animation = 'rdmaTransfer2 4s linear';
+        packet3.style.animation = 'rdmaTransfer3 4s linear';
+        packet4.style.animation = 'rdmaTransfer4 4s linear';
+      }, 2000);
+      
+      setTimeout(() => {
+        // Activate second hook
+        const hook2 = document.getElementById('hook-2');
+        hook2.style.opacity = '1';
+        hook2.style.animation = 'pulse 0.8s infinite';
+      }, 3500);
+      
+      setTimeout(() => {
+        // Deactivate hooks after communication
+        document.getElementById('hook-1').style.opacity = '0';
+        document.getElementById('hook-1').style.animation = 'none';
+        document.getElementById('hook-2').style.opacity = '0';
+        document.getElementById('hook-2').style.animation = 'none';
+        
+        // Reset packet animations
+        const packets = ['rdma-packet-1', 'rdma-packet-2', 'rdma-packet-3', 'rdma-packet-4'];
+        packets.forEach(id => {
+          document.getElementById(id).style.animation = 'none';
+          document.getElementById(id).style.opacity = '0';
+        });
+      }, 6000);
+    }
+    
+    function startAnimations() {
+      // Reset all elements
+      document.getElementById('trad-compute-1').style.width = '100%';
+      document.getElementById('trad-comm-1').style.width = '0%';
+      document.getElementById('trad-compute-2').style.width = '100%';
+      document.getElementById('trad-comm-2').style.width = '0%';
+      document.getElementById('trad-wait-1').style.opacity = '0';
+      document.getElementById('trad-wait-2').style.opacity = '0';
+      document.getElementById('trad-packet').style.opacity = '0';
+      document.getElementById('trad-packet').style.animation = 'none';
+      document.getElementById('trad-efficiency').style.width = '0%';
+      document.querySelector('#trad-efficiency + .efficiency-label').textContent = '0% Efficiency';
+      
+      document.getElementById('hook-1').style.opacity = '0';
+      document.getElementById('hook-1').style.animation = 'none';
+      document.getElementById('hook-2').style.opacity = '0';
+      document.getElementById('hook-2').style.animation = 'none';
+      
+      const packets = ['rdma-packet-1', 'rdma-packet-2', 'rdma-packet-3', 'rdma-packet-4'];
+      packets.forEach(id => {
+        document.getElementById(id).style.animation = 'none';
+        document.getElementById(id).style.opacity = '0';
+      });
+      
+      document.getElementById('deepep-efficiency').style.width = '0%';
+      document.querySelector('#deepep-efficiency + .efficiency-label').textContent = '0% Efficiency';
+      
+      // Start animations
+      animateTraditional();
+      animateDeepEP();
+    }
+    
+    // Document ready function (initialize everything)
+    document.addEventListener('DOMContentLoaded', () => {
+      // Initialize theme
+      initializeTheme();
+      
+      // Start animation
+      startAnimations();
+      
+      // Set up theme toggle button
+      document.getElementById('theme-toggle').addEventListener('click', toggleTheme);
+      
+      // Add restart button functionality
+      document.getElementById('restart-btn').addEventListener('click', startAnimations);
+    });
+  </script>
+</body>
+</html>

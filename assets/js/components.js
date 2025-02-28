@@ -107,7 +107,11 @@ document.addEventListener('DOMContentLoaded', async () => {
     'ascii-logo': 'ascii-logo.html',
     'blog-post-item': 'blog-post-item.html',
     'filter-chip': 'filter-chip.html',
-    'terminal-command': 'terminal-command.html'
+    'terminal-command': 'terminal-command.html',
+    'list-item': 'list-item.html',
+    'venture-item': 'venture-item.html',
+    'project-item': 'project-item.html',
+    'expertise-item': 'expertise-item.html'
   };
 
   // Load all components

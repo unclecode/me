@@ -476,7 +476,6 @@ function initializeApp() {
   
   // Project filtering
   const filterButtons = document.querySelectorAll('.filter-tag');
-  const projectItems = document.querySelectorAll('.project-item');
   
   filterButtons.forEach(button => {
     button.addEventListener('click', () => {
@@ -487,6 +486,9 @@ function initializeApp() {
       button.classList.add('active');
       
       const filter = button.getAttribute('data-filter');
+      
+      // Get all project items (they might be loaded dynamically)
+      const projectItems = document.querySelectorAll('.list-item[data-categories]');
       
       // Filter projects
       projectItems.forEach(item => {

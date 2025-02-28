@@ -13,8 +13,8 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
   <link rel="stylesheet" href="./assets/css/common.css">
   <link rel="stylesheet" href="./assets/css/terminal-core.css">
-  
   <link rel="stylesheet" href="./assets/css/main.css">
+  <link rel="stylesheet" href="./assets/css/list-component.css">
 
 </head>
 <body>
@@ -162,43 +162,8 @@
           </div>
           <h2 class="section-title">Ventures & Companies</h2>
           
-          <div class="ventures-grid">
-            <div class="venture-item">
-              <div class="venture-logo">
-                <img src="https://static.wixstatic.com/media/95371c_f2f6d914015240dea9fdd3b4e3fe114f~mv2.png/v1/fill/w_48,h_52,al_c,q_85,usm_0.66_1.00_0.01,enc_avif,quality_auto/aleph-null-logo.png" alt="Aleph Null">
-              </div>
-              <h3 class="venture-name">Aleph Null</h3>
-              <p class="venture-description">Asia's leading Edtech hub, democratizing AI in education and empowering the next generation of learners.</p>
-              <a href="https://www.alephnull.sg" target="_blank" class="venture-link">explore → </a>
-            </div>
-            
-            <div class="venture-item">
-              <div class="venture-logo">
-                <img src="https://static.wixstatic.com/media/95371c_bcae68bb50b94569986b2566d34d491c~mv2.png/v1/fill/w_52,h_52,al_c,q_85,usm_0.66_1.00_0.01,enc_avif,quality_auto/k-symbol-blue-512.png" alt="Kidocode">
-              </div>
-              <h3 class="venture-name">Kidocode</h3>
-              <p class="venture-description">Founded in 2014, empowering knowledge workers with adaptive education systems for over 30,000 students.</p>
-              <a href="https://kidocode.com" target="_blank" class="venture-link">explore → </a>
-            </div>
-            
-            <div class="venture-item">
-              <div class="venture-logo">
-                <img src="https://static.wixstatic.com/media/95371c_4688d51a1ce14d88a0122d92949a0ba6~mv2.png/v1/fill/w_50,h_52,al_c,q_85,usm_0.66_1.00_0.01,enc_avif,quality_auto/kplay-symbol.png" alt="KPlay Team">
-              </div>
-              <h3 class="venture-name">KPlay Team</h3>
-              <p class="venture-description">Software development and consultancy focusing on web & mobile app development services for enterprises.</p>
-              <a href="https://www.kplay.team/" target="_blank" class="venture-link">explore → </a>
-            </div>
-            
-            <div class="venture-item">
-              <div class="venture-logo">
-                <img src="https://static.wixstatic.com/media/95371c_eee00e6750a84ddeaf598c0abeba294d~mv2.png/v1/fill/w_80,h_80,al_c,q_85,usm_0.66_1.00_0.01,enc_avif,quality_auto/download-removebg-preview.png" alt="Pycademy">
-              </div>
-              <h3 class="venture-name">Pycademy</h3>
-              <p class="venture-description">Skills development and certification training for IT and Data Science professionals with simulations.</p>
-              <a href="https://pycademy.net/about-us/" target="_blank" class="venture-link">explore → </a>
-            </div>
-          </div>
+          <!-- Ventures will be loaded dynamically -->
+          <div class="ventures-list"></div>
         </div>
         
         <!-- Projects Tab -->
@@ -211,97 +176,8 @@
           </div>
           <h2 class="section-title">Projects & Experiments</h2>
           
-          <div class="filters">
-            <button class="filter-tag active" data-filter="all">all</button>
-            <button class="filter-tag" data-filter="project">projects</button>
-            <button class="filter-tag" data-filter="animation">animations</button>
-            <button class="filter-tag" data-filter="article">articles</button>
-          </div>
-          
-          <div class="projects-grid">
-            <!-- Featured AI Projects -->
-            <div class="project-item" data-categories="project ai">
-              <div class="project-logo">
-                <img src="https://static.wixstatic.com/media/95371c_cef0363acc384adba0cbea2695027500~mv2.png/v1/fill/w_121,h_121,al_c,q_85,usm_0.66_1.00_0.01,enc_avif,quality_auto/cubie-cover.png" alt="Cubie">
-              </div>
-              <h3 class="project-name">Cubie</h3>
-              <div class="project-tags">
-                <span class="project-tag">ai</span>
-                <span class="project-tag">education</span>
-              </div>
-              <p class="project-description">An AI-empowered learning platform with personalized education.</p>
-              <a href="https://cubie.kidocode.com/" class="project-link" target="_blank">view project → </a>
-            </div>
-            
-            <div class="project-item" data-categories="project ai">
-              <div class="project-logo">
-                <img src="https://static.wixstatic.com/media/95371c_df93487c495741879349c3f30132662a~mv2.png/v1/fill/w_121,h_121,al_c,q_85,usm_0.66_1.00_0.01,enc_avif,quality_auto/mojito-cover.png" alt="Mojitofilms">
-              </div>
-              <h3 class="project-name">Mojitofilms</h3>
-              <div class="project-tags">
-                <span class="project-tag">ai</span>
-                <span class="project-tag">recommendation</span>
-              </div>
-              <p class="project-description">An app with personalised movie recommendations, powered by AI assistant.</p>
-              <a href="https://www.mojitofilms.com/" class="project-link" target="_blank">view project → </a>
-            </div>
-            
-            <!-- Animations -->
-            <div class="project-item" data-categories="animation ai">
-              <div class="project-logo" style="background-color: var(--terminal-highlight); color: var(--terminal-cyan); display: flex; justify-content: center; align-items: center; font-size: 2rem;">
-                <i class="fas fa-chart-line"></i>
-              </div>
-              <h3 class="project-name">DeepGEMM Visualization</h3>
-              <div class="project-tags">
-                <span class="project-tag">ai</span>
-                <span class="project-tag">visualization</span>
-              </div>
-              <p class="project-description">Interactive visualization comparing CUTLASS and DeepGEMM approaches to matrix multiplication.</p>
-              <a href="./animations/deepgemm/" class="project-link">view animation → </a>
-            </div>
-            
-            <div class="project-item" data-categories="animation ai">
-              <div class="project-logo" style="background-color: var(--terminal-highlight); color: var(--terminal-cyan); display: flex; justify-content: center; align-items: center; font-size: 2rem;">
-                <i class="fas fa-network-wired"></i>
-              </div>
-              <h3 class="project-name">DeepEP Communication</h3>
-              <div class="project-tags">
-                <span class="project-tag">ai</span>
-                <span class="project-tag">visualization</span>
-              </div>
-              <p class="project-description">Animation demonstrating how DeepEP's RDMA-based approach improves MoE communication efficiency.</p>
-              <a href="./animations/deepep/" class="project-link">view animation → </a>
-            </div>
-            
-            <!-- Articles/Blog Posts -->
-            <div class="project-item" data-categories="article ai">
-              <div class="youtube-thumb">
-                <img src="https://i.ytimg.com/vi/1F4i_wubWi8/mqdefault.jpg" alt="Crawl4ai: SERP API for AI agents">
-                <div class="play-button"><i class="fab fa-youtube"></i></div>
-              </div>
-              <h3 class="project-name">Build your own SERP API</h3>
-              <div class="project-tags">
-                <span class="project-tag">ai</span>
-                <span class="project-tag">tutorial</span>
-              </div>
-              <p class="project-description">Learn how to build and deploy a custom SERP API for your AI agents using Crawl4ai.</p>
-              <a href="https://www.youtube.com/watch?v=1F4i_wubWi8" class="project-link" target="_blank">watch video → </a>
-            </div>
-            
-            <div class="project-item" data-categories="article ai">
-              <div class="youtube-thumb">
-                <img src="https://i.ytimg.com/vi/SrgJN7jOxoY/mqdefault.jpg" alt="Whisper Server on Colab">
-                <div class="play-button"><i class="fab fa-youtube"></i></div>
-              </div>
-              <h3 class="project-name">Super-Fast Whisper Server</h3>
-              <div class="project-tags">
-                <span class="project-tag">ai</span>
-                <span class="project-tag">tutorial</span>
-              </div>
-              <p class="project-description">Set up your own fast and efficient Whisper speech recognition server using Google Colab.</p>
-              <a href="https://www.youtube.com/watch?v=SrgJN7jOxoY" class="project-link" target="_blank">watch video → </a>
-            </div>
-          </div>
+          <!-- Projects will be loaded dynamically -->
+          <div class="projects-list"></div>
         </div>
         
         <!-- Consultancy Tab -->
@@ -317,33 +193,38 @@
             Leverage my expertise to help your organization harness AI for growth. With over a decade of experience building successful AI-powered businesses and solutions, I can guide your team through implementation challenges and strategic decisions.
           </p>
           
-          <div class="expertise-grid">
-            <div class="expertise-item">
-              <div class="expertise-icon"><i class="fas fa-brain"></i></div>
-              <h3 class="expertise-name">AI Strategy</h3>
-              <p class="expertise-description">Develop practical, ROI-focused AI implementation plans</p>
-            </div>
-            
-            <div class="expertise-item">
-              <div class="expertise-icon"><i class="fas fa-code-branch"></i></div>
-              <h3 class="expertise-name">Technical Implementation</h3>
-              <p class="expertise-description">Optimize deployment and integration of AI systems</p>
-            </div>
-            
-            <div class="expertise-item">
-              <div class="expertise-icon"><i class="fas fa-graduation-cap"></i></div>
-              <h3 class="expertise-name">AI Education</h3>
-              <p class="expertise-description">Training programs to upskill your team in AI technologies</p>
-            </div>
-          </div>
+          <!-- Expertise will be loaded dynamically -->
+          <div class="expertise-list"></div>
           
           <div class="contact-prompt">
-            <span>$</span> <span class="command">mail <span class="highlight">contact@unclecode.com</span></span>
+            <span>$</span> <span class="command">./contact-wizard.sh</span>
           </div>
           
-          <a href="mailto:contact@unclecode.com" class="contact-button">
-            <i class="fas fa-envelope"></i> Get in Touch
-          </a>
+          <button id="contact-terminal-btn" class="contact-button">
+            <i class="fas fa-terminal"></i> Get in Touch
+          </button>
+          
+          <div id="contact-terminal" class="terminal-dialog">
+            <div class="terminal-dialog-header">
+              <div class="terminal-dialog-title">
+                <i class="fas fa-terminal"></i> contact-wizard.sh
+              </div>
+              <button class="terminal-dialog-close" id="contact-terminal-close">×</button>
+            </div>
+            <div class="terminal-dialog-content">
+              <div class="terminal-output-container" id="terminal-output">
+                <div class="terminal-line">Welcome to the AI Consultancy contact wizard! 🚀</div>
+                <div class="terminal-line">Let's collect some information to get started...</div>
+                <div class="terminal-line">&nbsp;</div>
+              </div>
+              <div class="terminal-input-container">
+                <span class="terminal-prompt">$</span>
+                <input type="text" id="terminal-input" class="terminal-input" autocomplete="off" />
+              </div>
+            </div>
+          </div>
+          
+          <div id="confetti-container"></div>
         </div>
       </div>
     </div>
@@ -355,6 +236,9 @@
   <script src="./assets/js/components.js"></script>
   <script src="./assets/js/doteffect.js"></script>
   <script src="./assets/js/home.js"></script>
+  <script src="./assets/js/list-component.js"></script>
   <script src="./assets/js/main.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+  <script src="./assets/js/contact-terminal.js"></script>
 </body>
 </html>

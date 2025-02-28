@@ -17,43 +17,8 @@
   <link rel="stylesheet" href="../../assets/css/post.css">
 </head>
 <body>
-  <!-- Include the header (with blog URL adjusted for this page) -->
-  <header id="terminal-menu">
-    <div class="logo">unclecode</div>
-  
-    <div class="terminal-menu-bar">
-      <div class="main-menu">
-        <a href="#" class="menu-item" id="menu-dropdown-toggle">Menu</a>
-        <div class="dropdown-menu" id="menu-dropdown">
-          <a href="../../index.html#about" class="dropdown-item">About</a>
-          <a href="../../index.html#ventures" class="dropdown-item">Ventures</a>
-          <a href="../../index.html#projects" class="dropdown-item">Projects</a>
-          <a href="../../index.html#consultancy" class="dropdown-item">Consultancy</a>
-        </div>
-        
-        <a href="#" class="menu-item" id="themes-dropdown-toggle">Themes</a>
-        <div class="dropdown-menu" id="themes-dropdown">
-          <a href="#" class="dropdown-item theme-option" data-theme="monokai-dark">Monokai Dark</a>
-          <a href="#" class="dropdown-item theme-option" data-theme="dracula">Dracula</a>
-          <a href="#" class="dropdown-item theme-option" data-theme="nord">Nord</a>
-          <a href="#" class="dropdown-item theme-option" data-theme="monokai">Monokai</a>
-          <a href="#" class="dropdown-item theme-option" data-theme="github-dark">GitHub Dark</a>
-          <a href="#" class="dropdown-item theme-option" data-theme="github-light">GitHub Light</a>
-          <a href="#" class="dropdown-item theme-option" data-theme="solarized-light">Solarized Light</a>
-        </div>
-        
-        <a href="#" class="menu-item" id="fonts-dropdown-toggle">Fonts</a>
-        <div class="dropdown-menu" id="fonts-dropdown">
-          <a href="#" class="dropdown-item font-option" data-font="JetBrains Mono">JetBrains Mono</a>
-          <a href="#" class="dropdown-item font-option" data-font="Fira Code">Fira Code</a>
-          <a href="#" class="dropdown-item font-option" data-font="IBM Plex Mono">IBM Plex Mono</a>
-          <a href="#" class="dropdown-item font-option" data-font="Cascadia Code">Cascadia Code</a>
-        </div>
-        
-        <a href="../index.html" class="menu-item active">Blog</a>
-      </div>
-    </div>
-  </header>
+  <!-- Header will be loaded dynamically -->
+  <div data-component="header"></div>
   
   <div class="terminal-container">
     <div class="terminal-header">
@@ -539,30 +504,15 @@ if __name__ == "__main__":
     </div>
   </div>
   
-  <!-- Include the footer -->
-  <footer>
-    <p class="footer-text">© 2025 Unclecode (Hossein)</p>
-    <div class="social-links">
-      <a href="https://x.com/unclecode" target="_blank" class="social-link" title="Twitter/X">
-        <i class="fab fa-x-twitter"></i>
-      </a>
-      <a href="https://github.com/unclecode/crawl4ai" target="_blank" class="social-link" title="GitHub">
-        <i class="fab fa-github"></i>
-      </a>
-      <a href="https://www.linkedin.com/in/unclecode/" target="_blank" class="social-link" title="LinkedIn">
-        <i class="fab fa-linkedin"></i>
-      </a>
-      <a href="https://www.youtube.com/@unclecode" target="_blank" class="social-link" title="YouTube">
-        <i class="fab fa-youtube"></i>
-      </a>
-    </div>
-  </footer>
+  <!-- Footer will be loaded dynamically -->
+  <div data-component="footer"></div>
   
   <!-- Scripts -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"></script>
+  <script src="../../assets/js/components.js"></script>
   <script src="../../assets/js/main.js"></script>
   <script>
-    document.addEventListener('DOMContentLoaded', () => {
+    document.addEventListener('components:loaded', () => {
       // Initialize syntax highlighting
       hljs.highlightAll();
       

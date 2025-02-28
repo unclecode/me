@@ -18,42 +18,8 @@
 
 </head>
 <body>
-  <header id="terminal-menu">
-    <div class="logo">unclecode</div>
-
-    <div class="terminal-menu-bar">
-      <div class="main-menu">
-        <a href="#" class="menu-item" id="menu-dropdown-toggle">Menu</a>
-        <div class="dropdown-menu" id="menu-dropdown">
-          <a href="#" class="dropdown-item" data-tab="about">About</a>
-          <a href="#" class="dropdown-item" data-tab="ventures">Ventures</a>
-          <a href="#" class="dropdown-item" data-tab="projects">Projects</a>
-          <a href="#" class="dropdown-item" data-tab="consultancy">Consultancy</a>
-        </div>
-        
-        <a href="#" class="menu-item" id="themes-dropdown-toggle">Themes</a>
-        <div class="dropdown-menu" id="themes-dropdown">
-          <a href="#" class="dropdown-item theme-option" data-theme="monokai-dark">Monokai Dark</a>
-          <a href="#" class="dropdown-item theme-option" data-theme="dracula">Dracula</a>
-          <a href="#" class="dropdown-item theme-option" data-theme="nord">Nord</a>
-          <a href="#" class="dropdown-item theme-option" data-theme="monokai">Monokai</a>
-          <a href="#" class="dropdown-item theme-option" data-theme="github-dark">GitHub Dark</a>
-          <a href="#" class="dropdown-item theme-option" data-theme="github-light">GitHub Light</a>
-          <a href="#" class="dropdown-item theme-option" data-theme="solarized-light">Solarized Light</a>
-        </div>
-        
-        <a href="#" class="menu-item" id="fonts-dropdown-toggle">Fonts</a>
-        <div class="dropdown-menu" id="fonts-dropdown">
-          <a href="#" class="dropdown-item font-option" data-font="JetBrains Mono">JetBrains Mono</a>
-          <a href="#" class="dropdown-item font-option" data-font="Fira Code">Fira Code</a>
-          <a href="#" class="dropdown-item font-option" data-font="IBM Plex Mono">IBM Plex Mono</a>
-          <a href="#" class="dropdown-item font-option" data-font="Cascadia Code">Cascadia Code</a>
-        </div>
-        
-        <a href="./blog/index.html" class="menu-item">Blog</a>
-      </div>
-    </div>
-  </header>
+  <!-- Header will be loaded dynamically -->
+  <div data-component="header"></div>
   
   <section class="hero">
     <div class="hero-canvas-container">
@@ -383,25 +349,12 @@
     </div>
   </div>
   
-  <footer>
-    <p class="footer-text">© 2025 Unclecode (Hossein)</p>
-    <div class="social-links">
-      <a href="https://x.com/unclecode" target="_blank" class="social-link" title="Twitter/X">
-        <i class="fab fa-x-twitter"></i>
-      </a>
-      <a href="https://github.com/unclecode/crawl4ai" target="_blank" class="social-link" title="GitHub">
-        <i class="fab fa-github"></i>
-      </a>
-      <a href="https://www.linkedin.com/in/unclecode/" target="_blank" class="social-link" title="LinkedIn">
-        <i class="fab fa-linkedin"></i>
-      </a>
-      <a href="https://www.youtube.com/@unclecode" target="_blank" class="social-link" title="YouTube">
-        <i class="fab fa-youtube"></i>
-      </a>
-    </div>
-  </footer>
+  <!-- Footer will be loaded dynamically -->
+  <div data-component="footer"></div>
   
+  <script src="./assets/js/components.js"></script>
   <script src="./assets/js/doteffect.js"></script>
+  <script src="./assets/js/home.js"></script>
   <script src="./assets/js/main.js"></script>
 </body>
 </html>

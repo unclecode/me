@@ -1,269 +1,81 @@
 <!DOCTYPE html>
 <html lang="en" data-theme="dark">
+
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>~/blog | unclecode</title>
-  <meta name="description" content="Technical blog by Unclecode (Hossein) featuring AI, programming, and tech insights.">
-  
-  <!-- Fonts and Icons -->
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;500;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
-  <link rel="stylesheet" href="../assets/css/common.css">
-  <link rel="stylesheet" href="../assets/css/terminal-core.css">
-  <link rel="stylesheet" href="../assets/css/blog.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>~/blog | unclecode</title>
+    <meta name="description"
+        content="Technical blog by Unclecode (Hossein) featuring AI, programming, and tech insights.">
+
+    <!-- Fonts and Icons -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;500;700&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+    <link rel="stylesheet" href="../assets/css/common.css">
+    <link rel="stylesheet" href="../assets/css/terminal-core.css">
+    <link rel="stylesheet" href="../assets/css/blog.css">
 </head>
+
 <body>
-  <!-- Include the header (with blog URL adjusted for this page) -->
-  <header id="terminal-menu">
-    <div class="logo">unclecode</div>
-  
-    <div class="terminal-menu-bar">
-      <div class="main-menu">
-        <a href="#" class="menu-item" id="menu-dropdown-toggle">Menu</a>
-        <div class="dropdown-menu" id="menu-dropdown">
-          <a href="../index.html#about" class="dropdown-item">About</a>
-          <a href="../index.html#ventures" class="dropdown-item">Ventures</a>
-          <a href="../index.html#projects" class="dropdown-item">Projects</a>
-          <a href="../index.html#consultancy" class="dropdown-item">Consultancy</a>
+    <!-- Header will be loaded dynamically -->
+    <div data-component="header"></div>
+
+    <div class="terminal-container">
+        <div class="terminal-header">
+            <div class="terminal-title">
+                <i class="fas fa-terminal"></i> unclecode@blog: ~/posts
+            </div>
+            <div class="terminal-buttons">
+                <div class="terminal-button terminal-minimize"></div>
+                <div class="terminal-button terminal-maximize"></div>
+                <div class="terminal-button terminal-close"></div>
+            </div>
         </div>
-        
-        <a href="#" class="menu-item" id="themes-dropdown-toggle">Themes</a>
-        <div class="dropdown-menu" id="themes-dropdown">
-          <a href="#" class="dropdown-item theme-option" data-theme="monokai-dark">Monokai Dark</a>
-          <a href="#" class="dropdown-item theme-option" data-theme="dracula">Dracula</a>
-          <a href="#" class="dropdown-item theme-option" data-theme="nord">Nord</a>
-          <a href="#" class="dropdown-item theme-option" data-theme="monokai">Monokai</a>
-          <a href="#" class="dropdown-item theme-option" data-theme="github-dark">GitHub Dark</a>
-          <a href="#" class="dropdown-item theme-option" data-theme="github-light">GitHub Light</a>
-          <a href="#" class="dropdown-item theme-option" data-theme="solarized-light">Solarized Light</a>
+        <div class="terminal-body">
+            <div class="terminal-welcome">
+                <div data-component="ascii-logo"></div>
+                <p>Welcome to my technical blog featuring thoughts, tutorials, and insights.</p>
+                <p>Type 'help' for more information or 'search' to find specific topics.</p>
+            </div>
+
+            <div class="terminal-command">
+                <span class="terminal-prompt">$</span>
+                <div class="terminal-input-wrapper">
+                    <input type="text" class="terminal-input" id="search-input" placeholder="Search for posts...">
+                </div>
+            </div>
+
+            <div class="terminal-filters" id="filter-chips-container"></div>
+
+            <div id="terminal-output-container">
+                <!-- Terminal output will be updated dynamically -->
+            </div>
+
+
+            <ol class="posts-list" id="posts-container">
+                <!-- Posts will be loaded dynamically -->
+            </ol>
+
+            <div class="pagination">
+                <a class="pagination-item active">1</a>
+                <a class="pagination-item">2</a>
+                <a class="pagination-item">3</a>
+                <a class="pagination-item">Next ›</a>
+            </div>
+
         </div>
-        
-        <a href="#" class="menu-item" id="fonts-dropdown-toggle">Fonts</a>
-        <div class="dropdown-menu" id="fonts-dropdown">
-          <a href="#" class="dropdown-item font-option" data-font="JetBrains Mono">JetBrains Mono</a>
-          <a href="#" class="dropdown-item font-option" data-font="Fira Code">Fira Code</a>
-          <a href="#" class="dropdown-item font-option" data-font="IBM Plex Mono">IBM Plex Mono</a>
-          <a href="#" class="dropdown-item font-option" data-font="Cascadia Code">Cascadia Code</a>
-        </div>
-        
-        <a href="./index.html" class="menu-item active">Blog</a>
-      </div>
     </div>
-  </header>
-  
-  <div class="terminal-container">
-    <div class="terminal-header">
-      <div class="terminal-title">
-        <i class="fas fa-terminal"></i> unclecode@blog: ~/posts
-      </div>
-      <div class="terminal-buttons">
-        <div class="terminal-button terminal-minimize"></div>
-        <div class="terminal-button terminal-maximize"></div>
-        <div class="terminal-button terminal-close"></div>
-      </div>
-    </div>
-    <div class="terminal-body">
-      <div class="terminal-welcome">
-        <div class="terminal-ascii">
- _    _            _            _        
-| |  | |          | |          | |       
-| |  | |_ __   ___| | ___ ___  | |_ ___  
-| |  | | '_ \ / __| |/ _ \ __| | __/ _ \ 
-| |__| | | | | (__| |  __/ (__  | || (_) |
- \____/|_| |_|\___|_|\___\___|  \__\___/ 
-                                         
-        </div>
-        <p>Welcome to my technical blog featuring thoughts, tutorials, and insights.</p>
-        <p>Type 'help' for more information or 'search' to find specific topics.</p>
-      </div>
-      
-      <div class="terminal-command">
-        <span class="terminal-prompt">$</span>
-        <div class="terminal-input-wrapper">
-          <input type="text" class="terminal-input" id="search-input" placeholder="Search for posts...">
-        </div>
-      </div>
-      
-      <div class="terminal-filters">
-        <button class="filter-tag active" data-filter="all">all</button>
-        <button class="filter-tag" data-filter="ai">ai</button>
-        <button class="filter-tag" data-filter="web">web</button>
-        <button class="filter-tag" data-filter="programming">programming</button>
-        <button class="filter-tag" data-filter="tutorial">tutorial</button>
-      </div>
-      
-      <ol class="posts-list">
-        <li class="post-item" data-categories="ai programming tutorial">
-          <div class="post-number">1.</div>
-          <div class="post-content">
-            <a href="./posts/post-example.html" class="post-title-link">Building an Autonomous Web-Crawling Agent with Crawl4ai and LLMs</a>
-            <div class="post-meta">
-              <span class="post-date">Feb 28, 2025</span>
-              <span class="post-reading-time">12 min read</span>
-              <div class="post-tags">
-                <span class="post-tag">ai</span>
-                <span class="post-tag">programming</span>
-                <span class="post-tag">tutorial</span>
-              </div>
-            </div>
-          </div>
-        </li>
-        
-        <li class="post-item" data-categories="web programming">
-          <div class="post-number">2.</div>
-          <div class="post-content">
-            <a href="#" class="post-title-link">Modern CSS Features Every Developer Should Know in 2025</a>
-            <div class="post-meta">
-              <span class="post-date">Feb 20, 2025</span>
-              <span class="post-reading-time">8 min read</span>
-              <div class="post-tags">
-                <span class="post-tag">web</span>
-                <span class="post-tag">programming</span>
-              </div>
-            </div>
-          </div>
-        </li>
-        
-        <li class="post-item" data-categories="ai">
-          <div class="post-number">3.</div>
-          <div class="post-content">
-            <a href="#" class="post-title-link">What's New in the Latest Open Source LLMs - A Technical Breakdown</a>
-            <div class="post-meta">
-              <span class="post-date">Feb 12, 2025</span>
-              <span class="post-reading-time">15 min read</span>
-              <div class="post-tags">
-                <span class="post-tag">ai</span>
-                <span class="post-tag">research</span>
-              </div>
-            </div>
-          </div>
-        </li>
-        
-        <li class="post-item" data-categories="programming tutorial">
-          <div class="post-number">4.</div>
-          <div class="post-content">
-            <a href="#" class="post-title-link">Profiling and Optimizing Python Web Servers for High-Traffic Applications</a>
-            <div class="post-meta">
-              <span class="post-date">Feb 5, 2025</span>
-              <span class="post-reading-time">11 min read</span>
-              <div class="post-tags">
-                <span class="post-tag">programming</span>
-                <span class="post-tag">performance</span>
-                <span class="post-tag">tutorial</span>
-              </div>
-            </div>
-          </div>
-        </li>
-        
-        <li class="post-item" data-categories="ai programming">
-          <div class="post-number">5.</div>
-          <div class="post-content">
-            <a href="#" class="post-title-link">Creating Reliable Vector Databases for RAG Applications</a>
-            <div class="post-meta">
-              <span class="post-date">Jan 28, 2025</span>
-              <span class="post-reading-time">10 min read</span>
-              <div class="post-tags">
-                <span class="post-tag">ai</span>
-                <span class="post-tag">programming</span>
-                <span class="post-tag">database</span>
-              </div>
-            </div>
-          </div>
-        </li>
-      </ol>
-      
-      <div class="pagination">
-        <a class="pagination-item active">1</a>
-        <a class="pagination-item">2</a>
-        <a class="pagination-item">3</a>
-        <a class="pagination-item">Next ›</a>
-      </div>
-      
-      <div class="terminal-output">
-        <div class="line">
-          <span class="terminal-prompt">$</span> ls -la
-        </div>
-        <div class="line">
-          <span>total 5 articles</span>
-        </div>
-        <div class="line">
-          <span class="terminal-prompt">$</span> <span class="cursor"></span>
-        </div>
-      </div>
-    </div>
-  </div>
-  
-  <!-- Include the footer -->
-  <footer>
-    <p class="footer-text">© 2025 Unclecode (Hossein)</p>
-    <div class="social-links">
-      <a href="https://x.com/unclecode" target="_blank" class="social-link" title="Twitter/X">
-        <i class="fab fa-x-twitter"></i>
-      </a>
-      <a href="https://github.com/unclecode/crawl4ai" target="_blank" class="social-link" title="GitHub">
-        <i class="fab fa-github"></i>
-      </a>
-      <a href="https://www.linkedin.com/in/unclecode/" target="_blank" class="social-link" title="LinkedIn">
-        <i class="fab fa-linkedin"></i>
-      </a>
-      <a href="https://www.youtube.com/@unclecode" target="_blank" class="social-link" title="YouTube">
-        <i class="fab fa-youtube"></i>
-      </a>
-    </div>
-  </footer>
-  
-  <!-- Scripts -->
-  <script src="../assets/js/main.js"></script>
-  <script>
-    document.addEventListener('DOMContentLoaded', () => {
-      // Search functionality
-      const searchInput = document.getElementById('search-input');
-      const postItems = document.querySelectorAll('.post-item');
-      
-      searchInput.addEventListener('input', (e) => {
-        const searchTerm = e.target.value.toLowerCase();
-        
-        postItems.forEach(item => {
-          const title = item.querySelector('.post-title-link').textContent.toLowerCase();
-          const tags = Array.from(item.querySelectorAll('.post-tag'))
-            .map(tag => tag.textContent.toLowerCase());
-          
-          const matchesSearch = title.includes(searchTerm) || 
-                               tags.some(tag => tag.includes(searchTerm));
-          
-          item.style.display = matchesSearch ? '' : 'none';
-        });
-      });
-      
-      // Filter functionality
-      const filterButtons = document.querySelectorAll('.filter-tag');
-      
-      filterButtons.forEach(button => {
-        button.addEventListener('click', () => {
-          // Remove active class from all buttons
-          filterButtons.forEach(btn => btn.classList.remove('active'));
-          
-          // Add active class to clicked button
-          button.classList.add('active');
-          
-          const filter = button.getAttribute('data-filter');
-          
-          // Filter posts
-          postItems.forEach(item => {
-            const categories = item.getAttribute('data-categories').split(' ');
-            
-            if (filter === 'all' || categories.includes(filter)) {
-              item.style.display = '';
-            } else {
-              item.style.display = 'none';
-            }
-          });
-        });
-      });
-    });
-  </script>
+
+    <!-- Footer will be loaded dynamically -->
+    <div data-component="footer"></div>
+
+    <!-- Scripts -->
+    <script src="../assets/js/components.js"></script>
+    <script src="../assets/js/blog.js"></script>
+    <script src="../assets/js/main.js"></script>
 </body>
+
 </html>

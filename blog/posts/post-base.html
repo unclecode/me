@@ -3,8 +3,13 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>~/blog/posts/building-ai-agent-with-crawl4ai | unclecode</title>
-  <meta name="description" content="Learn how to create an autonomous web-crawling agent that can gather, process, and analyze data from the web using Crawl4ai and LLMs.">
+  <title>$POST_TITLE | unclecode</title>
+  <meta name="description" content="$POST_DESCRIPTION">
+  <meta name="keywords" content="$POST_KEYWORDS">
+  <meta name="author" content="$POST_AUTHOR">
+  <meta name="date" content="$POST_DATE_ISO">
+  <meta name="generator" content="unclecode-blog-engine">
+  <meta name="hash" content="$POST_HASH">
   
   <!-- Fonts and Icons -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -23,7 +28,7 @@
   <div class="terminal-container">
     <div class="terminal-header">
       <div class="terminal-title">
-        <i class="fas fa-terminal"></i> unclecode@blog: ~/posts/building-ai-agent-with-crawl4ai.md
+        <i class="fas fa-terminal"></i> unclecode@blog: ~/posts/$POST_FILENAME
       </div>
       <div class="terminal-buttons">
         <div class="terminal-button terminal-minimize"></div>
@@ -35,95 +40,29 @@
       <article class="post-article">
         <div class="post-header">
           <div class="post-meta-line">
-            <span>path: <span class="post-meta-value">~/blog/posts/building-ai-agent-with-crawl4ai.md</span></span>
-            <span>date: <span class="post-meta-value">2025-02-26</span></span>
-            <span>author: <span class="post-meta-value">unclecode</span></span>
-            <span>read_time: <span class="post-meta-value">~5 min</span></span>
+            <span>path: <span class="post-meta-value">~/blog/posts/$POST_FILENAME</span></span>
+            <span>date: <span class="post-meta-value">$POST_DATE</span></span>
+            <span>author: <span class="post-meta-value">$POST_AUTHOR</span></span>
+            <span>read_time: <span class="post-meta-value">$POST_READING_TIME</span></span>
           </div>
-          <h1 class="post-title">Building Your First AI Agent with Crawl4ai</h1>
+          <h1 class="post-title">$POST_TITLE</h1>
           <div class="post-tags">
-            <span class="post-tag">ai</span>
-            <span class="post-tag">tutorial</span>
+            $POST_TAGS_HTML
           </div>
         </div>
         
         <div class="post-content">
-          <p>
-            In today's data-driven world, autonomous web-crawling agents are becoming increasingly powerful tools for gathering and analyzing information from the internet.
-          </p>
-          
-          <h2>Prerequisites</h2>
-          
-          <ul>
-            <li>Python 3.9+</li>
-            <li>Basic knowledge of Python</li>
-            <li>An API key for an LLM provider</li>
-          </ul>
-          
-          <h2>Setting Up Your Environment</h2>
-          
-          <div class="code-container">
-            <div class="code-header">
-              <span>Terminal</span>
-              <button class="copy-button"><i class="fas fa-copy"></i> Copy</button>
-            </div>
-            <div class="code-block">
-              <pre><code class="language-bash">$ pip install crawl4ai langchain</code></pre>
-            </div>
-          </div>
-          
-          <div class="code-container">
-            <div class="code-header">
-              <span>web_agent.py</span>
-              <button class="copy-button"><i class="fas fa-copy"></i> Copy</button>
-            </div>
-            <div class="code-block">
-              <pre><code class="language-python">import asyncio
-from crawl4ai import Crawler
-from langchain.chat_models import ChatOpenAI
-
-class WebCrawlingAgent:
-    def __init__(self):
-        self.crawler = Crawler()
-        self.llm = ChatOpenAI()
-    
-    async def research_topic(self, topic):
-        # Implement research logic
-        pass
-
-# Usage
-agent = WebCrawlingAgent()
-asyncio.run(agent.research_topic("AI trends"))</code></pre>
-            </div>
-          </div>
-          
-          <h2>Ethical Considerations</h2>
-          
-          <ul>
-            <li>Respect robots.txt files</li>
-            <li>Implement rate limiting</li>
-            <li>Protect data privacy</li>
-          </ul>
-          
-          <blockquote>
-            Web crawling is powerful, but with great power comes great responsibility.
-          </blockquote>
-          
-          <h2>Conclusion</h2>
-          
-          <p>
-            By combining web crawling tools and AI, we can create intelligent agents that extract and analyze web information with unprecedented efficiency.
-          </p>
+          $POST_CONTENT
         </div>
         
         <section class="author-section">
           <h3 class="author-header">About the Author</h3>
           <div class="author-bio">
             <div class="author-avatar">
-              <img src="../../assets/images/me-avatar.jpg" alt="Unclecode (Hossein)">
+              <img src="../../assets/images/me-avatar.jpg" alt="$POST_AUTHOR">
             </div>
             <div class="author-info">
-              <h4 class="author-name">Unclecode (Hossein)</h4>
+              <h4 class="author-name">$POST_AUTHOR</h4>
               <p class="author-description">
                 AI researcher and creator of Crawl4ai - the fastest web crawler for AI agents.
               </p>
@@ -139,11 +78,11 @@ asyncio.run(agent.research_topic("AI trends"))</code></pre>
         <nav class="post-navigation">
           <div class="navigation-item navigation-prev">
             <div class="navigation-header">« Previous</div>
-            <a href="#" class="navigation-title">Creating Reliable Vector Databases</a>
+            <a href="$PREV_POST_URL" class="navigation-title">$PREV_POST_TITLE</a>
           </div>
           <div class="navigation-item navigation-next">
             <div class="navigation-header">Next »</div>
-            <a href="#" class="navigation-title">Modern CSS Features in 2025</a>
+            <a href="$NEXT_POST_URL" class="navigation-title">$NEXT_POST_TITLE</a>
           </div>
         </nav>
       </article>

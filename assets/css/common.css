@@ -6,7 +6,7 @@
 :root {
   /* Base colors */
   --bg-color: #000000;
-  --text-color: #ffffff;
+  --text-color: #e5dede;
   --accent-color: #8A2BE2; /* BlueViolet */
   --secondary-bg: #121212;
   --border-color: #333333;
@@ -62,6 +62,13 @@ a {
 a:hover {
   border-bottom-color: var(--accent-color);
 }
+
+
+.logo a {
+  text-decoration: none;
+  color: var(--termina-primary);
+}
+
 
 /* Header styles */
 header {

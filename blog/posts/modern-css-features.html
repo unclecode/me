@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Modern CSS Features Every Developer Should Know in 2025 | unclecode</title>
+  <meta name="description" content="Discover the most powerful CSS features of 2025 that will transform your web development workflow and help you build better interfaces.">
+  <meta name="keywords" content="CSS, web development, frontend, modern CSS, container queries">
+  <meta name="author" content="Unclecode (Hossein)">
+  <meta name="date" content="Feb 20, 2025_ISO">
+  <meta name="generator" content="unclecode-blog-engine">
+  <meta name="hash" content="32309068063c04a60f684817b4b6954c">
+  
+  <!-- Fonts and Icons -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;500;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/atom-one-dark.min.css">
+  <link rel="stylesheet" href="../../assets/css/common.css">
+  <link rel="stylesheet" href="../../assets/css/terminal-core.css">
+  <link rel="stylesheet" href="../../assets/css/post.css">
+</head>
+<body>
+  <!-- Header will be loaded dynamically -->
+  <div data-component="header"></div>
+  
+  <div class="terminal-container">
+    <div class="terminal-header">
+      <div class="terminal-title">
+        <i class="fas fa-terminal"></i> unclecode@blog: ~/posts/modern-css-features-every-developer-should-know-in-2025.md
+      </div>
+      <div class="terminal-buttons">
+        <div class="terminal-button terminal-minimize"></div>
+        <div class="terminal-button terminal-maximize"></div>
+        <div class="terminal-button terminal-close"></div>
+      </div>
+    </div>
+    <div class="terminal-body">
+      <article class="post-article">
+        <div class="post-header">
+          <div class="post-meta-line">
+            <span>path: <span class="post-meta-value">~/blog/posts/modern-css-features-every-developer-should-know-in-2025.md</span></span>
+            <span>date: <span class="post-meta-value">Feb 20, 2025</span></span>
+            <span>author: <span class="post-meta-value">Unclecode (Hossein)</span></span>
+            <span>read_time: <span class="post-meta-value">8 min</span></span>
+          </div>
+          <h1 class="post-title">Modern CSS Features Every Developer Should Know in 2025</h1>
+          <div class="post-tags">
+            <span class="post-tag">web</span><span class="post-tag">programming</span>
+          </div>
+        </div>
+        
+        <div class="post-content">
+          <h1 id="modern-css-features-every-developer-should-know-in-2025">Modern CSS Features Every Developer Should Know in 2025</h1>
+<p>CSS has evolved dramatically in recent years, adding powerful features that were once only possible with JavaScript. Let's explore the most important CSS features you should be using in 2025</p>
+<h2 id="container-queries-beyond-responsive-design">Container Queries: Beyond Responsive Design</h2>
+<p>Container queries are revolutionizing how we think about responsive design. Unlike media queries that respond to viewport dimensions, container queries allow elements to adapt based on their parent container's size:</p>
+<div class="code-container"><div class="code-header"><span>css</span><button class="copy-button"><i class="fas fa-copy"></i> Copy</button></div><div class="code-block"><div class="codehilite"><pre><code class="language-css">.card-container {
+  container-type: inline-size;
+  container-name: card;
+}
+
+@container card (width &lt; 400px) {
+  .card-title {
+    font-size: 1rem;
+  }
+
+  .card-content {
+    display: none;
+  }
+}
+</code></pre></div></div></div>
+
+<p>This approach enables truly modular components that adapt consistently regardless of where they're placed in your layout.</p>
+<h2 id="the-has-selector-conditional-styling">The :has() Selector: Conditional Styling</h2>
+<p>The <code>:has()</code> selector provides "if this contains that" logic directly in CSS. This powerful parent selector opens up possibilities that were previously only possible with JavaScript:</p>
+<div class="code-container"><div class="code-header"><span>css</span><button class="copy-button"><i class="fas fa-copy"></i> Copy</button></div><div class="code-block"><div class="codehilite"><pre><code class="language-css">/* Style a form field differently when it contains an invalid input */
+.form-field:has(input:invalid) {
+  border-color: red;
+}
+
+/* Apply different styles to articles with images */
+article:has(img) {
+  grid-template-columns: 1fr 1fr;
+}
+</code></pre></div></div></div>
+
+<h2 id="custom-properties-with-calculation-functions">Custom Properties with Calculation Functions</h2>
+<p>CSS variables (custom properties) combined with calculation functions create dynamic design systems:</p>
+<div class="code-container"><div class="code-header"><span>css</span><button class="copy-button"><i class="fas fa-copy"></i> Copy</button></div><div class="code-block"><div class="codehilite"><pre><code class="language-css">:root {
+  --base-size: 1rem;
+  --scale-ratio: 1.25;
+  --color-primary: hsl(220, 80%, 50%);
+}
+
+h1 {
+  font-size: calc(var(--base-size) * var(--scale-ratio) * var(--scale-ratio));
+  /* Computed as: 1rem × 1.25 × 1.25 = 1.5625rem */
+
+  /* Color transformations */
+  background-color: color-mix(in srgb, var(--color-primary) 80%, white);
+  color: color-contrast(var(--color-primary) vs white, black);
+}
+</code></pre></div></div></div>
+
+<h2 id="scroll-driven-animations">Scroll-Driven Animations</h2>
+<p>Control animations based on scroll progress without JavaScript:</p>
+<div class="code-container"><div class="code-header"><span>css</span><button class="copy-button"><i class="fas fa-copy"></i> Copy</button></div><div class="code-block"><div class="codehilite"><pre><code class="language-css">@keyframes fade-in {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+.reveal {
+  animation: fade-in linear;
+  animation-timeline: scroll(root block);
+  animation-range: entry 30% cover 50%;
+}
+</code></pre></div></div></div>
+
+<p>This declaration triggers the animation when the element enters the viewport and completes when it's 50% in view.</p>
+<h2 id="subgrid-true-grid-alignment">Subgrid: True Grid Alignment</h2>
+<p>Subgrid allows nested grid elements to align to the parent grid:</p>
+<div class="code-container"><div class="code-header"><span>css</span><button class="copy-button"><i class="fas fa-copy"></i> Copy</button></div><div class="code-block"><div class="codehilite"><pre><code class="language-css">.parent-grid {
+  display: grid;
+  grid-template-columns: repeat(12, 1fr);
+  gap: 1rem;
+}
+
+.nested-grid {
+  grid-column: 2 / 12;
+  display: grid;
+  grid-template-columns: subgrid;
+}
+</code></pre></div></div></div>
+
+<p>This feature solves complex alignment problems that were previously difficult to achieve.</p>
+<h2 id="style-queries-beyond-layout">Style Queries: Beyond Layout</h2>
+<p>Style queries let you respond to computed styles rather than just dimensions:</p>
+<div class="code-container"><div class="code-header"><span>css</span><button class="copy-button"><i class="fas fa-copy"></i> Copy</button></div><div class="code-block"><div class="codehilite"><pre><code class="language-css">.theme-container {
+  container-name: theme;
+  container-type: style;
+}
+
+@container theme style(--theme: dark) {
+  .card {
+    background-color: #222;
+    color: #fff;
+  }
+}
+</code></pre></div></div></div>
+
+<h2 id="conclusion">Conclusion</h2>
+<p>These CSS features represent a major shift in frontend development capabilities. By leveraging them effectively, you can create more maintainable codebases with less reliance on JavaScript for presentational concerns.</p>
+<p>In future posts, I'll explore how these features can be combined for powerful design systems and component libraries.</p>
+        </div>
+        
+        <section class="author-section">
+          <h3 class="author-header">About the Author</h3>
+          <div class="author-bio">
+            <div class="author-avatar">
+              <img src="../../assets/images/me-avatar.jpg" alt="Unclecode (Hossein)">
+            </div>
+            <div class="author-info">
+              <h4 class="author-name">Unclecode (Hossein)</h4>
+              <p class="author-description">
+                AI researcher and creator of Crawl4ai - the fastest web crawler for AI agents.
+              </p>
+              <div class="author-social">
+                <a href="https://github.com/unclecode" target="_blank"><i class="fab fa-github"></i></a>
+                <a href="https://x.com/unclecode" target="_blank"><i class="fab fa-x-twitter"></i></a>
+                <a href="https://linkedin.com/in/unclecode" target="_blank"><i class="fab fa-linkedin"></i></a>
+              </div>
+            </div>
+          </div>
+        </section>
+        
+        <nav class="post-navigation">
+          <div class="navigation-item navigation-prev">
+            <div class="navigation-header">« Previous</div>
+            <a href="#" class="navigation-title">Previous Post</a>
+          </div>
+          <div class="navigation-item navigation-next">
+            <div class="navigation-header">Next »</div>
+            <a href="#" class="navigation-title">Next Post</a>
+          </div>
+        </nav>
+      </article>
+    </div>
+  </div>
+  
+  <!-- Footer will be loaded dynamically -->
+  <div data-component="footer"></div>
+  
+  <!-- Scripts -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"></script>
+  <script src="../../assets/js/components.js"></script>
+  <script src="../../assets/js/main.js"></script>
+  <script>
+    document.addEventListener('components:loaded', () => {
+      // Initialize syntax highlighting
+      hljs.highlightAll();
+      
+      // Add copy functionality to code blocks
+      document.querySelectorAll('.copy-button').forEach(button => {
+        button.addEventListener('click', () => {
+          const codeBlock = button.closest('.code-container').querySelector('code');
+          const code = codeBlock.innerText;
+          
+          navigator.clipboard.writeText(code).then(() => {
+            // Visual feedback
+            const originalText = button.innerHTML;
+            button.innerHTML = '<i class="fas fa-check"></i> Copied!';
+            setTimeout(() => {
+              button.innerHTML = originalText;
+            }, 2000);
+          }).catch(err => {
+            console.error('Failed to copy code: ', err);
+          });
+        });
+      });
+    });
+  </script>
+</body>
+</html>

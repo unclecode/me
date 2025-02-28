@@ -1,4 +1,5 @@
-document.addEventListener('DOMContentLoaded', () => {
+// Wait for both DOM and components to be loaded before initializing
+function initializeApp() {
   // Theme toggle
   const themeToggle = document.getElementById('theme-toggle');
   const themeIcon = document.getElementById('theme-icon');
@@ -14,36 +15,7 @@ document.addEventListener('DOMContentLoaded', () => {
   
   // Theme handling completely moved to new method
   
-  // Hero overlay toggle
-  const heroOverlay = document.getElementById('hero-overlay');
-  const heroOverlayToggle = document.getElementById('hero-overlay-toggle');
-  const heroToggleIcon = document.getElementById('hero-toggle-icon');
-  
-  // Check if the overlay was previously minimized
-  const isOverlayMinimized = localStorage.getItem('hero-overlay-minimized') === 'true';
-  if (isOverlayMinimized) {
-    heroOverlay.classList.add('minimized');
-    heroToggleIcon.classList.remove('fa-chevron-right');
-    heroToggleIcon.classList.add('fa-chevron-left');
-  }
-  
-  // Toggle overlay
-  heroOverlayToggle.addEventListener('click', () => {
-    heroOverlay.classList.toggle('minimized');
-    const isMinimized = heroOverlay.classList.contains('minimized');
-    
-    // Update icon
-    if (isMinimized) {
-      heroToggleIcon.classList.remove('fa-chevron-right');
-      heroToggleIcon.classList.add('fa-chevron-left');
-    } else {
-      heroToggleIcon.classList.remove('fa-chevron-left');
-      heroToggleIcon.classList.add('fa-chevron-right');
-    }
-    
-    // Save state
-    localStorage.setItem('hero-overlay-minimized', isMinimized);
-  });
+  // Home page specific functionality has been moved to home.js
   
   // Define theme options with VSCode-inspired themes
   const themeOptions = {
@@ -224,20 +196,22 @@ document.addEventListener('DOMContentLoaded', () => {
     const heroOverlay = document.getElementById('hero-overlay');
     const heroToggleIcon = document.getElementById('hero-toggle-icon');
     
-    heroOverlay.classList.toggle('minimized');
-    const isMinimized = heroOverlay.classList.contains('minimized');
-    
-    // Update icon
-    if (isMinimized) {
-      heroToggleIcon.classList.remove('fa-chevron-right');
-      heroToggleIcon.classList.add('fa-chevron-left');
-    } else {
-      heroToggleIcon.classList.remove('fa-chevron-left');
-      heroToggleIcon.classList.add('fa-chevron-right');
+    if (heroOverlay && heroToggleIcon) {
+      heroOverlay.classList.toggle('minimized');
+      const isMinimized = heroOverlay.classList.contains('minimized');
+      
+      // Update icon
+      if (isMinimized) {
+        heroToggleIcon.classList.remove('fa-chevron-right');
+        heroToggleIcon.classList.add('fa-chevron-left');
+      } else {
+        heroToggleIcon.classList.remove('fa-chevron-left');
+        heroToggleIcon.classList.add('fa-chevron-right');
+      }
+      
+      // Save state
+      localStorage.setItem('hero-overlay-minimized', isMinimized);
     }
-    
-    // Save state
-    localStorage.setItem('hero-overlay-minimized', isMinimized);
   }
   
   // Old menu functions removed - the new menu system uses simpler dropdown approach
@@ -254,8 +228,8 @@ document.addEventListener('DOMContentLoaded', () => {
         case 'p': activateTab('projects'); e.preventDefault(); break;
         case 'c': activateTab('consultancy'); e.preventDefault(); break;
         case 'b': window.location.href = './blog/index.html'; e.preventDefault(); break;
-        case 'd': window.dotEffect.toggleControls(); e.preventDefault(); break;
-        case 't': toggleHeroOverlay(); e.preventDefault(); break;
+        case 'd': if (window.dotEffect) window.dotEffect.toggleControls(); e.preventDefault(); break;
+        case 't': if (document.getElementById('hero-overlay')) toggleHeroOverlay(); e.preventDefault(); break;
       }
     }
     
@@ -285,31 +259,7 @@ document.addEventListener('DOMContentLoaded', () => {
     return getComputedStyle(document.documentElement).getPropertyValue(varName).trim();
   }
   
-  // Initialize dot effect with theme colors
-  const dotEffect = new DotEffect({
-    blockSize: 12,
-    maxRadius: 4,
-    spacing: 0,
-    threshold: 30,
-    mouseRadius: 120,
-    mouseStrength: 0.3,
-    darkMode: true,
-    bgColor: '#1B191A',  // Dark background matching site theme
-    accentColor: getComputedThemeColor('--terminal-primary'), // Use computed theme color
-    // Disable matrix effect
-    matrixMode: false,
-    // Vibration effect parameters
-    vibrationRadius: 180,
-    vibrationStrength: 0.7,
-    vibrationSpeed: 3,
-    vibrationDuration: 1000,
-    vibrationElasticity: 0.9
-  });
-  
-  dotEffect.init('dot-canvas', './assets/images/me-avatar.jpg');
-  
-  // Store the dotEffect instance globally for access
-  window.dotEffect = dotEffect;
+  // Dot effect initialization moved to home.js
   
   // Enhanced theme switching function
   function switchColorTheme(themeName) {
@@ -327,7 +277,7 @@ document.addEventListener('DOMContentLoaded', () => {
     // Set dark/light theme
     document.documentElement.setAttribute('data-theme', theme.isDark ? 'dark' : 'light');
     
-    // Update dot effect if initialized
+    // Update dot effect if initialized (only on homepage)
     if (window.dotEffect) {
       // Use primary color for dots, background color for background
       window.dotEffect.updateTheme(theme.isDark, theme.primary, theme.bg);
@@ -566,4 +516,18 @@ document.addEventListener('DOMContentLoaded', () => {
   
   const savedFont = localStorage.getItem('font-preference') || 'JetBrains Mono';
   switchFont(savedFont);
+}
+
+// Initialize the app when both DOM and components are loaded
+document.addEventListener('DOMContentLoaded', () => {
+  // Check if we're using components
+  const hasComponents = document.querySelector('[data-component]');
+  
+  if (hasComponents) {
+    // Wait for components to load before initializing
+    document.addEventListener('components:loaded', initializeApp);
+  } else {
+    // No components, initialize immediately
+    initializeApp();
+  }
 });

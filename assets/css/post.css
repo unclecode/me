@@ -154,6 +154,19 @@ a:hover {
   color: var(--terminal-gray);
 }
 
+.code-header span {
+  color: var(--terminal-cyan);
+  font-weight: 500;
+  padding: 0.1rem 0.4rem;
+  background-color: rgba(0, 0, 0, 0.2);
+  border-radius: 3px;
+  display: inline-block;
+  max-width: 60%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
 .code-block {
   background-color: #1e1e1e;
   overflow-x: auto;

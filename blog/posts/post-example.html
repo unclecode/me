@@ -13,45 +13,52 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/atom-one-dark.min.css">
   <link rel="stylesheet" href="../../assets/css/common.css">
+  <link rel="stylesheet" href="../../assets/css/terminal-core.css">
   <link rel="stylesheet" href="../../assets/css/post.css">
-
 </head>
 <body>
-  <header>
+  <!-- Include the header (with blog URL adjusted for this page) -->
+  <header id="terminal-menu">
     <div class="logo">unclecode</div>
-    <nav class="main-nav">
-      <ul class="nav-links">
-        <li><a href="../../index.html">Home</a></li>
-        <li><a href="../../index.html#ventures">Ventures</a></li>
-        <li><a href="../../index.html#projects">Projects</a></li>
-        <li><a href="../../index.html#consultancy">Consultancy</a></li>
-        <li><a href="../index.html" class="active">Blog</a></li>
-      </ul>
-    </nav>
-    <button class="theme-toggle" id="theme-toggle" aria-label="Toggle theme">
-      <svg id="theme-icon" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-        <circle cx="12" cy="12" r="5"></circle>
-        <line x1="12" y1="1" x2="12" y2="3"></line>
-        <line x1="12" y1="21" x2="12" y2="23"></line>
-        <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
-        <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
-        <line x1="1" y1="12" x2="3" y2="12"></line>
-        <line x1="21" y1="12" x2="23" y2="12"></line>
-        <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
-        <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
-      </svg>
-    </button>
-    <button class="mobile-menu-toggle" aria-label="Toggle mobile menu">
-      <span></span>
-      <span></span>
-      <span></span>
-    </button>
+  
+    <div class="terminal-menu-bar">
+      <div class="main-menu">
+        <a href="#" class="menu-item" id="menu-dropdown-toggle">Menu</a>
+        <div class="dropdown-menu" id="menu-dropdown">
+          <a href="../../index.html#about" class="dropdown-item">About</a>
+          <a href="../../index.html#ventures" class="dropdown-item">Ventures</a>
+          <a href="../../index.html#projects" class="dropdown-item">Projects</a>
+          <a href="../../index.html#consultancy" class="dropdown-item">Consultancy</a>
+        </div>
+        
+        <a href="#" class="menu-item" id="themes-dropdown-toggle">Themes</a>
+        <div class="dropdown-menu" id="themes-dropdown">
+          <a href="#" class="dropdown-item theme-option" data-theme="monokai-dark">Monokai Dark</a>
+          <a href="#" class="dropdown-item theme-option" data-theme="dracula">Dracula</a>
+          <a href="#" class="dropdown-item theme-option" data-theme="nord">Nord</a>
+          <a href="#" class="dropdown-item theme-option" data-theme="monokai">Monokai</a>
+          <a href="#" class="dropdown-item theme-option" data-theme="github-dark">GitHub Dark</a>
+          <a href="#" class="dropdown-item theme-option" data-theme="github-light">GitHub Light</a>
+          <a href="#" class="dropdown-item theme-option" data-theme="solarized-light">Solarized Light</a>
+        </div>
+        
+        <a href="#" class="menu-item" id="fonts-dropdown-toggle">Fonts</a>
+        <div class="dropdown-menu" id="fonts-dropdown">
+          <a href="#" class="dropdown-item font-option" data-font="JetBrains Mono">JetBrains Mono</a>
+          <a href="#" class="dropdown-item font-option" data-font="Fira Code">Fira Code</a>
+          <a href="#" class="dropdown-item font-option" data-font="IBM Plex Mono">IBM Plex Mono</a>
+          <a href="#" class="dropdown-item font-option" data-font="Cascadia Code">Cascadia Code</a>
+        </div>
+        
+        <a href="../index.html" class="menu-item active">Blog</a>
+      </div>
+    </div>
   </header>
   
   <div class="terminal-container">
     <div class="terminal-header">
       <div class="terminal-title">
-        <i class="fas fa-terminal"></i> unclecode@coding-lab: ~/blog/posts/building-ai-agent-with-crawl4ai.md
+        <i class="fas fa-terminal"></i> unclecode@blog: ~/posts/building-ai-agent-with-crawl4ai.md
       </div>
       <div class="terminal-buttons">
         <div class="terminal-button terminal-minimize"></div>
@@ -59,267 +66,480 @@
         <div class="terminal-button terminal-close"></div>
       </div>
     </div>
-    
     <div class="terminal-body">
-      <div class="post-header">
-        <div class="post-meta-line">
-          <span>path: <span class="post-meta-value">~/blog/posts/building-ai-agent-with-crawl4ai.md</span></span>
-          <span>date: <span class="post-meta-value">2025-02-26</span></span>
-          <span>author: <span class="post-meta-value">unclecode</span></span>
-          <span>read_time: <span class="post-meta-value">~10 min</span></span>
-        </div>
-        <h1 class="post-title">Building Your First AI Agent with Crawl4ai</h1>
-        <div class="post-tags">
-          <span class="post-tag">ai</span>
-          <span class="post-tag">tutorial</span>
-        </div>
-      </div>
-      
-      <article class="post-content">
-        <p>
-          The intersection of Large Language Models (LLMs) and web crawling opens up fascinating possibilities for creating autonomous agents that can gather, analyze, and act upon web data. In this tutorial, I'll show you how to build an intelligent web crawler using <code>Crawl4ai</code>, my open-source library that's currently trending on GitHub with over 33,000 stars.
-        </p>
-        
-        <p>
-          By the end of this guide, you'll have created an AI agent capable of searching the web, extracting specific information, and generating insights without requiring constant human supervision.
-        </p>
-        
-        <h2>What is Crawl4ai?</h2>
-        
-        <p>
-          Crawl4ai is a Python library designed specifically for AI applications that need web data. Unlike traditional web crawlers, it's optimized for:
-        </p>
-        
-        <ul>
-          <li><strong>AI-focused extraction</strong>: Automatically structures content for LLM processing</li>
-          <li><strong>Blazing speed</strong>: Crawls websites up to 10x faster than traditional solutions</li>
-          <li><strong>Robustness</strong>: Handles JavaScript-heavy sites with ease</li>
-          <li><strong>Compliance</strong>: Built-in respect for robots.txt and rate limiting</li>
-        </ul>
-        
-        <h2>Setting Up Your Environment</h2>
-        
-        <p>First, install Crawl4ai and the necessary dependencies:</p>
-        
-        <div class="code-container">
-          <div class="code-header">
-            <span class="code-language">bash</span>
-            <button class="copy-button">
-              <i class="far fa-copy"></i> Copy
-            </button>
+      <article class="post-article">
+        <div class="post-header">
+          <div class="post-meta-line">
+            <span>path: <span class="post-meta-value">~/blog/posts/building-ai-agent-with-crawl4ai.md</span></span>
+            <span>date: <span class="post-meta-value">2025-02-26</span></span>
+            <span>author: <span class="post-meta-value">unclecode</span></span>
+            <span>read_time: <span class="post-meta-value">~10 min</span></span>
           </div>
-          <div class="code-block">
-            <pre><code class="language-bash">$ pip install crawl4ai openai
-
-# Optional dependencies for more advanced features
-$ pip install crawl4ai[all]</code></pre>
+          <h1 class="post-title">Building Your First AI Agent with Crawl4ai</h1>
+          <div class="post-tags">
+            <span class="post-tag">ai</span>
+            <span class="post-tag">tutorial</span>
           </div>
         </div>
         
-        <h2>Building a Basic AI Web Crawler</h2>
-        
-        <p>Let's start with a simple example that demonstrates the core functionality:</p>
-        
-        <div class="code-container">
-          <div class="code-header">
-            <span class="code-language">python</span>
-            <button class="copy-button">
-              <i class="far fa-copy"></i> Copy
-            </button>
-          </div>
-          <div class="code-block">
-            <pre><code class="language-python">from crawl4ai import Crawler
-from crawl4ai.processors import LLMProcessor
-import openai
-
-# Initialize the OpenAI client
-client = openai.OpenAI(api_key="your-api-key")
-
-# Configure the LLM processor
-llm_processor = LLMProcessor(
-    llm_provider="openai",
-    llm_client=client,
-    system_prompt="You are an expert at extracting key information from tech articles."
-)
-
-# Create and configure the crawler
-crawler = Crawler(
-    max_pages=5,
-    max_depth=2,
-    request_interval=1.0,
-    processors=[llm_processor]
-)
-
-# Start crawling
-results = crawler.crawl("https://example-tech-blog.com")
-
-# Access the LLM-processed content
-for page in results:
-    print(f"URL: {page.url}")
-    print(f"Title: {page.title}")
-    print(f"LLM Summary: {page.llm_output}")
-    print("---")</code></pre>
-          </div>
-        </div>
-        
-        <p>
-          This basic example crawls a website, processing up to 5 pages with a maximum depth of 2 links from the starting URL. The LLM processor passes each page's content to OpenAI's model for summarization based on the system prompt.
-        </p>
-        
-        <h2>Creating an Autonomous Research Agent</h2>
-        
-
-        
-        <p>
-          This more advanced example demonstrates several powerful capabilities of Crawl4ai:
-        </p>
-        
-        <ol>
-          <li><strong>Intelligent Filtering</strong>: Using both keyword matching and semantic relevance to ensure we only process pages related to quantum computing</li>
-          <li><strong>Structured Extraction</strong>: The ContentExtractor processor pulls out clean text, links, and metadata</li>
-          <li><strong>LLM Processing</strong>: Each page is analyzed by the LLM to extract specific types of information</li>
-          <li><strong>Agent Autonomy</strong>: The Agent can make decisions about where to crawl next based on found information</li>
-          <li><strong>Comprehensive Synthesis</strong>: The final output combines information from all crawled pages into a cohesive report</li>
-        </ol>
-        
-        <h2>Handling Advanced Scenarios</h2>
-        
-        <h3>Authentication</h3>
-        
-        <p>
-          For sites requiring login, Crawl4ai provides several authentication methods:
-        </p>
-        
-        <div class="code-container">
-          <div class="code-header">
-            <span class="code-language">python</span>
-            <button class="copy-button">
-              <i class="far fa-copy"></i> Copy
-            </button>
-          </div>
-          <div class="code-block">
-            <pre><code class="language-python">from crawl4ai import Crawler
-from crawl4ai.auth import BasicAuth, CookieAuth, FormAuth
-
-# Using cookie-based authentication
-cookie_auth = CookieAuth(
-    cookies={"session_id": "your-session-cookie"}
-)
-
-# Or form-based login
-form_auth = FormAuth(
-    login_url="https://example.com/login",
-    username_field="email",
-    password_field="password",
-    username="your-username",
-    password="your-password",
-    submit_button_selector="button[type='submit']"
-)
-
-crawler = Crawler(
-    auth=form_auth,
-    # Other configuration options...
-)
-
-results = crawler.crawl("https://example.com/members-area")</code></pre>
-          </div>
-        </div>
-        
-        <h3>JavaScript-Heavy Sites</h3>
-        
-        <p>
-          For sites that rely heavily on JavaScript to render content, Crawl4ai can use browser rendering:
-        </p>
-        
-        <div class="code-container">
-          <div class="code-header">
-            <span class="code-language">python</span>
-            <button class="copy-button">
-              <i class="far fa-copy"></i> Copy
-            </button>
-          </div>
-          <div class="code-block">
-            <pre><code class="language-python">from crawl4ai import Crawler
-from crawl4ai.browsers import PlaywrightBrowser
-
-browser = PlaywrightBrowser(
-    headless=True,
-    wait_until="networkidle",
-    wait_time=5.0  # Wait 5 seconds after page loads
-)
-
-crawler = Crawler(
-    browser=browser,
-    # Other configuration options...
-)
-
-results = crawler.crawl("https://javascript-heavy-site.com")</code></pre>
-          </div>
-        </div>
-        
-        <h2>Conclusion</h2>
-        
-        <p>
-          By combining Crawl4ai with modern LLMs, you can create sophisticated web agents that autonomously gather and process information from across the internet. The applications are virtually limitless - from market research to content aggregation, competitive analysis, and automated monitoring.
-        </p>
-        
-        <p>
-          As you build more advanced agents, consider implementing:
-        </p>
-        
-        <ul>
-          <li>Custom processors for domain-specific data extraction</li>
-          <li>Multi-stage crawling with different configurations for discovery vs. deep analysis</li>
-          <li>Storing results in vector databases for similarity search and knowledge retrieval</li>
-          <li>Periodic scheduling to keep information up-to-date</li>
-        </ul>
-        
-        <p>
-          If you build something interesting with Crawl4ai, I'd love to hear about it! Share your projects on GitHub or reach out to me directly on Twitter.
-        </p>
-        
-        <blockquote>
-          <p>"The combination of web crawling capabilities with LLM-based analysis is creating an entirely new paradigm for information gathering and processing. We're just scratching the surface of what's possible."</p>
-        </blockquote>
-      </article>
-      
-      <div class="author-section">
-        <h3 class="author-header">AUTHOR INFO</h3>
-        <div class="author-bio">
-          <div class="author-avatar">
-            <img src="../../assets/images/me-avatar.jpg" alt="Unclecode (Hossein)">
-          </div>
-          <div class="author-info">
-            <h3 class="author-name">Unclecode (Hossein)</h3>
-            <p class="author-description">
-              Founder & CEO at Asia's largest tech education ecosystem and creator of Crawl4ai. Passionate about building tools that make AI more accessible and practical for real-world applications.
-            </p>
-            <div class="author-social">
-              <a href="https://x.com/unclecode" target="_blank"><i class="fab fa-x-twitter"></i></a>
-              <a href="https://github.com/unclecode/crawl4ai" target="_blank"><i class="fab fa-github"></i></a>
-              <a href="https://www.linkedin.com/in/unclecode/" target="_blank"><i class="fab fa-linkedin"></i></a>
+        <div class="post-content">
+          <p>
+            In today's data-driven world, the ability to extract, process, and analyze information from the web is becoming increasingly valuable. With the rise of large language models (LLMs) and sophisticated web crawling tools, developers can now create powerful autonomous agents that can navigate the web, gather information, and generate insights with minimal human intervention.
+          </p>
+          
+          <p>
+            In this tutorial, we'll build an autonomous web-crawling agent that can research topics, extract relevant information, and create structured reports using Crawl4ai and modern LLMs. This agent will be able to traverse websites, understand their content, and extract meaningful insights while following ethical scraping practices.
+          </p>
+          
+          <h2>Prerequisites</h2>
+          
+          <p>
+            Before we get started, make sure you have the following:
+          </p>
+          
+          <ul>
+            <li>Python 3.9+ installed</li>
+            <li>Basic knowledge of Python and async programming</li>
+            <li>An API key for an LLM provider (OpenAI, Anthropic, etc.)</li>
+            <li>Understanding of web architecture and HTML structure</li>
+          </ul>
+          
+          <h2>Setting Up Your Environment</h2>
+          
+          <p>
+            First, let's set up our environment with the necessary libraries:
+          </p>
+          
+          <div class="code-container">
+            <div class="code-header">
+              <span>Terminal</span>
+              <button class="copy-button"><i class="fas fa-copy"></i> Copy</button>
+            </div>
+            <div class="code-block">
+              <pre><code class="language-bash">$ pip install crawl4ai langchain requests pydantic</code></pre>
             </div>
           </div>
+          
+          <p>
+            Create a new Python file for our project, let's call it <code>web_agent.py</code>:
+          </p>
+          
+          <div class="code-container">
+            <div class="code-header">
+              <span>web_agent.py</span>
+              <button class="copy-button"><i class="fas fa-copy"></i> Copy</button>
+            </div>
+            <div class="code-block">
+              <pre><code class="language-python">import os
+import json
+import asyncio
+from typing import List, Dict, Any
+
+from crawl4ai import Crawler
+from crawl4ai.links import extract_links
+from langchain.chat_models import ChatOpenAI
+from langchain.schema import HumanMessage, SystemMessage
+from pydantic import BaseModel, Field
+
+# Set your API key
+os.environ["OPENAI_API_KEY"] = "your-api-key"  
+
+class WebCrawlingAgent:
+    def __init__(self, llm_model="gpt-3.5-turbo"):
+        # Initialize the crawler
+        self.crawler = Crawler(
+            max_connections=5,
+            timeout=30,
+            headers={"User-Agent": "Research-Bot/1.0"}
+        )
+        
+        # Initialize LLM
+        self.llm = ChatOpenAI(model=llm_model, temperature=0.1)
+        
+    async def research_topic(self, topic: str, max_pages: int = 5):
+        """Research a topic by crawling relevant websites and generating a report."""
+        # Step 1: Generate initial search queries based on the topic
+        search_queries = self._generate_search_queries(topic)
+        
+        # Step 2: Find relevant URLs
+        urls = await self._find_relevant_urls(search_queries, max_pages)
+        
+        # Step 3: Crawl the URLs and extract content
+        page_contents = await self._crawl_urls(urls)
+        
+        # Step 4: Analyze the content and generate a report
+        report = self._generate_report(topic, page_contents)
+        
+        return report
+
+    def _generate_search_queries(self, topic: str) -> List[str]:
+        """Generate search queries based on the topic."""
+        # Implementation will follow
+        pass
+        
+    async def _find_relevant_urls(self, queries: List[str], max_pages: int) -> List[str]:
+        """Find relevant URLs based on search queries."""
+        # Implementation will follow
+        pass
+        
+    async def _crawl_urls(self, urls: List[str]) -> List[Dict[str, Any]]:
+        """Crawl URLs and extract content."""
+        # Implementation will follow
+        pass
+        
+    def _generate_report(self, topic: str, page_contents: List[Dict[str, Any]]) -> Dict[str, Any]:
+        """Generate a structured report based on crawled content."""
+        # Implementation will follow
+        pass
+
+# Usage example
+if __name__ == "__main__":
+    agent = WebCrawlingAgent()
+    report = asyncio.run(agent.research_topic("advances in generative AI 2025"))</code></pre>
+            </div>
+          </div>
+          
+          <p>
+            This gives us a basic structure for our agent. Now let's implement each of the methods.
+          </p>
+          
+          <h2>Implementing Search Query Generation</h2>
+          
+          <p>
+            First, we'll implement the <code>_generate_search_queries</code> method, which will use an LLM to generate effective search queries based on our topic:
+          </p>
+          
+          <div class="code-container">
+            <div class="code-header">
+              <span>Method implementation for _generate_search_queries</span>
+              <button class="copy-button"><i class="fas fa-copy"></i> Copy</button>
+            </div>
+            <div class="code-block">
+              <pre><code class="language-python">def _generate_search_queries(self, topic: str) -> List[str]:
+    """Generate search queries based on the topic."""
+    system_prompt = """
+    You are a research assistant that generates effective search queries for web research.
+    Given a research topic, generate 3-5 specific search queries that would help find 
+    comprehensive and authoritative information on the topic.
+    Provide only the queries, one per line, with no additional text or numbering.
+    """
+    
+    user_prompt = f"Generate search queries for researching: {topic}"
+    
+    messages = [
+        SystemMessage(content=system_prompt),
+        HumanMessage(content=user_prompt)
+    ]
+    
+    response = self.llm.invoke(messages)
+    queries = [q.strip() for q in response.content.split('\n') if q.strip()]
+    
+    return queries</code></pre>
+            </div>
+          </div>
+          
+          <p>
+            This method uses the LLM to generate targeted search queries, making our research more effective.
+          </p>
+          
+          <h2>Finding Relevant URLs</h2>
+          
+          <p>
+            Next, we'll implement a method to find relevant URLs based on our search queries. We'll use Crawl4ai to help with this:
+          </p>
+          
+          <div class="code-container">
+            <div class="code-header">
+              <span>Method implementation for _find_relevant_urls</span>
+              <button class="copy-button"><i class="fas fa-copy"></i> Copy</button>
+            </div>
+            <div class="code-block">
+              <pre><code class="language-python">async def _find_relevant_urls(self, queries: List[str], max_pages: int) -> List[str]:
+    """Find relevant URLs based on search queries."""
+    all_urls = set()
+    
+    # For demonstration, let's use a simple search engine results page crawler
+    # In a production system, you might want to use a proper search API
+    for query in queries:
+        # Format query for search engine
+        search_url = f"https://search.example.com/search?q={'+'.join(query.split())}"
+        
+        # Crawl the search results page
+        response = await self.crawler.get(search_url)
+        
+        if response and response.status == 200:
+            # Extract links from the search results
+            search_links = extract_links(
+                response.text, 
+                base_url=search_url,
+                # Filter out non-article links
+                link_filter=lambda url: not any(
+                    pattern in url for pattern in [
+                        "/search?", "javascript:", "mailto:", 
+                        ".pdf", ".jpg", ".png", ".gif"
+                    ]
+                )
+            )
+            
+            # Add unique URLs to our set
+            all_urls.update(search_links[:max_pages])
+    
+    # Convert set to list and limit to max_pages
+    return list(all_urls)[:max_pages]</code></pre>
+            </div>
+          </div>
+          
+          <p>
+            In a real-world application, you'd want to use a proper search API or a more sophisticated approach, but this gives you the general idea.
+          </p>
+          
+          <h2>Crawling URLs and Extracting Content</h2>
+          
+          <p>
+            Now let's implement the URL crawling functionality:
+          </p>
+          
+          <div class="code-container">
+            <div class="code-header">
+              <span>Method implementation for _crawl_urls</span>
+              <button class="copy-button"><i class="fas fa-copy"></i> Copy</button>
+            </div>
+            <div class="code-block">
+              <pre><code class="language-python">async def _crawl_urls(self, urls: List[str]) -> List[Dict[str, Any]]:
+    """Crawl URLs and extract content."""
+    page_contents = []
+    
+    async def process_url(url):
+        try:
+            response = await self.crawler.get(url)
+            
+            if response and response.status == 200:
+                # Extract main content and metadata using Crawl4ai's tools
+                from crawl4ai.extraction import extract_main_content, extract_metadata
+                
+                main_content = extract_main_content(response.text)
+                metadata = extract_metadata(response.text, url)
+                
+                return {
+                    "url": url,
+                    "title": metadata.get("title", "Untitled"),
+                    "description": metadata.get("description", ""),
+                    "content": main_content,
+                    "date_published": metadata.get("date_published", ""),
+                    "author": metadata.get("author", "Unknown")
+                }
+            return None
+        except Exception as e:
+            print(f"Error crawling {url}: {e}")
+            return None
+    
+    # Create crawling tasks for all URLs
+    tasks = [process_url(url) for url in urls]
+    
+    # Run tasks concurrently
+    results = await asyncio.gather(*tasks)
+    
+    # Filter out None results (failed crawls)
+    page_contents = [result for result in results if result]
+    
+    return page_contents</code></pre>
+            </div>
+          </div>
+          
+          <p>
+            This method crawls all URLs concurrently using asyncio, which makes it much faster than sequential crawling. It also extracts the main content and metadata from each page.
+          </p>
+          
+          <h2>Generating the Research Report</h2>
+          
+          <p>
+            Finally, we'll implement the report generation method that uses an LLM to analyze the crawled content and create a structured report:
+          </p>
+          
+          <div class="code-container">
+            <div class="code-header">
+              <span>Method implementation for _generate_report</span>
+              <button class="copy-button"><i class="fas fa-copy"></i> Copy</button>
+            </div>
+            <div class="code-block">
+              <pre><code class="language-python">def _generate_report(self, topic: str, page_contents: List[Dict[str, Any]]) -> Dict[str, Any]:
+    """Generate a structured report based on crawled content."""
+    # Prepare content for the LLM
+    sources_text = ""
+    for i, page in enumerate(page_contents, 1):
+        sources_text += f"\n--- SOURCE {i}: {page['title']} ---\n"
+        sources_text += f"URL: {page['url']}\n"
+        sources_text += f"Date: {page['date_published']}\n"
+        sources_text += f"Content: {page['content'][:1000]}...\n"  # Truncate long content
+    
+    system_prompt = """
+    You are a research assistant tasked with analyzing web content and creating a 
+    comprehensive research report. Based on the provided sources, generate a well-structured
+    report on the given topic with the following sections:
+    
+    1. Executive Summary: A 2-3 paragraph overview of the key findings
+    2. Key Insights: 5-7 bullet points highlighting the most important insights
+    3. Detailed Analysis: A comprehensive analysis organized by subtopics
+    4. Future Trends: Based on the research, what trends are emerging
+    5. References: A properly formatted list of sources used
+    
+    Format the report as a JSON object with these sections as keys.
+    Ensure all information is factual and directly supported by the provided sources.
+    """
+    
+    user_prompt = f"Generate a research report on: {topic}\n\nSources:\n{sources_text}"
+    
+    messages = [
+        SystemMessage(content=system_prompt),
+        HumanMessage(content=user_prompt)
+    ]
+    
+    response = self.llm.invoke(messages)
+    
+    # Parse the JSON response
+    try:
+        report = json.loads(response.content)
+    except json.JSONDecodeError:
+        # If the LLM didn't return valid JSON, try to extract it
+        content = response.content
+        start = content.find('{')
+        end = content.rfind('}') + 1
+        if start != -1 and end != 0:
+            try:
+                report = json.loads(content[start:end])
+            except:
+                # Fallback to a simple report structure
+                report = {
+                    "executive_summary": "Error parsing report",
+                    "raw_response": response.content
+                }
+        else:
+            report = {
+                "executive_summary": "Error parsing report",
+                "raw_response": response.content
+            }
+    
+    # Add metadata
+    report["metadata"] = {
+        "topic": topic,
+        "sources_count": len(page_contents),
+        "sources": [{"url": p["url"], "title": p["title"]} for p in page_contents],
+        "generated_at": datetime.now().isoformat()
+    }
+    
+    return report</code></pre>
+            </div>
+          </div>
+          
+          <p>
+            Now, to use our agent, we can simply run:
+          </p>
+          
+          <div class="code-container">
+            <div class="code-header">
+              <span>Usage example</span>
+              <button class="copy-button"><i class="fas fa-copy"></i> Copy</button>
+            </div>
+            <div class="code-block">
+              <pre><code class="language-python">if __name__ == "__main__":
+    agent = WebCrawlingAgent()
+    report = asyncio.run(agent.research_topic("advances in generative AI 2025"))
+    
+    # Pretty print the report
+    print(json.dumps(report, indent=2))
+    
+    # Or save to a file
+    with open("research_report.json", "w") as f:
+        json.dump(report, f, indent=2)</code></pre>
+            </div>
+          </div>
+          
+          <h2>Extending the Agent</h2>
+          
+          <p>
+            This is just a basic implementation. Here are some ways you could extend and improve it:
+          </p>
+          
+          <ul>
+            <li>Add more robust error handling and retries for failed requests</li>
+            <li>Implement recursive crawling to explore links within the pages</li>
+            <li>Add content classification to better organize the research</li>
+            <li>Implement sentiment analysis of the content</li>
+            <li>Create a feedback loop where the agent can refine its search based on initial findings</li>
+            <li>Add support for PDF documents and other file types</li>
+            <li>Implement a caching mechanism to avoid recrawling the same pages</li>
+          </ul>
+          
+          <h2>Ethical Considerations</h2>
+          
+          <p>
+            When building web crawling agents, it's important to follow ethical guidelines:
+          </p>
+          
+          <ul>
+            <li>Respect robots.txt files and website terms of service</li>
+            <li>Implement rate limiting to avoid overwhelming websites</li>
+            <li>Identify your crawler with a proper user agent string</li>
+            <li>Be mindful of data privacy concerns</li>
+            <li>Don't distribute copyrighted content without permission</li>
+          </ul>
+          
+          <blockquote>
+            Web crawling is a powerful tool, but with great power comes great responsibility. Always be respectful of the websites you crawl and the data you collect.
+          </blockquote>
+          
+          <h2>Conclusion</h2>
+          
+          <p>
+            In this tutorial, we've built a powerful autonomous web-crawling agent using Crawl4ai and LLMs. This agent can research topics, extract relevant information, and generate comprehensive reports with minimal human intervention.
+          </p>
+          
+          <p>
+            As AI and web crawling technologies continue to advance, the possibilities for autonomous agents will only grow. By combining the strengths of different tools and models, we can create systems that augment human capabilities and help us navigate the ever-expanding web of information.
+          </p>
+          
+          <p>
+            Remember to check out the <a href="https://github.com/unclecode/crawl4ai" target="_blank">Crawl4ai GitHub repository</a> for more advanced features and examples.
+          </p>
         </div>
-      </div>
-      
-      <div class="post-navigation">
-        <div class="navigation-item navigation-prev">
-          <div class="navigation-header">cd ../</div>
-          <a href="../index.html" class="navigation-title">Back to all posts</a>
-        </div>
-        <div class="navigation-item navigation-next">
-          <div class="navigation-header">cat developer-productivity-tools.md</div>
-          <a href="./developer-productivity-tools.html" class="navigation-title">10 Developer Tools That Will Boost Your Productivity</a>
-        </div>
-      </div>
-      
-      <div class="terminal-footer">
-        <span class="prompt">$</span> echo "Thanks for reading!"
-      </div>
+        
+        <section class="author-section">
+          <h3 class="author-header">About the Author</h3>
+          <div class="author-bio">
+            <div class="author-avatar">
+              <img src="../../assets/images/me-avatar.jpg" alt="Unclecode (Hossein)">
+            </div>
+            <div class="author-info">
+              <h4 class="author-name">Unclecode (Hossein)</h4>
+              <p class="author-description">
+                AI researcher and creator of Crawl4ai - the fastest web crawler for AI agents. 
+                Specializes in building tools that help developers create more powerful and 
+                efficient AI systems.
+              </p>
+              <div class="author-social">
+                <a href="https://github.com/unclecode" target="_blank"><i class="fab fa-github"></i></a>
+                <a href="https://x.com/unclecode" target="_blank"><i class="fab fa-x-twitter"></i></a>
+                <a href="https://linkedin.com/in/unclecode" target="_blank"><i class="fab fa-linkedin"></i></a>
+              </div>
+            </div>
+          </div>
+        </section>
+        
+        <nav class="post-navigation">
+          <div class="navigation-item navigation-prev">
+            <div class="navigation-header">« Previous</div>
+            <a href="#" class="navigation-title">Creating Reliable Vector Databases for RAG Applications</a>
+          </div>
+          <div class="navigation-item navigation-next">
+            <div class="navigation-header">Next »</div>
+            <a href="#" class="navigation-title">Modern CSS Features Every Developer Should Know in 2025</a>
+          </div>
+        </nav>
+      </article>
     </div>
   </div>
   
+  <!-- Include the footer -->
   <footer>
     <p class="footer-text">© 2025 Unclecode (Hossein)</p>
     <div class="social-links">
@@ -340,80 +560,27 @@ results = crawler.crawl("https://javascript-heavy-site.com")</code></pre>
   
   <!-- Scripts -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"></script>
+  <script src="../../assets/js/main.js"></script>
   <script>
     document.addEventListener('DOMContentLoaded', () => {
-      // Initialize code highlighting
+      // Initialize syntax highlighting
       hljs.highlightAll();
       
-      // Theme toggle
-      const themeToggle = document.getElementById('theme-toggle');
-      const themeIcon = document.getElementById('theme-icon');
-      const THEME_KEY = 'unclecode-theme-preference';
-      const LIGHT_THEME = 'light';
-      const DARK_THEME = 'dark';
-      
-      // Set theme
-      function setTheme(theme) {
-        document.documentElement.setAttribute('data-theme', theme);
-        localStorage.setItem(THEME_KEY, theme);
-        
-        // Update theme icon
-        if (theme === DARK_THEME) {
-          // Show sun icon in dark mode
-          themeIcon.innerHTML = `
-            <circle cx="12" cy="12" r="5"></circle>
-            <line x1="12" y1="1" x2="12" y2="3"></line>
-            <line x1="12" y1="21" x2="12" y2="23"></line>
-            <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
-            <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
-            <line x1="1" y1="12" x2="3" y2="12"></line>
-            <line x1="21" y1="12" x2="23" y2="12"></line>
-            <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
-            <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
-          `;
-        } else {
-          // Show moon icon in light mode
-          themeIcon.innerHTML = `<path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"></path>`;
-        }
-      }
-      
-      // Load saved theme
-      const savedTheme = localStorage.getItem(THEME_KEY) || DARK_THEME;
-      setTheme(savedTheme);
-      
-      // Toggle theme 
-      themeToggle.addEventListener('click', () => {
-        const currentTheme = document.documentElement.getAttribute('data-theme');
-        const newTheme = currentTheme === LIGHT_THEME ? DARK_THEME : LIGHT_THEME;
-        setTheme(newTheme);
-      });
-      
-      // Mobile menu toggle
-      const mobileMenuToggle = document.querySelector('.mobile-menu-toggle');
-      const navLinks = document.querySelector('.nav-links');
-      
-      mobileMenuToggle.addEventListener('click', () => {
-        navLinks.classList.toggle('active');
-        document.body.classList.toggle('menu-open');
-      });
-      
-      // Copy code button functionality
-      const copyButtons = document.querySelectorAll('.copy-button');
-      
-      copyButtons.forEach(button => {
+      // Add copy functionality to code blocks
+      document.querySelectorAll('.copy-button').forEach(button => {
         button.addEventListener('click', () => {
           const codeBlock = button.closest('.code-container').querySelector('code');
-          const codeText = codeBlock.textContent;
+          const code = codeBlock.innerText;
           
-          navigator.clipboard.writeText(codeText).then(() => {
-            // Show copied feedback
+          navigator.clipboard.writeText(code).then(() => {
+            // Visual feedback
             const originalText = button.innerHTML;
-            button.innerHTML = '<i class="fas fa-check"></i> Copied';
-            
-            // Reset after 2 seconds
+            button.innerHTML = '<i class="fas fa-check"></i> Copied!';
             setTimeout(() => {
               button.innerHTML = originalText;
             }, 2000);
+          }).catch(err => {
+            console.error('Failed to copy code: ', err);
           });
         });
       });

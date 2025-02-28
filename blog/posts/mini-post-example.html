@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>~/blog/posts/building-ai-agent-with-crawl4ai | unclecode</title>
+  <meta name="description" content="Learn how to create an autonomous web-crawling agent that can gather, process, and analyze data from the web using Crawl4ai and LLMs.">
+  
+  <!-- Fonts and Icons -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;500;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/atom-one-dark.min.css">
+  <link rel="stylesheet" href="../../assets/css/common.css">
+  <link rel="stylesheet" href="../../assets/css/terminal-core.css">
+  <link rel="stylesheet" href="../../assets/css/post.css">
+</head>
+<body>
+  <!-- Include the header (with blog URL adjusted for this page) -->
+  <header id="terminal-menu">
+    <div class="logo">unclecode</div>
+  
+    <div class="terminal-menu-bar">
+      <div class="main-menu">
+        <a href="#" class="menu-item" id="menu-dropdown-toggle">Menu</a>
+        <div class="dropdown-menu" id="menu-dropdown">
+          <a href="../../index.html#about" class="dropdown-item">About</a>
+          <a href="../../index.html#ventures" class="dropdown-item">Ventures</a>
+          <a href="../../index.html#projects" class="dropdown-item">Projects</a>
+          <a href="../../index.html#consultancy" class="dropdown-item">Consultancy</a>
+        </div>
+        
+        <a href="#" class="menu-item" id="themes-dropdown-toggle">Themes</a>
+        <div class="dropdown-menu" id="themes-dropdown">
+          <a href="#" class="dropdown-item theme-option" data-theme="monokai-dark">Monokai Dark</a>
+          <a href="#" class="dropdown-item theme-option" data-theme="dracula">Dracula</a>
+          <a href="#" class="dropdown-item theme-option" data-theme="nord">Nord</a>
+          <a href="#" class="dropdown-item theme-option" data-theme="monokai">Monokai</a>
+          <a href="#" class="dropdown-item theme-option" data-theme="github-dark">GitHub Dark</a>
+          <a href="#" class="dropdown-item theme-option" data-theme="github-light">GitHub Light</a>
+          <a href="#" class="dropdown-item theme-option" data-theme="solarized-light">Solarized Light</a>
+        </div>
+        
+        <a href="#" class="menu-item" id="fonts-dropdown-toggle">Fonts</a>
+        <div class="dropdown-menu" id="fonts-dropdown">
+          <a href="#" class="dropdown-item font-option" data-font="JetBrains Mono">JetBrains Mono</a>
+          <a href="#" class="dropdown-item font-option" data-font="Fira Code">Fira Code</a>
+          <a href="#" class="dropdown-item font-option" data-font="IBM Plex Mono">IBM Plex Mono</a>
+          <a href="#" class="dropdown-item font-option" data-font="Cascadia Code">Cascadia Code</a>
+        </div>
+        
+        <a href="../index.html" class="menu-item active">Blog</a>
+      </div>
+    </div>
+  </header>
+  
+  <div class="terminal-container">
+    <div class="terminal-header">
+      <div class="terminal-title">
+        <i class="fas fa-terminal"></i> unclecode@blog: ~/posts/building-ai-agent-with-crawl4ai.md
+      </div>
+      <div class="terminal-buttons">
+        <div class="terminal-button terminal-minimize"></div>
+        <div class="terminal-button terminal-maximize"></div>
+        <div class="terminal-button terminal-close"></div>
+      </div>
+    </div>
+    <div class="terminal-body">
+      <article class="post-article">
+        <div class="post-header">
+          <div class="post-meta-line">
+            <span>path: <span class="post-meta-value">~/blog/posts/building-ai-agent-with-crawl4ai.md</span></span>
+            <span>date: <span class="post-meta-value">2025-02-26</span></span>
+            <span>author: <span class="post-meta-value">unclecode</span></span>
+            <span>read_time: <span class="post-meta-value">~5 min</span></span>
+          </div>
+          <h1 class="post-title">Building Your First AI Agent with Crawl4ai</h1>
+          <div class="post-tags">
+            <span class="post-tag">ai</span>
+            <span class="post-tag">tutorial</span>
+          </div>
+        </div>
+        
+        <div class="post-content">
+          <p>
+            In today's data-driven world, autonomous web-crawling agents are becoming increasingly powerful tools for gathering and analyzing information from the internet.
+          </p>
+          
+          <h2>Prerequisites</h2>
+          
+          <ul>
+            <li>Python 3.9+</li>
+            <li>Basic knowledge of Python</li>
+            <li>An API key for an LLM provider</li>
+          </ul>
+          
+          <h2>Setting Up Your Environment</h2>
+          
+          <div class="code-container">
+            <div class="code-header">
+              <span>Terminal</span>
+              <button class="copy-button"><i class="fas fa-copy"></i> Copy</button>
+            </div>
+            <div class="code-block">
+              <pre><code class="language-bash">$ pip install crawl4ai langchain</code></pre>
+            </div>
+          </div>
+          
+          <div class="code-container">
+            <div class="code-header">
+              <span>web_agent.py</span>
+              <button class="copy-button"><i class="fas fa-copy"></i> Copy</button>
+            </div>
+            <div class="code-block">
+              <pre><code class="language-python">import asyncio
+from crawl4ai import Crawler
+from langchain.chat_models import ChatOpenAI
+
+class WebCrawlingAgent:
+    def __init__(self):
+        self.crawler = Crawler()
+        self.llm = ChatOpenAI()
+    
+    async def research_topic(self, topic):
+        # Implement research logic
+        pass
+
+# Usage
+agent = WebCrawlingAgent()
+asyncio.run(agent.research_topic("AI trends"))</code></pre>
+            </div>
+          </div>
+          
+          <h2>Ethical Considerations</h2>
+          
+          <ul>
+            <li>Respect robots.txt files</li>
+            <li>Implement rate limiting</li>
+            <li>Protect data privacy</li>
+          </ul>
+          
+          <blockquote>
+            Web crawling is powerful, but with great power comes great responsibility.
+          </blockquote>
+          
+          <h2>Conclusion</h2>
+          
+          <p>
+            By combining web crawling tools and AI, we can create intelligent agents that extract and analyze web information with unprecedented efficiency.
+          </p>
+        </div>
+        
+        <section class="author-section">
+          <h3 class="author-header">About the Author</h3>
+          <div class="author-bio">
+            <div class="author-avatar">
+              <img src="../../assets/images/me-avatar.jpg" alt="Unclecode (Hossein)">
+            </div>
+            <div class="author-info">
+              <h4 class="author-name">Unclecode (Hossein)</h4>
+              <p class="author-description">
+                AI researcher and creator of Crawl4ai - the fastest web crawler for AI agents.
+              </p>
+              <div class="author-social">
+                <a href="https://github.com/unclecode" target="_blank"><i class="fab fa-github"></i></a>
+                <a href="https://x.com/unclecode" target="_blank"><i class="fab fa-x-twitter"></i></a>
+                <a href="https://linkedin.com/in/unclecode" target="_blank"><i class="fab fa-linkedin"></i></a>
+              </div>
+            </div>
+          </div>
+        </section>
+        
+        <nav class="post-navigation">
+          <div class="navigation-item navigation-prev">
+            <div class="navigation-header">« Previous</div>
+            <a href="#" class="navigation-title">Creating Reliable Vector Databases</a>
+          </div>
+          <div class="navigation-item navigation-next">
+            <div class="navigation-header">Next »</div>
+            <a href="#" class="navigation-title">Modern CSS Features in 2025</a>
+          </div>
+        </nav>
+      </article>
+    </div>
+  </div>
+  
+  <!-- Include the footer -->
+  <footer>
+    <p class="footer-text">© 2025 Unclecode (Hossein)</p>
+    <div class="social-links">
+      <a href="https://x.com/unclecode" target="_blank" class="social-link" title="Twitter/X">
+        <i class="fab fa-x-twitter"></i>
+      </a>
+      <a href="https://github.com/unclecode/crawl4ai" target="_blank" class="social-link" title="GitHub">
+        <i class="fab fa-github"></i>
+      </a>
+      <a href="https://www.linkedin.com/in/unclecode/" target="_blank" class="social-link" title="LinkedIn">
+        <i class="fab fa-linkedin"></i>
+      </a>
+      <a href="https://www.youtube.com/@unclecode" target="_blank" class="social-link" title="YouTube">
+        <i class="fab fa-youtube"></i>
+      </a>
+    </div>
+  </footer>
+  
+  <!-- Scripts -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"></script>
+  <script src="../../assets/js/main.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      // Initialize syntax highlighting
+      hljs.highlightAll();
+      
+      // Add copy functionality to code blocks
+      document.querySelectorAll('.copy-button').forEach(button => {
+        button.addEventListener('click', () => {
+          const codeBlock = button.closest('.code-container').querySelector('code');
+          const code = codeBlock.innerText;
+          
+          navigator.clipboard.writeText(code).then(() => {
+            // Visual feedback
+            const originalText = button.innerHTML;
+            button.innerHTML = '<i class="fas fa-check"></i> Copied!';
+            setTimeout(() => {
+              button.innerHTML = originalText;
+            }, 2000);
+          }).catch(err => {
+            console.error('Failed to copy code: ', err);
+          });
+        });
+      });
+    });
+  </script>
+</body>
+</html>

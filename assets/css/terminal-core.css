@@ -5,23 +5,46 @@
  */
 
 :root {
-  /* Terminal theme colors */
+  /* Base theme */
   --terminal-bg: #1a1a1a;
-  --terminal-text: #f0f0f0;
-  --terminal-green: #33ff33;
-  --terminal-blue: #3399ff;
-  --terminal-yellow: #ffcc00;
-  --terminal-red: #ff3333;
-  --terminal-purple: #cc33ff;
-  --terminal-cyan: #33ffff;
+  --terminal-text: #e6e6e6; /* Slightly dimmed white */
+  --terminal-dimmed-text: #cccccc; /* More dimmed white for longer texts */
   --terminal-gray: #999999;
-  --terminal-highlight: rgba(255, 255, 255, 0.05);
-  --terminal-prompt: #33ff33;
-  --terminal-link: #3399ff;
   --terminal-border: #333333;
+  --terminal-highlight: rgba(255, 255, 255, 0.05);
   --terminal-header-bg: #333333;
   --terminal-code-bg: #2d2d2d;
+  
+  /* Brand colors - Adjusted for visibility and consistency */
+  --terminal-cyan: #40e3e3; /* Primary accent - bright but not harsh */
+  --terminal-purple: #b388ff; /* Secondary - AI theme */
+  --terminal-blue: #5599ff; /* Tertiary - softer blue */
+  --terminal-green: #2dd25b; /* Accent - used sparingly for success/prompts */
+  --terminal-yellow: #ffcc00; /* Warning/highlight */
+  --terminal-red: #ff5555; /* Error */
+  
+  /* Semantic assignments */
+  --terminal-primary: var(--terminal-cyan);
+  --terminal-secondary: var(--terminal-purple);
+  --terminal-tertiary: var(--terminal-blue);
+  --terminal-prompt: var(--terminal-green);
+  --terminal-link: var(--terminal-cyan);
+  
+  /* Typography */
   --monospace: 'JetBrains Mono', monospace;
+}
+
+/* Theme variants can be defined and toggled with JS */
+.theme-purple-primary {
+  --terminal-primary: var(--terminal-purple);
+  --terminal-secondary: var(--terminal-cyan);
+  --terminal-link: var(--terminal-purple);
+}
+
+.theme-blue-primary {
+  --terminal-primary: var(--terminal-blue);
+  --terminal-secondary: var(--terminal-purple);
+  --terminal-link: var(--terminal-blue);
 }
 
 /* Global terminal styling */

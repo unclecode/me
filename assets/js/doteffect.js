@@ -2,6 +2,7 @@
  * Interactive dot effect for Unclecode's personal website
  * Based on halftone dot effect algorithm
  * With water ripple effect on click
+ * Includes interactive controls for customization
  */
 
 class DotEffect {
@@ -21,13 +22,16 @@ class DotEffect {
     this.threshold = options.threshold || 20;
     this.darkMode = options.darkMode !== undefined ? options.darkMode : true;
     this.bgColor = options.bgColor || '#1B191A';
-    this.fgColor = options.accentColor || '#8A2BE2'; // Default accent color is purple
+    this.fgColor = options.accentColor || '#A7959C'; // Default accent color
+    this.defaultFgColor = '#A7959C'; // Store the default color for resets
     this.animating = false;
     this.needsRender = true;
     this.isInitialized = false;
     this.matrixMode = options.matrixMode !== undefined ? options.matrixMode : true;
     this.matrixSpeed = options.matrixSpeed || 2;
     this.lastMatrixUpdate = 0;
+    this.controlsVisible = false;
+    this.currentImage = null;
     
     // Color for matrix effect (various shades of green)
     // Define base colors for matrix effect
@@ -69,6 +73,11 @@ class DotEffect {
     this.createVibration = this.createVibration.bind(this);
     this.updateVibrations = this.updateVibrations.bind(this);
     this.interpolateColor = this.interpolateColor.bind(this);
+    this.createControls = this.createControls.bind(this);
+    this.updateFromControls = this.updateFromControls.bind(this);
+    this.toggleControls = this.toggleControls.bind(this);
+    this.downloadImage = this.downloadImage.bind(this);
+    this.handleFileUpload = this.handleFileUpload.bind(this);
   }
   
   init(canvasId, imageUrl) {
@@ -79,6 +88,11 @@ class DotEffect {
     }
     
     this.ctx = this.canvas.getContext('2d');
+    this.currentImage = imageUrl;
+    
+    // Load settings from localStorage if available
+    this.loadSettings();
+    
     this.loadImage(imageUrl);
     
     // Set up event listeners
@@ -86,7 +100,455 @@ class DotEffect {
     window.addEventListener('resize', this.handleResize);
     this.canvas.addEventListener('click', this.handleClick);
     
+    // Create control panel
+    this.createControls();
+    
     this.isInitialized = true;
+  }
+  
+  loadSettings() {
+    try {
+      const savedSettings = localStorage.getItem('dotEffect-settings');
+      if (savedSettings) {
+        const settings = JSON.parse(savedSettings);
+        
+        // Apply saved settings if they exist
+        if (settings.blockSize) this.blockSize = settings.blockSize;
+        if (settings.maxRadius) this.maxRadius = settings.maxRadius;
+        if (settings.spacing) this.spacing = settings.spacing;
+        if (settings.threshold) this.threshold = settings.threshold;
+        if (settings.bgColor) this.bgColor = settings.bgColor;
+        if (settings.fgColor) this.fgColor = settings.fgColor;
+      }
+    } catch (error) {
+      console.error('Error loading dot effect settings:', error);
+    }
+  }
+  
+  saveSettings() {
+    try {
+      const settings = {
+        blockSize: this.blockSize,
+        maxRadius: this.maxRadius,
+        spacing: this.spacing,
+        threshold: this.threshold,
+        bgColor: this.bgColor,
+        fgColor: this.fgColor
+      };
+      
+      localStorage.setItem('dotEffect-settings', JSON.stringify(settings));
+    } catch (error) {
+      console.error('Error saving dot effect settings:', error);
+    }
+  }
+  
+  createControls() {
+    // Create container for controls
+    const container = document.createElement('div');
+    container.className = 'dot-effect-controls';
+    container.style.display = this.controlsVisible ? 'block' : 'none';
+    
+    // Create toggle button
+    const toggleButton = document.createElement('button');
+    toggleButton.className = 'dot-effect-toggle';
+    toggleButton.innerHTML = '⚙️ Play with dots';
+    toggleButton.addEventListener('click', this.toggleControls);
+    
+    // Create header with title and close button
+    const header = document.createElement('div');
+    header.className = 'dot-effect-header';
+    
+    // Add title
+    const title = document.createElement('h3');
+    title.textContent = 'Dot Effect Controls';
+    title.className = 'dot-effect-title';
+    
+    // Add close button
+    const closeButton = document.createElement('button');
+    closeButton.className = 'dot-effect-close';
+    closeButton.innerHTML = '✕';
+    closeButton.addEventListener('click', this.toggleControls);
+    
+    // Assemble header
+    header.appendChild(title);
+    header.appendChild(closeButton);
+    
+    // Create control panel content
+    const controlsContent = document.createElement('div');
+    controlsContent.className = 'dot-effect-controls-content';
+    
+    // Create sliders for different parameters
+    const createSlider = (name, min, max, value, step, onChange) => {
+      const sliderContainer = document.createElement('div');
+      sliderContainer.className = 'dot-effect-slider-container';
+      
+      const label = document.createElement('label');
+      label.textContent = name;
+      label.className = 'dot-effect-label';
+      
+      const slider = document.createElement('input');
+      slider.type = 'range';
+      slider.min = min;
+      slider.max = max;
+      slider.value = value;
+      slider.step = step || 1;
+      slider.className = 'dot-effect-slider';
+      
+      const valueDisplay = document.createElement('span');
+      valueDisplay.textContent = value;
+      valueDisplay.className = 'dot-effect-value';
+      
+      slider.addEventListener('input', (e) => {
+        valueDisplay.textContent = e.target.value;
+        onChange(parseFloat(e.target.value));
+      });
+      
+      sliderContainer.appendChild(label);
+      sliderContainer.appendChild(slider);
+      sliderContainer.appendChild(valueDisplay);
+      
+      return sliderContainer;
+    };
+    
+    // Create color pickers
+    const createColorPicker = (name, value, onChange) => {
+      const colorContainer = document.createElement('div');
+      colorContainer.className = 'dot-effect-color-container';
+      
+      const label = document.createElement('label');
+      label.textContent = name;
+      label.className = 'dot-effect-label';
+      
+      const colorPicker = document.createElement('input');
+      colorPicker.type = 'color';
+      colorPicker.value = value;
+      colorPicker.className = 'dot-effect-color';
+      
+      colorPicker.addEventListener('input', (e) => {
+        onChange(e.target.value);
+      });
+      
+      colorContainer.appendChild(label);
+      colorContainer.appendChild(colorPicker);
+      
+      return colorContainer;
+    };
+    
+    // Add sliders
+    controlsContent.appendChild(createSlider('Block Size', 4, 20, this.blockSize, 1, (value) => {
+      this.blockSize = value;
+      this.processImage();
+    }));
+    
+    controlsContent.appendChild(createSlider('Max Dot Radius', 1, 10, this.maxRadius, 0.5, (value) => {
+      this.maxRadius = value;
+      this.processImage();
+    }));
+    
+    controlsContent.appendChild(createSlider('Spacing', 0, 10, this.spacing, 1, (value) => {
+      this.spacing = value;
+      this.processImage();
+    }));
+    
+    controlsContent.appendChild(createSlider('Brightness Threshold', 0, 100, this.threshold, 1, (value) => {
+      this.threshold = value;
+      this.processImage();
+    }));
+    
+    // Add color pickers
+    controlsContent.appendChild(createColorPicker('Background Color', this.bgColor, (value) => {
+      this.bgColor = value;
+      this.needsRender = true;
+    }));
+    
+    controlsContent.appendChild(createColorPicker('Dot Color', this.fgColor, (value) => {
+      this.fgColor = value;
+      this.needsRender = true;
+    }));
+    
+    // Add file upload
+    const fileUploadContainer = document.createElement('div');
+    fileUploadContainer.className = 'dot-effect-upload-container';
+    
+    const fileLabel = document.createElement('label');
+    fileLabel.textContent = 'Upload Image';
+    fileLabel.className = 'dot-effect-label';
+    
+    const fileInput = document.createElement('input');
+    fileInput.type = 'file';
+    fileInput.accept = 'image/*';
+    fileInput.className = 'dot-effect-file';
+    fileInput.addEventListener('change', this.handleFileUpload);
+    
+    fileUploadContainer.appendChild(fileLabel);
+    fileUploadContainer.appendChild(fileInput);
+    
+    controlsContent.appendChild(fileUploadContainer);
+    
+    // Add download button
+    const downloadButton = document.createElement('button');
+    downloadButton.textContent = 'Download Image';
+    downloadButton.className = 'dot-effect-download';
+    downloadButton.addEventListener('click', this.downloadImage);
+    
+    controlsContent.appendChild(downloadButton);
+    
+    // Add button container
+    const buttonContainer = document.createElement('div');
+    buttonContainer.className = 'dot-effect-button-container';
+    
+    // Add reset button
+    const resetButton = document.createElement('button');
+    resetButton.textContent = 'Reset Settings';
+    resetButton.className = 'dot-effect-reset';
+    resetButton.addEventListener('click', () => {
+      this.blockSize = 8;
+      this.maxRadius = 4;
+      this.spacing = 0;
+      this.threshold = 20;
+      this.bgColor = '#1B191A';
+      this.fgColor = this.defaultFgColor;
+      
+      // Reset all sliders and color pickers
+      const sliders = container.querySelectorAll('.dot-effect-slider');
+      const values = container.querySelectorAll('.dot-effect-value');
+      
+      sliders[0].value = this.blockSize;
+      values[0].textContent = this.blockSize;
+      
+      sliders[1].value = this.maxRadius;
+      values[1].textContent = this.maxRadius;
+      
+      sliders[2].value = this.spacing;
+      values[2].textContent = this.spacing;
+      
+      sliders[3].value = this.threshold;
+      values[3].textContent = this.threshold;
+      
+      const colorPickers = container.querySelectorAll('.dot-effect-color');
+      colorPickers[0].value = this.bgColor;
+      colorPickers[1].value = this.fgColor;
+      
+      // Reprocess image with default settings
+      this.processImage();
+    });
+    
+    buttonContainer.appendChild(resetButton);
+    
+    // Add apply button
+    const applyButton = document.createElement('button');
+    applyButton.textContent = 'Apply Changes';
+    applyButton.className = 'dot-effect-apply';
+    applyButton.addEventListener('click', this.updateFromControls);
+    
+    buttonContainer.appendChild(applyButton);
+    
+    controlsContent.appendChild(buttonContainer);
+    
+    // Add CSS styles
+    const style = document.createElement('style');
+    style.textContent = `
+      .dot-effect-toggle {
+        position: absolute;
+        bottom: 20px;
+        left: 20px;
+        background-color: #1B191A;
+        color: #726d6f;
+        border: 1px solid #726d6f;
+        border-radius: 4px;
+        padding: 8px 12px;
+        font-family: 'JetBrains Mono', monospace;
+        font-size: 14px;
+        cursor: pointer;
+        z-index: 1000;
+        transition: all 0.2s ease;
+      }
+      
+      .dot-effect-toggle:hover {
+        background-color: #726d6f;
+        color: #1B191A;
+      }
+      
+      .dot-effect-controls {
+        position: absolute;
+        top: 100px;
+        left: 60px;
+        background-color: #1B191A;
+        border: 1px solid #726d6f;
+        border-radius: 6px;
+        width: 320px;
+        z-index: 1000;
+        font-family: 'JetBrains Mono', monospace;
+        color: #726d6f;
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
+        cursor: move;
+        user-select: none;
+      }
+      
+      .dot-effect-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 10px 15px;
+        background-color: #2e2c2d;
+        border-top-left-radius: 6px;
+        border-top-right-radius: 6px;
+        border-bottom: 1px solid #494949;
+      }
+      
+      .dot-effect-title {
+        margin: 0;
+        font-size: 16px;
+        font-weight: normal;
+      }
+      
+      .dot-effect-close {
+        cursor: pointer;
+        background: none;
+        border: none;
+        font-size: 16px;
+        color: #726d6f;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 24px;
+        height: 24px;
+        border-radius: 4px;
+      }
+      
+      .dot-effect-close:hover {
+        background-color: #494949;
+      }
+      
+      .dot-effect-controls-content {
+        padding: 15px;
+        max-height: 70vh;
+        overflow-y: auto;
+      }
+      
+      .dot-effect-slider-container,
+      .dot-effect-color-container,
+      .dot-effect-upload-container {
+        margin-bottom: 15px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+      }
+      
+      .dot-effect-label {
+        flex: 0 0 40%;
+        font-size: 14px;
+      }
+      
+      .dot-effect-slider {
+        flex: 1;
+        margin: 0 10px;
+        height: 5px;
+        -webkit-appearance: none;
+        appearance: none;
+        background: #494949;
+        outline: none;
+        border-radius: 3px;
+      }
+      
+      .dot-effect-slider::-webkit-slider-thumb {
+        -webkit-appearance: none;
+        appearance: none;
+        width: 15px;
+        height: 15px;
+        border-radius: 50%;
+        background: #726d6f;
+        cursor: pointer;
+      }
+      
+      .dot-effect-value {
+        flex: 0 0 30px;
+        text-align: right;
+        font-size: 14px;
+      }
+      
+      .dot-effect-color {
+        height: 25px;
+        width: 50px;
+        border: none;
+        border-radius: 4px;
+        background: none;
+        cursor: pointer;
+        padding: 0;
+      }
+      
+      .dot-effect-file {
+        margin-left: 10px;
+        font-size: 14px;
+        color: #726d6f;
+      }
+      
+      .dot-effect-button-container {
+        display: flex;
+        justify-content: space-between;
+        gap: 10px;
+        margin-top: 15px;
+      }
+      
+      .dot-effect-download {
+        display: block;
+        margin: 10px auto;
+        padding: 8px 15px;
+        background-color: #1B191A;
+        color: #726d6f;
+        border: 1px solid #726d6f;
+        border-radius: 4px;
+        font-family: 'JetBrains Mono', monospace;
+        font-size: 14px;
+        cursor: pointer;
+        transition: all 0.2s ease;
+        width: 80%;
+      }
+      
+      .dot-effect-reset,
+      .dot-effect-apply {
+        flex: 1;
+        padding: 8px 15px;
+        background-color: #1B191A;
+        color: #726d6f;
+        border: 1px solid #726d6f;
+        border-radius: 4px;
+        font-family: 'JetBrains Mono', monospace;
+        font-size: 14px;
+        cursor: pointer;
+        transition: all 0.2s ease;
+      }
+      
+      .dot-effect-download:hover,
+      .dot-effect-reset:hover,
+      .dot-effect-apply:hover {
+        background-color: #726d6f;
+        color: #1B191A;
+      }
+    `;
+    
+    document.head.appendChild(style);
+    
+    // Combine all elements
+    container.appendChild(header);
+    container.appendChild(controlsContent);
+    
+    // Add to document
+    if (this.canvas && this.canvas.parentElement) {
+      this.canvas.parentElement.style.position = 'relative';
+      this.canvas.parentElement.appendChild(toggleButton);
+      this.canvas.parentElement.appendChild(container);
+    } else {
+      document.body.appendChild(toggleButton);
+      document.body.appendChild(container);
+    }
+    
+    // Save references
+    this.controlsElement = container;
+    this.toggleButton = toggleButton;
+    
+    // Make the controls draggable
+    this.makeDraggable(container, header);
   }
   
   loadImage(imageUrl) {
@@ -126,6 +588,9 @@ class DotEffect {
     
     // Clear existing dots
     this.dots = [];
+    
+    // Save settings whenever processing image
+    this.saveSettings();
     
     // Calculate aspect ratio scaling
     const imageAspect = this.image.width / this.image.height;
@@ -545,20 +1010,125 @@ class DotEffect {
     return `rgb(${r}, ${g}, ${b})`;
   }
 
-  updateTheme(isDarkMode, accentColor) {
+  updateTheme(isDarkMode, accentColor, bgColor) {
     this.darkMode = isDarkMode;
+    
     if (accentColor) {
       this.fgColor = accentColor;
+      this.defaultFgColor = accentColor;
     }
     
-    if (this.darkMode) {
-      this.bgColor = '#000000';
+    // If a background color is provided, use it; otherwise, use default colors
+    if (bgColor) {
+      this.bgColor = bgColor;
+    } else if (this.darkMode) {
+      this.bgColor = '#1B191A';
     } else {
-      this.bgColor = '#FFFFFF';
-      this.fgColor = '#000000';
+      this.bgColor = '#F5F5F5';
+      // If no accent color provided for light mode, use current defaultFgColor but darker
+      if (!accentColor) {
+        this.fgColor = '#333333';
+      }
     }
     
     this.needsRender = true;
+    this.saveSettings(); // Save theme changes
+  }
+  
+  toggleControls() {
+    this.controlsVisible = !this.controlsVisible;
+    if (this.controlsElement) {
+      this.controlsElement.style.display = this.controlsVisible ? 'block' : 'none';
+    }
+  }
+  
+  makeDraggable(element, handle) {
+    if (!element || !handle) return;
+    
+    let pos1 = 0, pos2 = 0, pos3 = 0, pos4 = 0;
+    
+    handle.addEventListener('mousedown', dragMouseDown);
+    
+    function dragMouseDown(e) {
+      e.preventDefault();
+      // Get the initial mouse cursor position
+      pos3 = e.clientX;
+      pos4 = e.clientY;
+      
+      // When the mouse button is released, stop moving
+      document.addEventListener('mouseup', closeDragElement);
+      
+      // Call function when the cursor moves
+      document.addEventListener('mousemove', elementDrag);
+    }
+    
+    function elementDrag(e) {
+      e.preventDefault();
+      
+      // Calculate the new cursor position
+      pos1 = pos3 - e.clientX;
+      pos2 = pos4 - e.clientY;
+      pos3 = e.clientX;
+      pos4 = e.clientY;
+      
+      // Set the element's new position
+      element.style.top = (element.offsetTop - pos2) + "px";
+      element.style.left = (element.offsetLeft - pos1) + "px";
+    }
+    
+    function closeDragElement() {
+      // Stop moving when mouse button is released
+      document.removeEventListener('mouseup', closeDragElement);
+      document.removeEventListener('mousemove', elementDrag);
+    }
+  }
+  
+  handleFileUpload(event) {
+    const file = event.target.files[0];
+    if (file && file.type.match('image.*')) {
+      const reader = new FileReader();
+      
+      reader.onload = (e) => {
+        const img = new Image();
+        img.onload = () => {
+          this.currentImage = img.src;
+          this.loadImage(img.src);
+        };
+        img.src = e.target.result;
+      };
+      
+      reader.readAsDataURL(file);
+    }
+  }
+  
+  downloadImage() {
+    if (!this.canvas) return;
+    
+    // Create a temporary link
+    const link = document.createElement('a');
+    link.download = 'dot-effect-creation.png';
+    
+    // Convert the canvas to a blob and create a URL
+    this.canvas.toBlob((blob) => {
+      const url = URL.createObjectURL(blob);
+      link.href = url;
+      
+      // Simulate a click on the link to trigger download
+      document.body.appendChild(link);
+      link.click();
+      
+      // Clean up
+      document.body.removeChild(link);
+      URL.revokeObjectURL(url);
+    });
+  }
+  
+  updateFromControls() {
+    // Process image with current settings
+    this.processImage();
+    
+    // Save settings to localStorage
+    this.saveSettings();
   }
   
   destroy() {
@@ -567,6 +1137,16 @@ class DotEffect {
     if (this.canvas) {
       this.canvas.removeEventListener('click', this.handleClick);
     }
+    
+    // Remove controls
+    if (this.controlsElement && this.controlsElement.parentElement) {
+      this.controlsElement.parentElement.removeChild(this.controlsElement);
+    }
+    
+    if (this.toggleButton && this.toggleButton.parentElement) {
+      this.toggleButton.parentElement.removeChild(this.toggleButton);
+    }
+    
     this.animating = false;
     this.dots = [];
     this.waves = [];

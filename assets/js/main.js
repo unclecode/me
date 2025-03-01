@@ -358,6 +358,7 @@ function initializeApp() {
     <div class="keyboard-help-content" id="keyboard-help-content">
       <div class="keyboard-help-section">
         <div class="keyboard-help-section-title">Navigation</div>
+        <div class="keyboard-shortcut"><span class="shortcut-key">Cmd+P</span> <span class="shortcut-desc">Command Palette</span></div>
         <div class="keyboard-shortcut"><span class="shortcut-key">Ctrl+A</span> <span class="shortcut-desc">About</span></div>
         <div class="keyboard-shortcut"><span class="shortcut-key">Ctrl+V</span> <span class="shortcut-desc">Ventures</span></div>
         <div class="keyboard-shortcut"><span class="shortcut-key">Ctrl+P</span> <span class="shortcut-desc">Projects</span></div>
@@ -520,8 +521,29 @@ function initializeApp() {
   switchFont(savedFont);
 }
 
+// Load command palette script
+function loadCommandPalette() {
+  return new Promise((resolve) => {
+    const script = document.createElement('script');
+    script.src = '/assets/js/command-palette.js';
+    script.onload = resolve;
+    document.head.appendChild(script);
+    
+    // Also load the CSS
+    const link = document.createElement('link');
+    link.rel = 'stylesheet';
+    link.href = '/assets/css/command-palette.css';
+    document.head.appendChild(link);
+  });
+}
+
 // Initialize the app when both DOM and components are loaded
 document.addEventListener('DOMContentLoaded', () => {
+  // Load command palette
+  loadCommandPalette().then(() => {
+    console.log('Command palette loaded');
+  });
+  
   // Check if we're using components
   const hasComponents = document.querySelector('[data-component]');
   

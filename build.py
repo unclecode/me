@@ -390,6 +390,21 @@ def update_blog_js(posts_data):
     
     print(f"Updated blog.js with {len(js_posts)} posts")
 
+def generate_command_palette_data():
+    """Generate command palette data for the website."""
+    # Execute the command palette generator script if it exists
+    cmd_palette_script = os.path.join(ROOT_DIR, 'tools', 'generate_command_palette.py')
+    if os.path.exists(cmd_palette_script):
+        print("Generating command palette data...")
+        try:
+            import importlib.util
+            spec = importlib.util.spec_from_file_location("generate_command_palette", cmd_palette_script)
+            generate_module = importlib.util.module_from_spec(spec)
+            spec.loader.exec_module(generate_module)
+            generate_module.main()
+        except Exception as e:
+            print(f"Error generating command palette data: {e}")
+
 def main():
     """Main function to process all Markdown files."""
     print("Building blog posts...")
@@ -422,6 +437,9 @@ def main():
     
     # Update blog.js with the latest posts data
     update_blog_js(posts_data)
+    
+    # Generate command palette data
+    generate_command_palette_data()
     
     print("Done!")
 

@@ -33,7 +33,7 @@ class DotEffect {
     this.controlsVisible = false;
     this.currentImage = null;
     
-    // Color for matrix effect (various shades of green)
+    // Color for matrix effect and rainbow effects
     // Define base colors for matrix effect
     this.baseColors = [
       { r: 17, g: 34, b: 17 },    // #112211 - Darkest green
@@ -44,6 +44,29 @@ class DotEffect {
       { r: 102, g: 255, b: 102 }, // #66FF66
       { r: 136, g: 255, b: 136 }  // #88FF88
     ];
+    
+    // Rainbow colors for the new hover effect
+    this.rainbowColors = [
+      { r: 255, g: 0, b: 0 },     // Red
+      { r: 255, g: 165, b: 0 },   // Orange
+      { r: 255, g: 255, b: 0 },   // Yellow
+      { r: 0, g: 255, b: 0 },     // Green
+      { r: 0, g: 127, b: 255 },   // Blue
+      { r: 75, g: 0, b: 130 },    // Indigo
+      { r: 148, g: 0, b: 211 }    // Violet
+    ];
+    
+    // Rainbow effect settings
+    this.rainbowEnabled = true;
+    this.rainbowTrail = { x: 0, y: 0, active: false };
+    this.rainbowRadius = 180;
+    this.rainbowIntensity = 0.8;
+    this.rainbowPersistence = 0.995; // Higher value for slower fade (0-1)
+    this.rainbowSpeed = 0.002; // Even slower color cycling for more elegance
+    this.rainbowPhase = 0; // Current position in the color cycle
+    this.lastMouseMoveTime = 0;
+    this.rainbowMemory = []; // Stores previous positions for persistent effect
+    this.maxMemorySize = 10; // How many previous positions to remember
     
     // Ripple effect options
     this.waveSpeed = options.waveSpeed || 5;
@@ -693,6 +716,50 @@ class DotEffect {
     // Create a small vibration wave at mouse position
     this.createVibration(this.mouse.x, this.mouse.y);
     
+    // Handle rainbow effect
+    if (this.rainbowEnabled) {
+      // Remember current position and color phase
+      const now = Date.now();
+      
+      // Only add to memory if we've moved a significant distance
+      // or if it's been a while since the last move
+      const lastPos = this.rainbowMemory.length > 0 ? this.rainbowMemory[this.rainbowMemory.length - 1] : null;
+      const timeDiff = lastPos ? now - lastPos.time : Infinity;
+      const distanceThreshold = 20; // Minimum distance to record a new position
+      const timeThreshold = 100; // Minimum time between recordings
+      
+      let shouldRecord = !lastPos;
+      
+      if (lastPos) {
+        const dx = this.mouse.x - lastPos.x;
+        const dy = this.mouse.y - lastPos.y;
+        const distance = Math.sqrt(dx * dx + dy * dy);
+        shouldRecord = (distance > distanceThreshold || timeDiff > timeThreshold);
+      }
+      
+      if (shouldRecord) {
+        // Add current position to memory
+        this.rainbowMemory.push({
+          x: this.mouse.x,
+          y: this.mouse.y,
+          phase: this.rainbowPhase,
+          time: now,
+          active: 1.0 // Full intensity
+        });
+        
+        // Limit memory size
+        if (this.rainbowMemory.length > this.maxMemorySize) {
+          this.rainbowMemory.shift();
+        }
+      }
+      
+      // Set current active position
+      this.rainbowTrail.x = this.mouse.x;
+      this.rainbowTrail.y = this.mouse.y;
+      this.rainbowTrail.active = 1.0;
+      this.lastMouseMoveTime = now;
+    }
+    
     this.needsRender = true;
   }
   
@@ -724,10 +791,21 @@ class DotEffect {
     const clickX = e.clientX - rect.left;
     const clickY = e.clientY - rect.top;
     
-    this.createWave(clickX, clickY);
+    // Get the current rainbow phase for colored ripples
+    let waveColor = null;
+    
+    if (this.rainbowEnabled) {
+      // Determine if we should use rainbow color for the wave
+      waveColor = {
+        phase: this.rainbowPhase,
+        color: this.getRainbowColor(this.rainbowPhase)
+      };
+    }
+    
+    this.createWave(clickX, clickY, waveColor);
   }
   
-  createWave(x, y) {
+  createWave(x, y, colorInfo = null) {
     const now = Date.now();
     
     this.waves.push({
@@ -736,7 +814,8 @@ class DotEffect {
       radius: 0,
       strength: 1,
       startTime: now,
-      lastUpdate: now
+      lastUpdate: now,
+      colorInfo: colorInfo // Store the color info
     });
     
     this.needsRender = true;
@@ -799,6 +878,11 @@ class DotEffect {
       this.needsRender = true;
     }
     
+    // Always render if rainbow effect is active
+    if (this.rainbowEnabled && this.rainbowTrail.active) {
+      this.needsRender = true;
+    }
+    
     if (this.needsRender) {
       this.renderDots();
       this.needsRender = false;
@@ -851,6 +935,33 @@ class DotEffect {
     
     const canvasWidth = this.canvas.width;
     const canvasHeight = this.canvas.height;
+    const now = Date.now();
+    
+    // Update rainbow phase for smooth color transitions
+    this.rainbowPhase += this.rainbowSpeed;
+    if (this.rainbowPhase > 1) this.rainbowPhase -= 1;
+    
+    // Check if the rainbow effect should fade out
+    const timeSinceLastMove = now - this.lastMouseMoveTime;
+    if (timeSinceLastMove > 50 && this.rainbowTrail.active) {
+      // Gradually decrease intensity if mouse hasn't moved
+      this.rainbowTrail.active = this.rainbowTrail.active * this.rainbowPersistence;
+      
+      // Deactivate if it gets too small
+      if (this.rainbowTrail.active < 0.01) {
+        this.rainbowTrail.active = false;
+      }
+    }
+    
+    // Update rainbow memory points, fading them out slowly
+    for (let i = 0; i < this.rainbowMemory.length; i++) {
+      const point = this.rainbowMemory[i];
+      // Fade out much more slowly than the current position
+      point.active *= this.rainbowPersistence;
+    }
+    
+    // Remove memory points that have faded too much
+    this.rainbowMemory = this.rainbowMemory.filter(point => point.active > 0.01);
     
     // Clear canvas and set background
     this.ctx.fillStyle = this.darkMode ? this.bgColor : '#FFFFFF';
@@ -862,6 +973,86 @@ class DotEffect {
       dot.x = dot.originalX;
       dot.y = dot.originalY;
       dot.radius = dot.originalRadius;
+      
+      // Apply rainbow effect if enabled
+      let rainbowEffect = false;
+      let rainbowColor = null;
+      let rainbowIntensity = 0;
+      
+      // Check current mouse position first
+      if (this.rainbowEnabled && this.rainbowTrail.active) {
+        // Calculate distance from the dot to the mouse position
+        const dx = dot.originalX - this.rainbowTrail.x;
+        const dy = dot.originalY - this.rainbowTrail.y;
+        const distance = Math.sqrt(dx * dx + dy * dy);
+        
+        // Apply rainbow effect based on distance
+        if (distance < this.rainbowRadius) {
+          // Calculate a smooth falloff based on distance
+          const normalizedDistance = distance / this.rainbowRadius;
+          const falloff = 1 - Math.pow(normalizedDistance, 2); // Quadratic falloff for smoother gradient
+          
+          // Calculate final intensity
+          rainbowIntensity = falloff * this.rainbowIntensity * this.rainbowTrail.active;
+          
+          if (rainbowIntensity > 0.05) { // Only apply if above threshold
+            rainbowEffect = true;
+            
+            // Calculate color position based on distance and phase
+            // This creates a smooth gradient of colors that radiates outward
+            const colorPosition = (this.rainbowPhase + distance / (this.rainbowRadius * 3)) % 1.0;
+            
+            // Get color from the rainbow spectrum
+            rainbowColor = this.getRainbowColor(colorPosition);
+            
+            // Make dots near the mouse slightly larger
+            dot.radius += dot.originalRadius * rainbowIntensity * 0.3;
+          }
+        }
+      }
+      
+      // Then check previous positions in memory for persistent effect
+      if (!rainbowEffect && this.rainbowEnabled && this.rainbowMemory.length > 0) {
+        // Find the memory point with the strongest effect on this dot
+        let strongestEffect = { intensity: 0, colorPosition: 0 };
+        
+        for (const memory of this.rainbowMemory) {
+          // Skip inactive memory points
+          if (memory.active < 0.05) continue;
+          
+          const dx = dot.originalX - memory.x;
+          const dy = dot.originalY - memory.y;
+          const distance = Math.sqrt(dx * dx + dy * dy);
+          
+          if (distance < this.rainbowRadius) {
+            // Calculate a smooth falloff based on distance
+            const normalizedDistance = distance / this.rainbowRadius;
+            const falloff = 1 - Math.pow(normalizedDistance, 2); 
+            
+            // Calculate intensity for this memory point
+            const intensity = falloff * this.rainbowIntensity * memory.active;
+            
+            if (intensity > strongestEffect.intensity) {
+              // Calculate color position based on memory's phase and dot distance
+              const colorPosition = (memory.phase + distance / (this.rainbowRadius * 3)) % 1.0;
+              
+              strongestEffect = { 
+                intensity, 
+                colorPosition,
+                memory 
+              };
+            }
+          }
+        }
+        
+        // Apply the strongest effect if any
+        if (strongestEffect.intensity > 0.05) {
+          rainbowEffect = true;
+          rainbowIntensity = strongestEffect.intensity;
+          rainbowColor = this.getRainbowColor(strongestEffect.colorPosition);
+          dot.radius += dot.originalRadius * rainbowIntensity * 0.3;
+        }
+      }
       
       // Apply vibration effect
       if (this.vibrations && this.vibrations.length > 0) {
@@ -882,7 +1073,6 @@ class DotEffect {
             
             // Calculate vibration amplitude based on distance and time
             // Create sine wave oscillation effect
-            const now = Date.now();
             const elapsed = now - vibration.startTime;
             const phase = elapsed * this.vibrationSpeed / 100;
             const oscillation = Math.sin(phase + distance / 10) * this.vibrationStrength * intensity;
@@ -916,6 +1106,8 @@ class DotEffect {
       // Apply wave effects from click
       if (this.waves.length > 0) {
         let totalWaveEffect = { x: 0, y: 0, radius: 0 };
+        let waveRainbowEffect = false;
+        let waveRainbowColor = null;
         
         for (const wave of this.waves) {
           const dx = dot.originalX - wave.x;
@@ -949,6 +1141,26 @@ class DotEffect {
             
             // Make dots larger at the peak of the wave
             totalWaveEffect.radius += peakIntensity * wave.strength * 1.5;
+            
+            // Apply colored wave effect if wave has color info
+            if (wave.colorInfo && peakIntensity > 0.4) {
+              // Stronger rainbow effect at the peak of the wave
+              const waveColorIntensity = peakIntensity * wave.strength;
+              
+              // If this is a stronger effect than any previous wave or rainbow effect
+              if (waveColorIntensity > rainbowIntensity && !waveRainbowEffect) {
+                waveRainbowEffect = true;
+                
+                // Use wave's stored color
+                if (typeof wave.colorInfo.phase === 'number') {
+                  // Calculate a color position that varies with distance for ripple effect
+                  const colorPos = (wave.colorInfo.phase + distance / 200) % 1.0;
+                  waveRainbowColor = this.getRainbowColor(colorPos);
+                } else {
+                  waveRainbowColor = wave.colorInfo.color;
+                }
+              }
+            }
           }
         }
         
@@ -964,13 +1176,22 @@ class DotEffect {
         } else {
           dot.radius += radiusChange;
         }
+        
+        // Override rainbow effect with wave color if applicable
+        if (waveRainbowEffect && waveRainbowColor) {
+          rainbowEffect = true;
+          rainbowColor = waveRainbowColor;
+        }
       }
       
       // Ensure radius is never negative before drawing
       const safeRadius = Math.max(0.1, dot.radius);
       
-      // Set the dot color based on matrix mode
-      if (this.matrixMode && this.darkMode) {
+      // Set the dot color based on effects
+      if (rainbowEffect && rainbowColor) {
+        // Use the rainbow color for this dot
+        this.ctx.fillStyle = rainbowColor;
+      } else if (this.matrixMode && this.darkMode) {
         // Use smooth interpolated color based on the dot's position in the color gradient
         this.ctx.fillStyle = this.interpolateColor(dot.colorPosition);
       } else {
@@ -986,28 +1207,33 @@ class DotEffect {
   }
   
   // Interpolate between two colors based on a position value (0-1)
-  interpolateColor(position) {
+  interpolateColor(position, colorArray = this.baseColors) {
     // Ensure position is between 0 and 1
     position = Math.max(0, Math.min(1, position));
     
     // Calculate which two colors to interpolate between
-    const numColors = this.baseColors.length;
+    const numColors = colorArray.length;
     const scaledPosition = position * (numColors - 1);
     const index1 = Math.floor(scaledPosition);
     const index2 = Math.min(index1 + 1, numColors - 1);
     const localPosition = scaledPosition - index1; // Position between the two colors (0-1)
     
     // Get the two colors to interpolate between
-    const color1 = this.baseColors[index1];
-    const color2 = this.baseColors[index2];
+    const color1 = colorArray[index1];
+    const color2 = colorArray[index2];
     
     // Interpolate RGB values
     const r = Math.round(color1.r + (color2.r - color1.r) * localPosition);
     const g = Math.round(color1.g + (color2.g - color1.g) * localPosition);
     const b = Math.round(color1.b + (color2.b - color1.b) * localPosition);
     
-    // Return color in hex format
+    // Return color in RGB format
     return `rgb(${r}, ${g}, ${b})`;
+  }
+  
+  // Get a rainbow color from the spectrum
+  getRainbowColor(position) {
+    return this.interpolateColor(position, this.rainbowColors);
   }
 
   updateTheme(isDarkMode, accentColor, bgColor) {

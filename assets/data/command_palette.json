@@ -1,0 +1,148 @@
+[
+  {
+    "title": "~/unclecode | Hossein",
+    "type": "page",
+    "path": "index.html",
+    "description": "Main page: ~/unclecode | Hossein"
+  },
+  {
+    "title": "Modern CSS Features Every Developer Should Know in 2025 | unclecode",
+    "type": "blog",
+    "path": "blog/posts/modern-css-features.html",
+    "description": "Blog post: Modern CSS Features Every Developer Should Know in 2025 | unclecode"
+  },
+  {
+    "title": "~/blog/posts/building-ai-agent-with-crawl4ai | unclecode",
+    "type": "blog",
+    "path": "blog/posts/mini-post-example.html",
+    "description": "Blog post: ~/blog/posts/building-ai-agent-with-crawl4ai | unclecode"
+  },
+  {
+    "title": "What's New in the Latest Open Source LLMs - A Technical Breakdown | unclecode",
+    "type": "blog",
+    "path": "blog/posts/latest-llm-developments.html",
+    "description": "Blog post: What's New in the Latest Open Source LLMs - A Technical Breakdown | unclecode"
+  },
+  {
+    "title": "Creating Reliable Vector Databases for RAG Applications | unclecode",
+    "type": "blog",
+    "path": "blog/posts/effective-vector-databases.html",
+    "description": "Blog post: Creating Reliable Vector Databases for RAG Applications | unclecode"
+  },
+  {
+    "title": "Testing Code Blocks with File Names | unclecode",
+    "type": "blog",
+    "path": "blog/posts/test-code-blocks.html",
+    "description": "Blog post: Testing Code Blocks with File Names | unclecode"
+  },
+  {
+    "title": "Deepgemm",
+    "type": "animation",
+    "path": "animations/deepgemm/index.html",
+    "description": "Animation: Deepgemm"
+  },
+  {
+    "title": "Deepep",
+    "type": "animation",
+    "path": "animations/deepep/index.html",
+    "description": "Animation: Deepep"
+  },
+  {
+    "title": "Cubie",
+    "type": "project",
+    "path": "https://cubie.kidocode.com/",
+    "description": "An AI-empowered learning platform with personalized education.",
+    "external": true
+  },
+  {
+    "title": "Mojitofilms",
+    "type": "project",
+    "path": "https://www.mojitofilms.com/",
+    "description": "An app with personalised movie recommendations, powered by AI assistant.",
+    "external": true
+  },
+  {
+    "title": "AdNext",
+    "type": "project",
+    "path": "https://adnext.ai/",
+    "description": "AI platform that enhances e-commerce conversions and customer satisfaction.",
+    "external": true
+  },
+  {
+    "title": "Talk2Me",
+    "type": "project",
+    "path": "https://talk2me.stucent.ai/",
+    "description": "Chat-based AI app to learn new things through character conversations.",
+    "external": true
+  },
+  {
+    "title": "Potatomath",
+    "type": "project",
+    "path": "http://www.potatomath.com/",
+    "description": "An engaging and gamified math mobile application for K12 students.",
+    "external": true
+  },
+  {
+    "title": "Talk2Me",
+    "type": "project",
+    "path": "http://www.potatomath.com/",
+    "description": "Chat-based AI app to learn new things through character conversations.",
+    "external": true
+  },
+  {
+    "title": "Beat the Bot",
+    "type": "project",
+    "path": "http://www.potatomath.com/",
+    "description": "Interactive educational game where kids outsmart AI while learning and having fun.",
+    "external": true
+  },
+  {
+    "title": "Craft4Me",
+    "type": "project",
+    "path": "http://www.potatomath.com/",
+    "description": "AI-powered tool to create personalized courses tailored to individual learning goals.",
+    "external": true
+  },
+  {
+    "title": "Upped by Astro",
+    "type": "project",
+    "path": "http://www.potatomath.com/",
+    "description": "An educational website with various content for students to facilitate self-learning.",
+    "external": true
+  },
+  {
+    "title": "Star Tutor",
+    "type": "project",
+    "path": "http://www.potatomath.com/",
+    "description": "An e-learning platform that provides live tuitions to wide age-range of students.",
+    "external": true
+  },
+  {
+    "title": "Aleph Null",
+    "type": "venture",
+    "path": "https://www.alephnull.sg",
+    "description": "Aleph Null is Asia's leading Edtech hub, where student centricity is at the core of everything we do. We exist to democratize AI in education and empower the next generation of learners and learning institutions with services and tools they need to thrive in a rapidly changing world.",
+    "external": true
+  },
+  {
+    "title": "Kidocode",
+    "type": "venture",
+    "path": "https://kidocode.com",
+    "description": "Founded in 2014, Kidocode empowers the next generation of knowledge workers through a personalized, adaptive education system accessible both online and in classrooms. With over 30,000 students, it continues to revolutionize learning by making cutting-edge skills and tools available to all.",
+    "external": true
+  },
+  {
+    "title": "KPlay Team",
+    "type": "venture",
+    "path": "https://www.kplay.team/",
+    "description": "KPlay Team is a software development and consultancy company, with a focus on web & mobile app development services. We enable enterprises, service providers, and system integrators to model, design, standardize, and optimize infrastructure.",
+    "external": true
+  },
+  {
+    "title": "Pycademy",
+    "type": "venture",
+    "path": "https://pycademy.net/about-us/",
+    "description": "Pycademy provides skills development and certification training for IT and Data Science professionals while building the entire workforce\u2019s aptitude through awareness training and simulations.",
+    "external": true
+  }
+]

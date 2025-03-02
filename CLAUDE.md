@@ -9,6 +9,7 @@
 ## Components
 - **Blog Generator**: Python script that converts Markdown to HTML
 - **Command Palette**: VSCode-like quick navigation (Cmd+P / Ctrl+P)
+- **AI Assistant**: In-browser AI powered by Transformers.js with terminal interface
 - **Terminal List**: Reusable component for ventures, projects, and consultancy items
 - **Dot Effect**: Interactive canvas animation on homepage
 
@@ -34,3 +35,5 @@
 - Handle errors gracefully with fallbacks when possible
 
 This personal website is a static site with a Python-based blog generator and modern JavaScript components.
+
+

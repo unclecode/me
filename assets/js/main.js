@@ -537,11 +537,36 @@ function loadCommandPalette() {
   });
 }
 
+// Load AI agent
+function loadAIAgent() {
+  return new Promise((resolve) => {
+    const script = document.createElement('script');
+    script.src = '/assets/js/ai-agent.js';
+    script.onload = resolve;
+    document.head.appendChild(script);
+    
+    // Also load the CSS
+    const link = document.createElement('link');
+    link.rel = 'stylesheet';
+    link.href = '/assets/css/ai-terminal.css';
+    document.head.appendChild(link);
+  });
+}
+
 // Initialize the app when both DOM and components are loaded
 document.addEventListener('DOMContentLoaded', () => {
   // Load command palette
   loadCommandPalette().then(() => {
     console.log('Command palette loaded');
+  });
+  
+  // Load AI agent
+  loadAIAgent().then(() => {
+    console.log('AI agent loaded');
+    // Initialize AI agent after script is loaded
+    if (window.initializeAIAgent) {
+      window.initializeAIAgent();
+    }
   });
   
   // Check if we're using components

@@ -12,7 +12,7 @@ class AIAgent {
     this.chatLog = [];
     
     // API configuration
-    this.apiEndpoint = 'http://localhost:8081/chat'; // Update to your production URL
+    this.apiEndpoint = 'https://api-uc.ngrok.app/chat'; // Production URL via ngrok
     this.oneTimeToken = null; // Store one-time token for subsequent requests
     this.fingerprint = this.generateFingerprint(); // Create browser fingerprint
     
@@ -268,7 +268,7 @@ class AIAgent {
       
       try {
         // Test the connection to the backend
-        const healthCheckUrl = this.apiEndpoint.replace('/chat', '/health');
+        const healthCheckUrl = 'https://api-uc.ngrok.app/health';
         const response = await fetch(healthCheckUrl, {
           method: 'GET',
           headers: {

@@ -37,7 +37,9 @@ app.add_middleware(
         "http://localhost:3000",  # Development
         "http://localhost:8000",
         "http://localhost",
-        "https://yourwebsite.com",  # Production
+        "https://unclecode.com",  # Production
+        "https://www.unclecode.com",  # Production with www
+        "https://unclecode.github.io",  # GitHub Pages
     ],
     allow_credentials=True,
     allow_methods=["*"],

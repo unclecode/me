@@ -36,4 +36,28 @@
 
 This personal website is a static site with a Python-based blog generator and modern JavaScript components.
 
+## CHANGELOG
+
+### 2025-03-03
+- Implemented secure AI chat backend with LiteLLM integration
+  - Created FastAPI server with streaming response support
+  - Added one-time token security system to prevent API key theft
+  - Implemented browser fingerprinting for additional security
+  - Set up Redis-based rate limiting (120 requests per hour)
+  - Created test client for verifying streaming functionality
+
+### 2025-03-02
+- Enhanced ai-agent.js with secure LLM backend connection
+  - Updated frontend to handle streaming responses
+  - Added responsive UI that updates in real-time as tokens arrive
+  - Implemented proper error handling with fallback responses
+  - Modified chatbot UI to handle code blocks and formatting
+  
+### Earlier
+- Initial website implementation with terminal-style UI
+- Implemented blog generator with Markdown to HTML conversion
+- Created command palette for quick navigation (VSCode-style)
+- Added interactive animations and responsive design
+- Set up projects, ventures, and consultancy components
+
 

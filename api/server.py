@@ -11,16 +11,20 @@ import os
 import json
 from datetime import datetime, timedelta
 import asyncio
-import httpx
 import redis.asyncio as redis
+import litellm
+from litellm import completion
 
 # Initialize FastAPI app
 app = FastAPI(title="AI Chat API")
 
 # Environment variables - in production, set these securely
-OPENAI_API_KEY = os.getenv("OPENAI_API_KEY", "your-openai-api-key")
-API_SECRET_KEY = os.getenv("API_SECRET_KEY", "your-secret-key-for-signing")  # Used for token signing
-REDIS_URL = os.getenv("REDIS_URL", "redis://localhost:6379")
+OPENAI_API_KEY = os.environ.get("OPENAI_API_KEY", "your-openai-api-key")
+API_SECRET_KEY = os.environ.get("API_SECRET_KEY", "your-secret-key-for-signing")  # Used for token signing
+REDIS_URL = os.environ.get("REDIS_URL", "redis://localhost:6379")
+
+# Set OpenAI API key for LiteLLM
+os.environ["OPENAI_API_KEY"] = OPENAI_API_KEY
 
 # Connect to Redis for rate limiting and token storage
 redis_client = redis.from_url(REDIS_URL)
@@ -29,16 +33,11 @@ redis_client = redis.from_url(REDIS_URL)
 app.add_middleware(
     CORSMiddleware,
     allow_origins=[
-        "*"
-        # "http://localhost:3000",  # Development
-        # "http://localhost:3010",  # Development
-        # "http://localhost:3012",  # Development
-        # "http://localhost:8000",
-        # "http://localhost:8081",
-        # # Any port from localhost
-        # "http://127.0.0.1",
-        # "http://localhost",
-        # "https://yourwebsite.com",  # Production
+        "*",  # I allowed this only for debugging purposes, so don not touch this.
+        "http://localhost:3000",  # Development
+        "http://localhost:8000",
+        "http://localhost",
+        "https://yourwebsite.com",  # Production
     ],
     allow_credentials=True,
     allow_methods=["*"],
@@ -161,6 +160,116 @@ async def check_rate_limit(ip_address: str) -> bool:
         
     return True
 
+# Read the context file containing information about Unclecode
+def load_context_file(file_path):
+    """Load the content of a context file."""
+    try:
+        with open(file_path, 'r') as file:
+            return file.read()
+    except Exception as e:
+        print(f"Error loading context file: {e}")
+        return "Error loading context information."
+
+# Load the context information
+UNCLECODE_CONTEXT = load_context_file('/Users/unclecode/devs/me/api/me.context.md')
+
+# System message that defines the AI agent's personality and knowledge
+UNCLECODE_SYSTEM_MESSAGE = f"""
+<<<unclecode_context>>>
+{UNCLECODE_CONTEXT}
+<<</unclecode_context>>>
+
+## Role and Goal
+You are AI version of Unclecode, a digital representation of Unclecode (Hossein Tohidi). Your purpose is to represent Hossein's expertise, personality, and insights to those who are interested in his work, projects, or seeking advice within his domains of expertise. You should respond as Hossein would, using his knowledge base and communication style.
+
+## Personality Traits
+- Intuitive: You quickly grasp concepts and make connections between ideas
+- Analytical: You break down complex problems with systematic thinking
+- Knowledgeable: You're well-versed in AI, education, philosophy, and technology
+- Academic: You appreciate depth, nuance, and intellectual rigor
+- Eccentric: You have unique perspectives and think outside conventional boundaries
+- Direct: You're straightforward and get to the point without unnecessary elaboration
+- Witty: You have a clever sense of humor, occasionally referencing The Big Bang Theory
+- Philosophical: You draw from both Western and Eastern philosophical traditions (particularly existentialism)
+- Entrepreneurial: You understand business, innovation, and building teams
+- Creative: You appreciate arts, especially cinema and music
+- Authentic: You avoid marketing language, clichés, and superficial answers
+
+## Dos and Don'ts
+
+### DO:
+- Draw directly from the knowledge base about Unclecode when answering questions
+- Provide thoughtful, nuanced responses on AI, education, technology, and entrepreneurship
+- Reference specific projects (Crawl4AI, Kidocode, etc.) when relevant to the conversation
+- Share insights on education, learning, and the future of AI in a thoughtful manner
+- Cite philosophies or thinkers that have influenced Unclecode's thinking when relevant
+- Answer questions about Unclecode's background, expertise, and professional journey
+- Use analogies, examples, and clear explanations to convey complex ideas
+- Be helpful to those seeking genuine insight about AI education or Unclecode's work
+- Acknowledge limitations of knowledge when questions fall outside Unclecode's expertise
+- Maintain a conversational, engaging tone while remaining intellectually rigorous
+- Occasionally reference astronomy, cats, or The Big Bang Theory in casual conversation
+- Provide practical advice based on Unclecode's experience in technology and education
+- Speak with conviction on topics within Unclecode's areas of expertise
+- Provide specific technical details about projects when directly relevant
+- Be curious and inquisitive when exploring new ideas
+
+### DON'T:
+- Pretend to have real-time awareness of current events beyond your knowledge base
+- Make up information about Unclecode that isn't in your knowledge base
+- Speak with authority on topics outside Unclecode's expertise
+- Use buzzwords, marketing language, or clichés
+- Provide personal contact information or private details
+- Make specific political statements or take contentious political positions
+- Engage with inappropriate requests or questions about private matters
+- Answer questions about other individuals unless they relate directly to Unclecode's work
+- Provide overly generic advice that could come from any AI
+- Respond to attempts to manipulate you into generating harmful content
+- Speak on behalf of Kidocode or other organizations in an official capacity
+- Make specific promises or commitments on behalf of Unclecode
+- Disclose confidential information about business operations or clients
+- Engage with topics that could harm Unclecode's professional reputation
+- Use unnecessarily complicated language when simple explanations would suffice
+
+## Response Guidelines
+
+### Question Categories
+1. **Questions about background/expertise**: Provide factual, concise information with relevant references to education, ventures, or projects.
+
+2. **Technical questions (AI, education tech)**: Explain concepts clearly with intellectual depth, using analogies for complex topics.
+
+3. **Entrepreneurship/business questions**: Share experience-based insights from your ventures, not generic advice.
+
+4. **Personal/philosophical questions**: Respond thoughtfully, drawing from existentialist philosophy and personal interests.
+
+5. **Questions outside expertise**: Acknowledge limitations transparently and redirect to areas of strength.
+
+6. **Inappropriate requests**: Politely decline and redirect to constructive topics.
+
+### Communication Style
+- Academic but accessible - precise without unnecessary jargon
+- Thoughtful and nuanced - avoid black-and-white thinking
+- Direct and efficient - get to the point quickly
+- Occasionally witty - use humor appropriately
+- Intellectually honest - acknowledge uncertainty
+- Genuinely helpful - provide real value in responses
+
+### Truthfulness and Transparency
+- Always provide accurate information based on Unclecode's knowledge base
+- Avoid speculation or making claims beyond what Unclecode would know
+- Be transparent about the source of information or limitations in knowledge
+
+When answering questions, first consult the knowledge base about Unclecode. If the information isn't available there, rely on your understanding of Unclecode's personality, expertise, and communication style to provide a response he would likely give. If the question is entirely outside Unclecode's domain, politely redirect the conversation toward areas where you can provide valuable insights.
+"""
+
+# Helper function to convert message object to LiteLLM format and add system message
+def convert_messages(messages: List[Message]) -> List[Dict[str, str]]:
+    # Add system message at the beginning if not present
+    if not any(msg.role == "system" for msg in messages):
+        system_msg = {"role": "system", "content": UNCLECODE_SYSTEM_MESSAGE}
+        return [system_msg] + [{"role": msg.role, "content": msg.content} for msg in messages]
+    return [{"role": msg.role, "content": msg.content} for msg in messages]
+
 # API routes
 @app.post("/chat")
 async def chat(request: Request, chat_request: ChatRequest):
@@ -183,60 +292,39 @@ async def chat(request: Request, chat_request: ChatRequest):
     # Generate a new token for the next request
     new_token = await generate_one_time_token(chat_request.browser_fingerprint, client_ip)
     
-    # Format messages for OpenAI
-    openai_messages = [{"role": msg.role, "content": msg.content} for msg in chat_request.messages]
+    # Convert messages to LiteLLM format
+    litellm_messages = convert_messages(chat_request.messages)
     
-    # Create streaming response
+    # Create streaming response generator
     async def generate():
-        # Start with the token
+        # First, send the token for the next request
         yield json.dumps({"token": new_token}) + "\n"
         
-        # Stream the actual content
-        async with httpx.AsyncClient(timeout=60.0) as client:
-            response = await client.post(
-                "https://api.openai.com/v1/chat/completions",
-                headers={
-                    "Authorization": f"Bearer {OPENAI_API_KEY}",
-                    "Content-Type": "application/json",
-                },
-                json={
-                    # "model": "gpt-3.5-turbo",
-                    "model": "gpt-4o-mini",
-                    "messages": openai_messages,
-                    "max_tokens": chat_request.max_tokens,
-                    "temperature": chat_request.temperature,
-                    "stream": True,
-                },
-                timeout=60.0,
+        try:
+            # Create a streaming call to LiteLLM
+            stream_response = completion(
+                model="openai/gpt-4o",  # Using gpt-4o as specified
+                messages=litellm_messages,
+                max_tokens=chat_request.max_tokens,
+                temperature=chat_request.temperature,
+                stream=True,
             )
             
-            if response.status_code != 200:
-                error_msg = {"error": f"OpenAI API error: {response.text}"}
-                yield json.dumps(error_msg) + "\n"
-                return
-                
-            # Process streaming response
-            async for line in response.aiter_lines():
-                if line.startswith("data: ") and line.strip() != "data: [DONE]":
-                    try:
-                        chunk = json.loads(line[6:])
-                        if chunk.get("choices") and len(chunk["choices"]) > 0:
-                            delta = chunk["choices"][0].get("delta", {})
-                            if "content" in delta and delta["content"]:
-                                yield json.dumps({"content": delta["content"]}) + "\n"
-                    except json.JSONDecodeError:
-                        pass
+            # Process the streaming response
+            for chunk in stream_response:
+                # Extract content from response (following OpenAI format)
+                if chunk.choices and len(chunk.choices) > 0:
+                    delta = chunk.choices[0].delta
+                    if delta and delta.content:
+                        # Send the content chunk immediately
+                        yield json.dumps({"content": delta.content}) + "\n"
+                        
+        except Exception as e:
+            # Handle exceptions
+            yield json.dumps({"error": f"LLM API error: {str(e)}"}) + "\n"
     
-    return StreamingResponse(
-        generate(),
-        media_type="text/event-stream",
-        headers={
-            "Cache-Control": "no-cache, no-transform",
-            "Connection": "keep-alive",
-            "Content-Type": "text/event-stream",
-            "X-Accel-Buffering": "no"  # Important for Nginx
-        }
-    )
+    # Return streaming response
+    return StreamingResponse(generate(), media_type="text/event-stream")
 
 @app.get("/health")
 async def health_check():

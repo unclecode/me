@@ -377,7 +377,7 @@ function initializeApp() {
   const versionIndicator = document.getElementById('version-indicator');
   if (versionIndicator) {
     // Store version in localStorage to detect changes
-    const currentVersion = '1.0.2'; // Update this when making changes
+    const currentVersion = '1.0.3'; // Update this when making changes
     const lastVersion = localStorage.getItem('site-version') || '';
     
     // Update the version text

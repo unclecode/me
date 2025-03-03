@@ -32,11 +32,25 @@
         const pathParts = window.location.pathname.split('/');
         const repoName = pathParts[1]; // The repository name is the first part of the path
         
-        // Update all relative CSS paths
+        // Update all relative CSS paths - fix double "me" issue
         document.querySelectorAll('link[rel="stylesheet"]').forEach(link => {
-          if (link.href.startsWith(window.location.origin) && link.href.includes('/assets/')) {
-            const newHref = link.href.replace('/assets/', `/${repoName}/assets/`);
-            link.href = newHref;
+          // Check if the href includes '/assets/' but doesn't already have the correct path
+          if (link.href.startsWith(window.location.origin) && 
+              link.href.includes('/assets/') && 
+              !link.href.includes(`/${repoName}/assets/`)) {
+              
+              // Replace any incorrect paths with the correct one
+              // First, standardize by removing any potential duplicated repo names
+              let fixedHref = link.href.replace(new RegExp(`/${repoName}/${repoName}/`, 'g'), `/${repoName}/`);
+              
+              // Then ensure it has the correct path structure
+              if (fixedHref.includes('/assets/')) {
+                const pathPattern = /\/assets\//;
+                fixedHref = fixedHref.replace(pathPattern, `/${repoName}/assets/`);
+              }
+              
+              console.log(`Fixing path: ${link.href} -> ${fixedHref}`);
+              link.href = fixedHref;
           }
         });
       }
@@ -226,9 +240,14 @@
         window.isGitHubPages = true;
         window.repoName = repoName;
         
-        // Modify ComponentLoader basePath
+        // Modify ComponentLoader basePath - avoid double "me" issue
         if (window.componentLoader) {
-          window.componentLoader.basePath = `/${repoName}/assets/includes/`;
+          // Ensure we don't get a path like /me/me/assets/includes/
+          let correctPath = `/${repoName}/assets/includes/`;
+          // Remove any duplicate repo names
+          correctPath = correctPath.replace(new RegExp(`/${repoName}/${repoName}/`, 'g'), `/${repoName}/`);
+          
+          window.componentLoader.basePath = correctPath;
           console.log('Updated basePath for GitHub Pages:', window.componentLoader.basePath);
         }
       }

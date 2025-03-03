@@ -449,8 +449,18 @@ function getAssetsBasePath() {
   // If we're in the blog directory, adjust path accordingly
   const path = window.location.pathname;
   
-  // For GitHub Pages deployment
-  if (path.includes('/me/')) {
+  // First check if we're in GitHub Pages with the global flag
+  if (window.isGitHubPages && window.repoName) {
+    // Use absolute paths with origin to avoid double "me" issue
+    const origin = window.location.origin;
+    const repoName = window.repoName;
+    const basePath = `${origin}/${repoName}/assets/`;
+    console.log(`Using absolute GitHub Pages path: ${basePath}`);
+    return basePath;
+  }
+  // Regular path resolution
+  else if (path.includes('/me/')) {
+    // For GitHub Pages deployment
     if (path.includes('/me/blog/posts/')) {
       return '../../assets/';
     } else if (path.includes('/me/blog/')) {

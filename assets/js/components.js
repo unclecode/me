@@ -9,7 +9,12 @@ class ComponentLoader {
     
     // If GitHub Pages environment was detected, use that path
     if (window.isGitHubPages && window.repoName) {
-      this.basePath = `/${window.repoName}/assets/includes/`;
+      // Ensure we don't get a path like /me/me/assets/includes/
+      let correctPath = `/${window.repoName}/assets/includes/`;
+      // Remove any duplicate repo names in case they're already in the path
+      correctPath = correctPath.replace(new RegExp(`/${window.repoName}/${window.repoName}/`, 'g'), `/${window.repoName}/`);
+      
+      this.basePath = correctPath;
       console.log('GitHub Pages detected, setting includes path to:', this.basePath);
     } else {
       // Automatically detect if we're in the blog directory for local development

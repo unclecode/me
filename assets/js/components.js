@@ -6,7 +6,7 @@
 class ComponentLoader {
   constructor() {
     this.components = {};
-    this.basePath = '/assets/includes/';
+    this.basePath = './assets/includes/';
     this.loadedCount = 0;
     this.totalComponents = 0;
   }

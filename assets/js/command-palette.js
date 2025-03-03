@@ -26,7 +26,7 @@ class CommandPalette {
    */
   async fetchCommandData() {
     try {
-      const response = await fetch('/assets/data/command_palette.json');
+      const response = await fetch('./assets/data/command_palette.json');
       if (!response.ok) {
         throw new Error('Failed to load command palette data');
       }

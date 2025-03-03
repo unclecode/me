@@ -525,14 +525,14 @@ function initializeApp() {
 function loadCommandPalette() {
   return new Promise((resolve) => {
     const script = document.createElement('script');
-    script.src = '/assets/js/command-palette.js';
+    script.src = './assets/js/command-palette.js';
     script.onload = resolve;
     document.head.appendChild(script);
     
     // Also load the CSS
     const link = document.createElement('link');
     link.rel = 'stylesheet';
-    link.href = '/assets/css/command-palette.css';
+    link.href = './assets/css/command-palette.css';
     document.head.appendChild(link);
   });
 }
@@ -541,14 +541,14 @@ function loadCommandPalette() {
 function loadAIAgent() {
   return new Promise((resolve) => {
     const script = document.createElement('script');
-    script.src = '/assets/js/ai-agent.js';
+    script.src = './assets/js/ai-agent.js';
     script.onload = resolve;
     document.head.appendChild(script);
     
     // Also load the CSS
     const link = document.createElement('link');
     link.rel = 'stylesheet';
-    link.href = '/assets/css/ai-terminal.css';
+    link.href = './assets/css/ai-terminal.css';
     document.head.appendChild(link);
   });
 }

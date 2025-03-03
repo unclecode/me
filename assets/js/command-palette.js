@@ -26,7 +26,10 @@ class CommandPalette {
    */
   async fetchCommandData() {
     try {
-      const response = await fetch('./assets/data/command_palette.json');
+      // Get the correct path based on current URL
+      const basePath = this.getAssetsBasePath();
+      const response = await fetch(`${basePath}data/command_palette.json`);
+      
       if (!response.ok) {
         throw new Error('Failed to load command palette data');
       }
@@ -34,6 +37,34 @@ class CommandPalette {
       console.log('Command palette data loaded:', this.items.length, 'items');
     } catch (error) {
       console.error('Error loading command palette data:', error);
+    }
+  }
+  
+  /**
+   * Helper function to determine the correct assets path
+   */
+  getAssetsBasePath() {
+    const path = window.location.pathname;
+    
+    // For GitHub Pages deployment
+    if (path.includes('/me/')) {
+      if (path.includes('/me/blog/posts/')) {
+        return '../../assets/';
+      } else if (path.includes('/me/blog/')) {
+        return '../assets/';
+      } else {
+        return './assets/';
+      }
+    } 
+    // For local development
+    else {
+      if (path.includes('/blog/posts/')) {
+        return '../../assets/';
+      } else if (path.includes('/blog/')) {
+        return '../assets/';
+      } else {
+        return './assets/';
+      }
     }
   }
   

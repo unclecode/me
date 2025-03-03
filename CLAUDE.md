@@ -36,7 +36,36 @@
 
 This personal website is a static site with a Python-based blog generator and modern JavaScript components.
 
+## Path Handling
+
+The website uses relative paths that need to work in both development and production (GitHub Pages) environments.
+Key path resolution functions are implemented in:
+
+- `components.js`: Uses `basePath` with environment detection for component includes
+- `main.js`: Uses `getAssetsBasePath()` for loading additional scripts and CSS
+- `command-palette.js`: Also has its own `getAssetsBasePath()` for loading JSON data
+
+### GitHub Pages Compatibility
+
+To ensure the site works on GitHub Pages:
+1. Script and CSS paths automatically adjust based on environment detection
+2. Special handling exists for blog posts which are in a subdirectory
+3. Component loading uses additional path resolution for GitHub Pages
+
+When the site is hosted on GitHub Pages at `username.github.io/me/`:
+- Root pages: Assets loaded from `./assets/`
+- Blog index: Assets loaded from `../assets/`  
+- Blog posts: Assets loaded from `../../assets/`
+
 ## CHANGELOG
+
+### 2025-03-04
+- Added GitHub Pages compatibility
+  - Updated path resolution in components.js, main.js, and command-palette.js
+  - Added environment detection for GitHub Pages vs local development
+  - Modified blog templates to handle both environments
+  - Fixed script loading for nested blog post pages
+  - Added verbose logging for component loading process
 
 ### 2025-03-03
 - Implemented secure AI chat backend with LiteLLM integration

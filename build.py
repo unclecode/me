@@ -255,7 +255,7 @@ def create_html_post(md_file, template_file, posts_data=None, force_rebuild=Fals
         'id': len(posts_data) + 1 if posts_data is not None else 1,
         'title': metadata.get('title', ''),
         'slug': slug,
-        'url': f"./posts/{html_filename}",
+        'url': f"./posts/{html_filename}",  # Relative path works for both local and GitHub Pages
         'date': formatted_date,
         'date_obj': metadata.get('date', ''),
         'readingTime': metadata.get('reading_time', ''),

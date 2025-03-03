@@ -31,6 +31,41 @@
       </div>
       
       <a href="$BLOG_URL" class="menu-item">Blog</a>
+      <a href="#" class="menu-item" id="keyboard-shortcuts-toggle">Shortcuts</a>
+      <span class="menu-item version-indicator" id="version-indicator">v1.0.0</span>
     </div>
   </div>
 </header>
+
+<!-- Keyboard shortcuts modal -->
+<div id="keyboard-shortcuts-modal" class="modal">
+  <div class="modal-content">
+    <div class="modal-header">
+      <span class="modal-title">Keyboard Shortcuts</span>
+      <span class="modal-close">&times;</span>
+    </div>
+    <div class="modal-body">
+      <div class="shortcuts-grid">
+        <div class="keyboard-help-section">
+          <div class="keyboard-help-section-title">Navigation</div>
+          <div class="keyboard-shortcut"><span class="shortcut-key">Cmd+P</span> <span class="shortcut-desc">Command Palette</span></div>
+          <div class="keyboard-shortcut"><span class="shortcut-key">Ctrl+A</span> <span class="shortcut-desc">About</span></div>
+          <div class="keyboard-shortcut"><span class="shortcut-key">Ctrl+V</span> <span class="shortcut-desc">Ventures</span></div>
+          <div class="keyboard-shortcut"><span class="shortcut-key">Ctrl+P</span> <span class="shortcut-desc">Projects</span></div>
+          <div class="keyboard-shortcut"><span class="shortcut-key">Ctrl+C</span> <span class="shortcut-desc">Consultancy</span></div>
+          <div class="keyboard-shortcut"><span class="shortcut-key">Ctrl+B</span> <span class="shortcut-desc">Blog</span></div>
+        </div>
+        <div class="keyboard-help-section">
+          <div class="keyboard-help-section-title">Actions</div>
+          <div class="keyboard-shortcut"><span class="shortcut-key">Ctrl+D</span> <span class="shortcut-desc">Play with Dots</span></div>
+          <div class="keyboard-shortcut"><span class="shortcut-key">Ctrl+T</span> <span class="shortcut-desc">Toggle Panel</span></div>
+        </div>
+        <div class="keyboard-help-section">
+          <div class="keyboard-help-section-title">Themes & Fonts</div>
+          <div class="keyboard-shortcut"><span class="shortcut-key">Alt+1/2/3</span> <span class="shortcut-desc">Change Color Theme</span></div>
+          <div class="keyboard-shortcut"><span class="shortcut-key">Alt+J/F/I</span> <span class="shortcut-desc">Change Font</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

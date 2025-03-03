@@ -346,134 +346,57 @@ function initializeApp() {
     }
   }
   
-  // Add keyboard help in footer
-  const footer = document.querySelector('footer');
-  const keyboardHelp = document.createElement('div');
-  keyboardHelp.className = 'keyboard-help';
-  keyboardHelp.innerHTML = `
-    <div class="keyboard-help-header">
-      <span class="keyboard-help-title">Keyboard Shortcuts</span>
-      <button class="keyboard-help-toggle" id="keyboard-help-toggle">Show</button>
-    </div>
-    <div class="keyboard-help-content" id="keyboard-help-content">
-      <div class="keyboard-help-section">
-        <div class="keyboard-help-section-title">Navigation</div>
-        <div class="keyboard-shortcut"><span class="shortcut-key">Cmd+P</span> <span class="shortcut-desc">Command Palette</span></div>
-        <div class="keyboard-shortcut"><span class="shortcut-key">Ctrl+A</span> <span class="shortcut-desc">About</span></div>
-        <div class="keyboard-shortcut"><span class="shortcut-key">Ctrl+V</span> <span class="shortcut-desc">Ventures</span></div>
-        <div class="keyboard-shortcut"><span class="shortcut-key">Ctrl+P</span> <span class="shortcut-desc">Projects</span></div>
-        <div class="keyboard-shortcut"><span class="shortcut-key">Ctrl+C</span> <span class="shortcut-desc">Consultancy</span></div>
-        <div class="keyboard-shortcut"><span class="shortcut-key">Ctrl+B</span> <span class="shortcut-desc">Blog</span></div>
-      </div>
-      <div class="keyboard-help-section">
-        <div class="keyboard-help-section-title">Actions</div>
-        <div class="keyboard-shortcut"><span class="shortcut-key">Ctrl+D</span> <span class="shortcut-desc">Play with Dots</span></div>
-        <div class="keyboard-shortcut"><span class="shortcut-key">Ctrl+T</span> <span class="shortcut-desc">Toggle Panel</span></div>
-      </div>
-      <div class="keyboard-help-section">
-        <div class="keyboard-help-section-title">Themes & Fonts</div>
-        <div class="keyboard-shortcut"><span class="shortcut-key">Alt+1/2/3</span> <span class="shortcut-desc">Change Color Theme</span></div>
-        <div class="keyboard-shortcut"><span class="shortcut-key">Alt+J/F/I</span> <span class="shortcut-desc">Change Font</span></div>
-      </div>
-    </div>
-  `;
+  // Setup keyboard shortcuts modal
+  const keyboardShortcutsToggle = document.getElementById('keyboard-shortcuts-toggle');
+  const keyboardShortcutsModal = document.getElementById('keyboard-shortcuts-modal');
+  const modalClose = document.querySelector('.modal-close');
   
-  // Add styles for keyboard help
-  const keyboardHelpStyle = document.createElement('style');
-  keyboardHelpStyle.textContent = `
-    .keyboard-help {
-      margin: 1.5rem auto 0;
-      max-width: 600px;
-      font-family: var(--monospace);
-      border: 1px solid var(--terminal-border);
-      border-radius: 6px;
-      background-color: var(--terminal-highlight);
-    }
-    
-    .keyboard-help-header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      padding: 0.8rem 1rem;
-      border-bottom: 1px solid var(--terminal-border);
-    }
-    
-    .keyboard-help-title {
-      color: var(--terminal-primary);
-      font-weight: bold;
-    }
-    
-    .keyboard-help-toggle {
-      background: none;
-      border: 1px solid var(--terminal-border);
-      border-radius: 4px;
-      padding: 0.3rem 0.6rem;
-      color: var(--terminal-text);
-      font-family: var(--monospace);
-      font-size: 0.8rem;
-      cursor: pointer;
-      transition: all 0.2s ease;
-    }
-    
-    .keyboard-help-toggle:hover {
-      background-color: var(--terminal-primary);
-      color: var(--terminal-bg);
-      border-color: var(--terminal-primary);
-    }
-    
-    .keyboard-help-content {
-      display: none;
-      padding: 1rem;
-    }
-    
-    .keyboard-help-content.active {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-      gap: 1.5rem;
-    }
-    
-    .keyboard-help-section-title {
-      color: var(--terminal-gray);
-      font-size: 0.85rem;
-      margin-bottom: 0.6rem;
-      padding-bottom: 0.3rem;
-      border-bottom: 1px solid var(--terminal-border);
-    }
-    
-    .keyboard-shortcut {
-      display: flex;
-      margin-bottom: 0.5rem;
-      font-size: 0.85rem;
-    }
-    
-    .shortcut-key {
-      flex: 0 0 80px;
-      color: var(--terminal-secondary);
-      background-color: rgba(0, 0, 0, 0.2);
-      padding: 0.1rem 0.4rem;
-      border-radius: 3px;
-      border: 1px solid var(--terminal-border);
-      margin-right: 0.5rem;
-    }
-    
-    .shortcut-desc {
-      color: var(--terminal-dimmed-text);
-    }
-  `;
-  document.head.appendChild(keyboardHelpStyle);
+  // Show modal when clicking on "Shortcuts" in the header
+  if (keyboardShortcutsToggle) {
+    keyboardShortcutsToggle.addEventListener('click', (e) => {
+      e.preventDefault();
+      keyboardShortcutsModal.style.display = 'block';
+    });
+  }
   
-  // Insert before social links
-  const socialLinks = footer.querySelector('.social-links');
-  footer.insertBefore(keyboardHelp, socialLinks);
+  // Close modal when clicking on X
+  if (modalClose) {
+    modalClose.addEventListener('click', () => {
+      keyboardShortcutsModal.style.display = 'none';
+    });
+  }
   
-  // Toggle keyboard help
-  const keyboardHelpToggle = document.getElementById('keyboard-help-toggle');
-  const keyboardHelpContent = document.getElementById('keyboard-help-content');
-  
-  keyboardHelpToggle.addEventListener('click', () => {
-    keyboardHelpContent.classList.toggle('active');
-    keyboardHelpToggle.textContent = keyboardHelpContent.classList.contains('active') ? 'Hide' : 'Show';
+  // Close modal when clicking outside
+  window.addEventListener('click', (e) => {
+    if (e.target === keyboardShortcutsModal) {
+      keyboardShortcutsModal.style.display = 'none';
+    }
   });
+  
+  // Set up version indicator
+  const versionIndicator = document.getElementById('version-indicator');
+  if (versionIndicator) {
+    // Store version in localStorage to detect changes
+    const currentVersion = '1.0.2'; // Update this when making changes
+    const lastVersion = localStorage.getItem('site-version') || '';
+    
+    // Update the version text
+    versionIndicator.textContent = `v${currentVersion}`;
+    
+    // Check if version changed since last visit
+    if (lastVersion && lastVersion !== currentVersion) {
+      // Highlight version indicator to show changes
+      versionIndicator.style.backgroundColor = 'var(--terminal-primary)';
+      versionIndicator.style.color = 'var(--terminal-bg)';
+      versionIndicator.style.opacity = '1';
+      
+      // Add tooltip to explain what's new
+      versionIndicator.title = `Updated from v${lastVersion} to v${currentVersion}. Changes: Shortcuts menu added, GitHub Pages support`;
+    }
+    
+    // Save current version
+    localStorage.setItem('site-version', currentVersion);
+  }
   
   // Project filtering
   const filterButtons = document.querySelectorAll('.filter-tag');
@@ -521,18 +444,47 @@ function initializeApp() {
   switchFont(savedFont);
 }
 
+// Get the relative base path for assets
+function getAssetsBasePath() {
+  // If we're in the blog directory, adjust path accordingly
+  const path = window.location.pathname;
+  
+  // For GitHub Pages deployment
+  if (path.includes('/me/')) {
+    if (path.includes('/me/blog/posts/')) {
+      return '../../assets/';
+    } else if (path.includes('/me/blog/')) {
+      return '../assets/';
+    } else {
+      return './assets/';
+    }
+  } 
+  // For local development
+  else {
+    if (path.includes('/blog/posts/')) {
+      return '../../assets/';
+    } else if (path.includes('/blog/')) {
+      return '../assets/';
+    } else {
+      return './assets/';
+    }
+  }
+}
+
 // Load command palette script
 function loadCommandPalette() {
   return new Promise((resolve) => {
+    const basePath = getAssetsBasePath();
+    
     const script = document.createElement('script');
-    script.src = './assets/js/command-palette.js';
+    script.src = `${basePath}js/command-palette.js`;
     script.onload = resolve;
     document.head.appendChild(script);
     
     // Also load the CSS
     const link = document.createElement('link');
     link.rel = 'stylesheet';
-    link.href = './assets/css/command-palette.css';
+    link.href = `${basePath}css/command-palette.css`;
     document.head.appendChild(link);
   });
 }
@@ -540,15 +492,17 @@ function loadCommandPalette() {
 // Load AI agent
 function loadAIAgent() {
   return new Promise((resolve) => {
+    const basePath = getAssetsBasePath();
+    
     const script = document.createElement('script');
-    script.src = './assets/js/ai-agent.js';
+    script.src = `${basePath}js/ai-agent.js`;
     script.onload = resolve;
     document.head.appendChild(script);
     
     // Also load the CSS
     const link = document.createElement('link');
     link.rel = 'stylesheet';
-    link.href = './assets/css/ai-terminal.css';
+    link.href = `${basePath}css/ai-terminal.css`;
     document.head.appendChild(link);
   });
 }

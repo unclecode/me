@@ -6,7 +6,22 @@
 class ComponentLoader {
   constructor() {
     this.components = {};
-    this.basePath = './assets/includes/';
+    
+    // If GitHub Pages environment was detected, use that path
+    if (window.isGitHubPages && window.repoName) {
+      this.basePath = `/${window.repoName}/assets/includes/`;
+      console.log('GitHub Pages detected, setting includes path to:', this.basePath);
+    } else {
+      // Automatically detect if we're in the blog directory for local development
+      const isBlogPage = window.location.pathname.includes('/blog/');
+      this.basePath = isBlogPage ? '../assets/includes/' : './assets/includes/';
+      
+      // For blog post pages (which are in a subdirectory)
+      if (window.location.pathname.includes('/blog/posts/')) {
+        this.basePath = '../../assets/includes/';
+      }
+    }
+    
     this.loadedCount = 0;
     this.totalComponents = 0;
   }
@@ -20,16 +35,18 @@ class ComponentLoader {
   async load(name, path) {
     try {
       this.totalComponents++;
+      console.log(`Loading component ${name} from ${path}`);
       const response = await fetch(path);
       if (!response.ok) {
-        throw new Error(`Failed to load component ${name}`);
+        throw new Error(`Failed to load component ${name} from ${path} (status: ${response.status})`);
       }
       const html = await response.text();
       this.components[name] = html;
       this.loadedCount++;
+      console.log(`Successfully loaded component ${name}`);
       return html;
     } catch (error) {
-      console.error(`Error loading component ${name}:`, error);
+      console.error(`Error loading component ${name} from ${path}:`, error);
       return null;
     }
   }
@@ -120,19 +137,30 @@ document.addEventListener('DOMContentLoaded', async () => {
   // Insert components into the page
   const basePath = window.location.pathname.split('/').length > 2 ? '../' : './';
   
-  // Get the relative base path to root
+  // Get the relative base path to root, properly handling GitHub Pages paths
   function getBasePath() {
     const path = window.location.pathname;
-    const parts = path.split('/').filter(p => p.length);
-    return parts.length ? '../'.repeat(parts.length) : './';
+    
+    // Special handling for GitHub Pages where site is in a subdirectory
+    if (path.includes('/me/')) {
+      // For GitHub Pages deployment
+      const rootParts = path.split('/me/')[1]?.split('/').filter(p => p.length) || [];
+      return rootParts.length ? '../'.repeat(rootParts.length) : './';
+    } else {
+      // For local development
+      const parts = path.split('/').filter(p => p.length);
+      return parts.length ? '../'.repeat(parts.length) : './';
+    }
   }
 
   // Insert header with correct blog URL
   document.querySelectorAll('[data-component="header"]').forEach(el => {
     const relativePath = getBasePath();
+    
+    // Remove trailing 'index.html' for cleaner URLs
     componentLoader.insert('[data-component="header"]', 'header', {
-      BLOG_URL: `${relativePath}blog/index.html`,
-      HOME_URL: `${relativePath}index.html`
+      BLOG_URL: `${relativePath}blog/`,
+      HOME_URL: relativePath
     });
   });
   

@@ -19,7 +19,29 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/atom-one-dark.min.css">
   <link rel="stylesheet" href="../../assets/css/common.css">
   <link rel="stylesheet" href="../../assets/css/terminal-core.css">
+  <link rel="stylesheet" href="../../assets/css/main.css">
   <link rel="stylesheet" href="../../assets/css/post.css">
+  <script>
+    // Handle paths for both local development and GitHub Pages
+    (function() {
+      // Check if we're on GitHub Pages (domain contains github.io)
+      const isGitHubPages = window.location.hostname.includes('github.io');
+      
+      if (isGitHubPages) {
+        // Get the repository name from the path
+        const pathParts = window.location.pathname.split('/');
+        const repoName = pathParts[1]; // The repository name is the first part of the path
+        
+        // Update all relative CSS paths
+        document.querySelectorAll('link[rel="stylesheet"]').forEach(link => {
+          if (link.href.startsWith(window.location.origin) && link.href.includes('/assets/')) {
+            const newHref = link.href.replace('/assets/', `/${repoName}/assets/`);
+            link.href = newHref;
+          }
+        });
+      }
+    })();
+  </script>
 </head>
 <body>
   <!-- Header will be loaded dynamically -->
@@ -154,6 +176,29 @@ console.log(greet(&quot;World&quot;));
   <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"></script>
   <script src="../../assets/js/components.js"></script>
   <script src="../../assets/js/main.js"></script>
+  <script>
+    // Fix paths for GitHub Pages after scripts are loaded
+    document.addEventListener('DOMContentLoaded', () => {
+      // Check if we're on GitHub Pages (domain contains github.io)
+      const isGitHubPages = window.location.hostname.includes('github.io');
+      
+      if (isGitHubPages) {
+        // Get the repository name from the path
+        const pathParts = window.location.pathname.split('/');
+        const repoName = pathParts[1]; // The repository name is the first part of the path
+        
+        // Inject a global variable that components.js can use
+        window.isGitHubPages = true;
+        window.repoName = repoName;
+        
+        // Modify ComponentLoader basePath
+        if (window.componentLoader) {
+          window.componentLoader.basePath = `/${repoName}/assets/includes/`;
+          console.log('Updated basePath for GitHub Pages:', window.componentLoader.basePath);
+        }
+      }
+    });
+  </script>
   <script>
     document.addEventListener('components:loaded', () => {
       // Initialize syntax highlighting

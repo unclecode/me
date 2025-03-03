@@ -998,6 +998,113 @@ header {
     height: 100vh;
     position: relative;
   }
+}
+
+/* Version indicator */
+.version-indicator {
+  font-size: 0.8rem;
+  opacity: 0.7;
+  cursor: default;
+  padding: 0.3rem 0.5rem;
+  background-color: rgba(0, 0, 0, 0.2);
+  border-radius: 4px;
+  margin-left: 1rem;
+}
+
+/* Modal styles */
+.modal {
+  display: none;
+  position: fixed;
+  z-index: 1000;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  overflow: auto;
+  background-color: rgba(0, 0, 0, 0.7);
+  backdrop-filter: blur(3px);
+}
+
+.modal-content {
+  position: relative;
+  background-color: var(--terminal-bg);
+  margin: 10% auto;
+  padding: 0;
+  border: 1px solid var(--terminal-border);
+  width: 80%;
+  max-width: 800px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+  border-radius: 6px;
+  animation: modalFadeIn 0.3s;
+}
+
+@keyframes modalFadeIn {
+  from { opacity: 0; transform: translateY(-20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.modal-header {
+  padding: 1rem;
+  border-bottom: 1px solid var(--terminal-border);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.modal-title {
+  color: var(--terminal-primary);
+  font-weight: bold;
+  font-size: 1.1rem;
+}
+
+.modal-close {
+  color: var(--terminal-gray);
+  font-size: 1.5rem;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.modal-close:hover {
+  color: var(--terminal-primary);
+}
+
+.modal-body {
+  padding: 1rem;
+}
+
+.shortcuts-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 1.5rem;
+}
+
+.keyboard-help-section-title {
+  color: var(--terminal-gray);
+  font-size: 0.85rem;
+  margin-bottom: 0.6rem;
+  padding-bottom: 0.3rem;
+  border-bottom: 1px solid var(--terminal-border);
+}
+
+.keyboard-shortcut {
+  display: flex;
+  margin-bottom: 0.5rem;
+  font-size: 0.85rem;
+}
+
+.shortcut-key {
+  flex: 0 0 80px;
+  color: var(--terminal-secondary);
+  background-color: rgba(0, 0, 0, 0.2);
+  padding: 0.1rem 0.4rem;
+  border-radius: 3px;
+  border: 1px solid var(--terminal-border);
+  margin-right: 0.5rem;
+}
+
+.shortcut-desc {
+  color: var(--terminal-dimmed-text);
+}
   
   .hero-overlay {
     width: 100%;

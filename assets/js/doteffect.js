@@ -373,7 +373,7 @@ class DotEffect {
     style.textContent = `
       .dot-effect-toggle {
         position: absolute;
-        bottom: 20px;
+        top: 20px;
         left: 20px;
         background-color: #1B191A;
         color: #726d6f;
